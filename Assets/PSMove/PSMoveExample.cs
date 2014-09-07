@@ -25,22 +25,29 @@ public class PSMoveExample : MonoBehaviour {
 
 	private float throwTime;
 	public Rigidbody projectile;
+	private int itemCount;
+	private RaycastHit hit;
+	private GameObject item;
 	
 	
 	// Use this for initialization
 	void Start () {
 		PSMoveInput.Connect(ipAddress, int.Parse(port));
 		throwTime = Time.time;
+		itemCount = 0;
 	}
 		
 	
 	void Update() {
+		Rgrab();
+
 		if(PSMoveInput.IsConnected && PSMoveInput.MoveControllers[0].Connected) {
-			//print("connect");
 			Vector3 gemPos, handlePos;
 			MoveData moveData = PSMoveInput.MoveControllers[0].Data;
 			gemPos = moveData.Position;
 			handlePos = moveData.HandlePosition;
+			//print("connect");
+
 
 			if (moveData.Acceleration.x > 100)
 			{
@@ -105,5 +112,29 @@ public class PSMoveExample : MonoBehaviour {
 		gStr = "0"; 
 		bStr = "0";
 		rumbleStr = "0";
+	}
+
+	void Rgrab() {
+		MoveData moveData = PSMoveInput.MoveControllers[0].Data;
+		Ray ray = Camera.main.ScreenPointToRay(moveData.Position);
+		if (Physics.Raycast(ray,out hit, 100)){
+			print("Hit something");
+			print (hit.collider.tag);
+			print (moveData.Position);
+			//if(itemCount ==0 && hit.collider.tag == "item" && moveData.GetButtonsDown(MoveButton.T)) {
+			if( hit.collider.tag == "item" && Input.GetKeyDown(KeyCode.F)) {
+				//itemCount++;
+				//item = hit.collider.gameObject;
+				//item.transform.parent = transform;
+				//item.transform.position = transform.position + transform.forward;
+				print ("grab you!");
+				//print (itemCount);
+			}
+		}else if(itemCount >0 && Input.GetKeyDown(KeyCode.F)){
+			print ("throw you!");
+			itemCount--;
+			item.transform.parent = null;
+			item.transform.position = transform.position + transform.forward*10;
+		}
 	}
 }
