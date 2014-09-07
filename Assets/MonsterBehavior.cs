@@ -7,9 +7,15 @@ public class MonsterBehavior : MonoBehaviour {
 	public float speed = 1f;
 	public bool isWalking = true;
 
+	public AudioClip Sound1;
+	public AudioClip Sound2;
+
+	public AudioSource audioSource;
+
 	// Use this for initialization
 	void Start () {
-	
+		audioSource.clip = Sound1;
+		audioSource.Play ();
 	}
 	
 	// Update is called once per frame
