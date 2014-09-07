@@ -115,14 +115,25 @@ public class PSMoveExample : MonoBehaviour {
 	}
 
 	void Rgrab() {
+		if (!Input.GetKeyDown(KeyCode.F)) {
+			return;
+		}
 		MoveData moveData = PSMoveInput.MoveControllers[0].Data;
 		Ray ray = Camera.main.ScreenPointToRay(moveData.Position);
+		print("moveData.Position: " + moveData.Position + ", is it expected?");
+		if (itemCount > 0) {
+			print ("throw you!");
+			itemCount--;
+			item.transform.parent = null;
+			item.transform.position = transform.position + transform.forward*10;
+			return;
+		}
 		if (Physics.Raycast(ray,out hit, 100)){
 			print("Hit something");
 			print (hit.collider.tag);
 			print (moveData.Position);
 			//if(itemCount ==0 && hit.collider.tag == "item" && moveData.GetButtonsDown(MoveButton.T)) {
-			if( hit.collider.tag == "item" && Input.GetKeyDown(KeyCode.F)) {
+			if(hit.collider.tag == "item") {
 				//itemCount++;
 				//item = hit.collider.gameObject;
 				//item.transform.parent = transform;
@@ -130,11 +141,6 @@ public class PSMoveExample : MonoBehaviour {
 				print ("grab you!");
 				//print (itemCount);
 			}
-		}else if(itemCount >0 && Input.GetKeyDown(KeyCode.F)){
-			print ("throw you!");
-			itemCount--;
-			item.transform.parent = null;
-			item.transform.position = transform.position + transform.forward*10;
 		}
 	}
 }
