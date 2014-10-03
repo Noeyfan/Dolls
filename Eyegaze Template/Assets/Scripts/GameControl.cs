@@ -4,8 +4,9 @@ using System.Collections;
 public class GameControl : MonoBehaviour {
 	//GameObject[] people;
 	int count = 0;
+	public Vector3 pOffset;
 	peopleSkeleton[] people;
-	string[] peopel_name = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"};
+	string[] people_name = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"};
 	//Component[] parts;
 	public GameObject peoplePrefab;
 	// Use this for initialization
@@ -65,83 +66,85 @@ public class GameControl : MonoBehaviour {
 		//Generate Info
 		//Generate Dialog
 
-		if(b) {
-			for(int k = 0; k < 5; k++) {
-				switch(k){
-				case 0: // Change Face
-					switch(Random.Range(0,2)) {
-					case 0:
-						temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Face1.prefab", typeof(GameObject));
-						Inst = Instantiate(temp) as GameObject;
-						Inst.transform.parent = people[i].p.transform;
-						break;
-					case 1:
-						temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Face2.prefab", typeof(GameObject));
-						Inst = Instantiate(temp) as GameObject;
-						Inst.transform.parent = people[i].p.transform;
-						break;
-					}
-					temp= GameObject.Find("P_name");
-					temp.guiText.text = peopel_name[Random.Range(0,peopel_name.Length)];
+//		if(b) {
+		for(int k = 0; k < 5; k++) {
+			switch(k){
+			case 0: // Change Face
+				switch(Random.Range(0,2)) {
+				case 0:
+					temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Face1.prefab", typeof(GameObject));
+					Inst = Instantiate(temp) as GameObject;
+					Inst.transform.parent = people[i].p.transform;
 					break;
-				case 1:// Change Hair
-					switch(Random.Range(0,2)) {
-					case 0:
-						temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Hair1.prefab", typeof(GameObject));
-						Inst = Instantiate(temp) as GameObject;
-						Inst.transform.parent = people[i].p.transform;
-						break;
-					case 1:
-						temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Hair2.prefab", typeof(GameObject));
-						Inst = Instantiate(temp) as GameObject;
-						Inst.transform.parent = people[i].p.transform;
-						break;
-					}
-					break;
-				case 2://Change Eyes
-					switch(Random.Range(0,2)) {
-					case 0:
-						temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Eye1.prefab", typeof(GameObject));
-						Inst = Instantiate(temp) as GameObject;
-						Inst.transform.parent = people[i].p.transform;
-						break;
-					case 1:
-						temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Eye2.prefab", typeof(GameObject));
-						Inst = Instantiate(temp) as GameObject;
-						Inst.transform.parent = people[i].p.transform;
-						break;
-					}
-					break;
-				case 3://Change Nose
-					switch(Random.Range(0,2)) {
-					case 0:
-						temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Nose1.prefab", typeof(GameObject));
-						Inst = Instantiate(temp) as GameObject;
-						Inst.transform.parent = people[i].p.transform;
-						break;
-					case 1:
-						temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Nose2.prefab", typeof(GameObject));
-						Inst = Instantiate(temp) as GameObject;
-						Inst.transform.parent = people[i].p.transform;
-						break;
-					}
-					break;
-				case 4:
-					switch(Random.Range(0,2)) {
-					case 0:
-						temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Mouth1.prefab", typeof(GameObject));
-						Inst = Instantiate(temp) as GameObject;
-						Inst.transform.parent = people[i].p.transform;
-						break;
-					case 1:
-						temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Mouth2.prefab", typeof(GameObject));
-						Inst = Instantiate(temp) as GameObject;
-						Inst.transform.parent = people[i].p.transform;
-						break;
-					}
+				case 1:
+					temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Face2.prefab", typeof(GameObject));
+					Inst = Instantiate(temp) as GameObject;
+					Inst.transform.parent = people[i].p.transform;
 					break;
 				}
+				//temp= GameObject.Find("P_name");
+				//temp.guiText.text = peopel_name[Random.Range(0,peopel_name.Length)];
+				//temp.transform.parent = people[i].p.transform;
+				break;
+			case 1:// Change Hair
+				switch(Random.Range(0,2)) {
+				case 0:
+					temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Hair1.prefab", typeof(GameObject));
+					Inst = Instantiate(temp) as GameObject;
+					Inst.transform.parent = people[i].p.transform;
+					break;
+				case 1:
+					temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Hair2.prefab", typeof(GameObject));
+					Inst = Instantiate(temp) as GameObject;
+					Inst.transform.parent = people[i].p.transform;
+					break;
+				}
+				break;
+			case 2://Change Eyes
+				switch(Random.Range(0,2)) {
+				case 0:
+					temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Eye1.prefab", typeof(GameObject));
+					Inst = Instantiate(temp) as GameObject;
+					Inst.transform.parent = people[i].p.transform;
+					break;
+				case 1:
+					temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Eye2.prefab", typeof(GameObject));
+					Inst = Instantiate(temp) as GameObject;
+					Inst.transform.parent = people[i].p.transform;
+					break;
+				}
+				break;
+			case 3://Change Nose
+				switch(Random.Range(0,2)) {
+				case 0:
+					temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Nose1.prefab", typeof(GameObject));
+					Inst = Instantiate(temp) as GameObject;
+					Inst.transform.parent = people[i].p.transform;
+					break;
+				case 1:
+					temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Nose2.prefab", typeof(GameObject));
+					Inst = Instantiate(temp) as GameObject;
+					Inst.transform.parent = people[i].p.transform;
+					break;
+				}
+				break;
+			case 4:
+				switch(Random.Range(0,2)) {
+				case 0:
+					temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Mouth1.prefab", typeof(GameObject));
+					Inst = Instantiate(temp) as GameObject;
+					Inst.transform.parent = people[i].p.transform;
+					break;
+				case 1:
+					temp = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Parts/Mouth2.prefab", typeof(GameObject));
+					Inst = Instantiate(temp) as GameObject;
+					Inst.transform.parent = people[i].p.transform;
+					break;
+				}
+				GeneratePP(b,i); 				//generate other info
+				break;
 			}
+		}
 
 			/*foreach (Transform parts in people[i].p.transform) {
 				//print ("kid: " + parts.name);
@@ -167,7 +170,24 @@ public class GameControl : MonoBehaviour {
 					break;
 				}
 			}
-		*/}else {
+		*/ //}else {
+			//Genreate False
+		}
+	//}
+
+	void GeneratePP (bool b, int i) {
+		if(b) {
+			//slightly changed
+			GameObject passport = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/Passport.prefab", typeof(GameObject));
+			passport = Instantiate(passport) as GameObject;
+			GameObject clone = Instantiate(people[i].p, passport.transform.position - pOffset, Quaternion.identity) as GameObject;
+			clone.transform.localScale -= new Vector3(0.7F, 0.7F, 0);
+			clone.SetActive(true);
+			clone.transform.parent = passport.transform;
+			passport.transform.parent = people[i].p.transform;
+			passport.SetActive(true);
+		} else {
+			//huge changed
 		}
 	}
 
@@ -192,5 +212,7 @@ public class GameControl : MonoBehaviour {
 			people[count - 1].p.SetActive(false);
 		}
 		people[count++].p.SetActive(true);
+		GameObject temp= GameObject.Find("P_name");
+		//temp.guiText.text = "Name: " + people_name[Random.Range(0,people_name.Length)];
 	}
 }
