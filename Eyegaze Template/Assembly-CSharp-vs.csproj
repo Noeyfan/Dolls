@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\ButtonControl.cs" />
      <Compile Include="Assets\Scripts\EyeTest.cs" />
      <Compile Include="Assets\Scripts\EyeTracker.cs" />
      <Compile Include="Assets\Scripts\EyeWrapper.cs" />

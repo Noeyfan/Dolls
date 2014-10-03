@@ -25,6 +25,7 @@ public class GameControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		/********** key direct test
 		if(Input.GetKeyDown(KeyCode.Space)) {
 			if(count >= 1) {
 				people[count - 1].p.SetActive(false);
@@ -32,6 +33,7 @@ public class GameControl : MonoBehaviour {
 			people[count++].p.SetActive(true);
 		}
 		//print(Random.Range(0,1));
+	**********/
 	}
 
 	void InstantiatePeople() {
@@ -140,6 +142,7 @@ public class GameControl : MonoBehaviour {
 					break;
 				}
 			}
+
 			/*foreach (Transform parts in people[i].p.transform) {
 				//print ("kid: " + parts.name);
 				switch(parts.name) {
@@ -168,6 +171,7 @@ public class GameControl : MonoBehaviour {
 		}
 	}
 
+	//Useless for now
 	void GenerateFace(GameObject go){// Useless, Cannot pass reference
 		print(go.name);
 		switch(Random.Range(0,2)){
@@ -181,5 +185,12 @@ public class GameControl : MonoBehaviour {
 		//foreach (var face in GameObject.FindGameObjectsWithTag("Face")) {
 		//	face.SetActive(false);
 		//}
+	}
+
+	void NextOne() {
+		if(count >= 1) {
+			people[count - 1].p.SetActive(false);
+		}
+		people[count++].p.SetActive(true);
 	}
 }
