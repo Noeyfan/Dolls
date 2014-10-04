@@ -13,16 +13,24 @@ public class GameControl : MonoBehaviour {
 
 	string[,] resouce_name = {
 		{"Face1", "Face2", "Face3"},
-		{"Hair1", "Hair2", "Hair2"},
+		//{"Hair1", "Hair2", "Hair2"},
 		{"Eye1", "Eye2", "Eye3"},
 		{"Nose1", "Nose2", "Nose3"},
 		{"Mouth1", "Mouth2", "Mouth3"},
+		{"Beard"},
+	};
+
+	string[,] pp_name = {
+		{"name01","name02","name03","name04","name05","name06","name07","name08","name09","name10"},
+		{"Flag_of_China","Flag_of_France","Flag_of_Germany","Flag_of_India","Flag_of_Japan","Flag_of_Russia","Flag_of_South_Korea","Flag_of_the_UK","Flag_of_the_United_States","Flag_of_TW"},
+		{"birthday01","birthday02","birthday03","birthday04","birthday05","birthday06","birthday07","birthday08","birthday09","birthday10"},
 	};
 	// Use this for initialization
 
 	struct peopleSkeleton {
 		public GameObject p;
 		public bool identity;
+		public bool ismale;
 		public bool playerChoice;
 	};
 
@@ -31,6 +39,9 @@ public class GameControl : MonoBehaviour {
 		InstantiatePeople();
 		GenerateRandom();
 		people[count].p.SetActive(true);
+		for(int i = 0; i < people.Length; i++) {
+			print(people[i].ismale);
+		}
 		//GameObject testPrefab = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/WhiteBoard.prefab", typeof(GameObject));
 		//Instantiate(testPrefab);
 	}
@@ -74,49 +85,88 @@ public class GameControl : MonoBehaviour {
 		//Generate Passport = Info
 		//Generate Info
 		//Generate Dialog
-		for(int k =0; k < 5; k++) {
-		//for(int k =0; k < 4; k++) { // no hair
-			string parts_name = resouce_name[k, Random.Range(0, 3)];
-			print("load" + parts_name);
+		//for(int k =0; k < 5; k++) {
+		for(int k =0; k < 4; k++) { // no hair
+			int rVal = Random.Range(0,3);
+			string parts_name = resouce_name[k, rVal];
 			GameObject temp = (GameObject)Resources.Load(parts_name, typeof(GameObject));
+			if(k == 0) {
+				if(rVal == 0){
+					people[i].ismale = false;
+				}
+				else {
+					people[i].ismale = true;
+				}
+			}
 			GameObject Inst = Instantiate(temp) as GameObject;
 			Inst.transform.parent = people[i].p.transform;
-			if (k == 4) {
+			//if (k =4 3) { no hair
+			if (k == 3) {
 				GeneratePP(b,i);
+				GenerateImmgration(b,i);
 			}
 		}
 	}
 	//}
 
 	void GeneratePP (bool b, int i) {
+		GameObject passport = (GameObject)Resources.Load("Passport", typeof(GameObject));
+		passport = Instantiate(passport) as GameObject;
 		if(b) {
+			GameObject sex;
+			if(people[i].ismale) {
+				sex = Instantiate((GameObject)Resources.Load("Male", typeof(GameObject))) as GameObject;
+			}else {
+				sex = Instantiate((GameObject)Resources.Load("Female", typeof(GameObject))) as GameObject;
+			}
+
 			//slightly changed
-			GameObject passport = (GameObject)Resources.Load("Passport", typeof(GameObject));
-			passport = Instantiate(passport) as GameObject;
 			GameObject clone = Instantiate(people[i].p, passport.transform.position - pOffset, Quaternion.identity) as GameObject;
+
 			// change clone
-			clone.transform.localScale -= new Vector3(0.6F, 0.6F, 0);
+			clone.transform.localScale -= new Vector3(0.7F, 0.7F, 0);
 			clone.SetActive(true);
 			Transform[] allChildren = clone.gameObject.GetComponentsInChildren<Transform>();
-			foreach (Transform children in allChildren) {
-				if(children.name.Contains("Hair")) {
-					print("hair");
+			//foreach (Transform children in allChildren) {
+				//if(children.name.Contains("Hair")) {
+					//print("hair");
 					//children.gameObject.renderer = (Instantiate((GameObject)Resources.Load(resouce_name[1, Random.Range(0, 2)], typeof(GameObject))) as GameObject).renderer;
-				}
-			}
+				//}
+			//}
 			clone.transform.parent = passport.transform;
+			//generate info
+			for(int k = 0; k < 3; k++) {
+				string parts_name = pp_name[k, Random.Range(0,10)];
+				GameObject tmp_pp = Instantiate((GameObject)Resources.Load(parts_name, typeof(GameObject))) as GameObject;
+				tmp_pp.SetActive(true);
+				tmp_pp.transform.parent = clone.transform;
+			}
+			sex.SetActive(true);
+			sex.transform.parent = passport.transform;
 			passport.transform.parent = people[i].p.transform;
 			passport.SetActive(true);
 		} else {
-			GameObject passport = (GameObject)Resources.Load("Passport", typeof(GameObject));
-			passport = Instantiate(passport) as GameObject;
-			GameObject clone = Instantiate(people[i+1].p, passport.transform.position - pOffset, Quaternion.identity) as GameObject;
-			clone.transform.localScale -= new Vector3(0.6F, 0.6F, 0);
+			GameObject clone = Instantiate(people[i].p, passport.transform.position - pOffset, Quaternion.identity) as GameObject;
+			clone.transform.localScale -= new Vector3(0.7F, 0.7F, 0);
 			clone.SetActive(true);
+			//Beard for test
+			GameObject tmp = (GameObject)Resources.Load("Beard", typeof(GameObject));
+			GameObject ist = Instantiate(tmp) as GameObject;
+			ist.transform.parent = clone.transform;
+
 			clone.transform.parent = passport.transform;
 			passport.transform.parent = people[i].p.transform;
 			passport.SetActive(true);
 			//huge changed
+		}
+	}
+
+	void GenerateImmgration(bool b, int i) {
+		GameObject passport = (GameObject)Resources.Load("ScreenFile", typeof(GameObject));
+		passport = Instantiate(passport) as GameObject;
+		if(b) {
+
+		}else {
 		}
 	}
 
