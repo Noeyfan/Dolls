@@ -14,19 +14,21 @@ public class ButtonControl : MonoBehaviour {
 	
 	}
 
-	void OnTriggerStay2D() {
-		timeRecord ++;
-		if(timeRecord > 100) {
-			if(name == "Approve") {
-				//set user chose true;
-				GameObject.Find("GameController").SendMessage("NextOne", true);
+	void OnTriggerStay2D(Collider2D c) {
+		if(c.tag == "Magnify") {
+			timeRecord ++;
+			if(timeRecord > 100) {
+				timeRecord = 0;
+				if(name == "Approve") {
+					//set user chose true;
+					GameObject.Find("GameController").SendMessage("NextOne", true);
+				}
+				if(name == "Reject"){
+					//set user chose false;
+					GameObject.Find("GameController").SendMessage("NextOne", false);
+				}
+				print("NextOne");
 			}
-			if(name == "Reject"){
-				//set user chose false;
-				GameObject.Find("GameController").SendMessage("NextOne", false);
-			}
-			print("NextOne");
-			timeRecord = 0;
 		}
 	}
 

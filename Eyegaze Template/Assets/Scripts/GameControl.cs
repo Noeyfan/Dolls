@@ -6,8 +6,8 @@ public class GameControl : MonoBehaviour {
 	int count = 0;
 	public int numbOfPeople = 10;
 	public Vector3 pOffset;
+	public Vector3 immOffset;
 	peopleSkeleton[] people;
-	string[] people_name = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"};
 	//Component[] parts;
 	public GameObject peoplePrefab;
 
@@ -110,16 +110,16 @@ public class GameControl : MonoBehaviour {
 	//}
 
 	void GeneratePP (bool b, int i) {
+		GameObject sex;
 		GameObject passport = (GameObject)Resources.Load("Passport", typeof(GameObject));
 		passport = Instantiate(passport) as GameObject;
-		if(b) {
-			GameObject sex;
-			if(people[i].ismale) {
-				sex = Instantiate((GameObject)Resources.Load("Male", typeof(GameObject))) as GameObject;
-			}else {
-				sex = Instantiate((GameObject)Resources.Load("Female", typeof(GameObject))) as GameObject;
-			}
+		if(people[i].ismale) {
+			sex = Instantiate((GameObject)Resources.Load("Male", typeof(GameObject))) as GameObject;
+		}else {
+			sex = Instantiate((GameObject)Resources.Load("Female", typeof(GameObject))) as GameObject;
+		}
 
+		if(b) {
 			//slightly changed
 			GameObject clone = Instantiate(people[i].p, passport.transform.position - pOffset, Quaternion.identity) as GameObject;
 
@@ -155,6 +155,16 @@ public class GameControl : MonoBehaviour {
 			ist.transform.parent = clone.transform;
 
 			clone.transform.parent = passport.transform;
+
+			for(int k = 0; k < 3; k++) {
+				string parts_name = pp_name[k, Random.Range(0,10)];
+				GameObject tmp_pp = Instantiate((GameObject)Resources.Load(parts_name, typeof(GameObject))) as GameObject;
+				tmp_pp.SetActive(true);
+				tmp_pp.transform.parent = clone.transform;
+			}
+			sex.SetActive(true);
+			sex.transform.parent = passport.transform;
+
 			passport.transform.parent = people[i].p.transform;
 			passport.SetActive(true);
 			//huge changed
@@ -162,11 +172,22 @@ public class GameControl : MonoBehaviour {
 	}
 
 	void GenerateImmgration(bool b, int i) {
-		GameObject passport = (GameObject)Resources.Load("ScreenFile", typeof(GameObject));
-		passport = Instantiate(passport) as GameObject;
+		GameObject sf = (GameObject)Resources.Load("ScreenFile", typeof(GameObject));
+		sf = Instantiate(sf) as GameObject;
 		if(b) {
-
+			GameObject clone_im = Instantiate(people[i].p, sf.transform.position + immOffset, Quaternion.identity) as GameObject;
+			clone_im.transform.localScale -= new Vector3(0.45F, 0.45F, 0);
+			clone_im.SetActive(true);
+			foreach (Transform child in clone_im.transform) {
+				if(child.tag == "Passport") {
+					child.gameObject.SetActive(false);
+				}
+			}
+			clone_im.transform.parent = sf.transform;
+			sf.transform.parent = people[i].p.transform;
+			sf.SetActive(true);
 		}else {
+			//wrong one
 		}
 	}
 
@@ -193,8 +214,8 @@ public class GameControl : MonoBehaviour {
 			people[count++].playerChoice = b;
 			if(count < numbOfPeople){
 				people[count].p.SetActive(true);
-				GameObject temp= GameObject.Find("P_name");
-				temp.guiText.text = "Name: " + people_name[Random.Range(0,people_name.Length)];
+				//GameObject temp= GameObject.Find("P_name");
+				//temp.guiText.text = "Name: " + people_name[Random.Range(0,people_name.Length)];
 			}	else {
 				for(int i = 0; i < numbOfPeople; i++) {
 					print(people[i].identity +" "+ people[i].playerChoice + i);
@@ -209,5 +230,9 @@ public class GameControl : MonoBehaviour {
 				print("win");
 			}
 		}
+	}
+
+	void GetCurrentPeople () {
+		
 	}
 }
