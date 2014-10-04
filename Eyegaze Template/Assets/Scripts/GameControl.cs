@@ -12,11 +12,11 @@ public class GameControl : MonoBehaviour {
 	public GameObject peoplePrefab;
 
 	string[,] resouce_name = {
-		{"Face1", "Face2"},
-		{"Hair1", "Hair2"},
-		{"Eye1", "Eye2"},
-		{"Nose1", "Nose2"},
-		{"Mouth1", "Mouth2"},
+		{"Face1", "Face2", "Face3"},
+		{"Hair1", "Hair2", "Hair2"},
+		{"Eye1", "Eye2", "Eye3"},
+		{"Nose1", "Nose2", "Nose3"},
+		{"Mouth1", "Mouth2", "Mouth3"},
 	};
 	// Use this for initialization
 
@@ -75,7 +75,10 @@ public class GameControl : MonoBehaviour {
 		//Generate Info
 		//Generate Dialog
 		for(int k =0; k < 5; k++) {
-			GameObject temp = (GameObject)Resources.Load(resouce_name[k, Random.Range(0, 2)], typeof(GameObject));
+		//for(int k =0; k < 4; k++) { // no hair
+			string parts_name = resouce_name[k, Random.Range(0, 3)];
+			print("load" + parts_name);
+			GameObject temp = (GameObject)Resources.Load(parts_name, typeof(GameObject));
 			GameObject Inst = Instantiate(temp) as GameObject;
 			Inst.transform.parent = people[i].p.transform;
 			if (k == 4) {
