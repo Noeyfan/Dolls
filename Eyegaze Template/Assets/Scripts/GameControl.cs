@@ -4,6 +4,7 @@ using System.Collections;
 public class GameControl : MonoBehaviour {
 	//GameObject[] people;
 	int count = 0;
+	public int numbOfPeople = 10;
 	public Vector3 pOffset;
 	peopleSkeleton[] people;
 	string[] people_name = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k"};
@@ -14,10 +15,11 @@ public class GameControl : MonoBehaviour {
 	struct peopleSkeleton {
 		public GameObject p;
 		public bool identity;
+		public bool playerChoice;
 	};
 
 	void Start () {
-		people  = new peopleSkeleton[10];
+		people  = new peopleSkeleton[numbOfPeople];
 		InstantiatePeople();
 		GenerateRandom();
 		//GameObject testPrefab = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/WhiteBoard.prefab", typeof(GameObject));
@@ -45,14 +47,14 @@ public class GameControl : MonoBehaviour {
 	}
 
 	void GenerateRandom () {
-		for(int i = 0; i< 10; i++) {
+		for(int i = 0; i< numbOfPeople; i++) {
 			if(Random.Range(0,6) >= 1) {
 				people[i].identity = true;
 			}else {
 				people[i].identity = false;
 			}
 		}
-		for(int i =0; i < 10; i++) {
+		for(int i =0; i < numbOfPeople; i++) {
 			Generate(people[i].identity, i);
 		}
 	}
@@ -181,12 +183,20 @@ public class GameControl : MonoBehaviour {
 			GameObject passport = (GameObject)Resources.Load("Passport", typeof(GameObject));
 			passport = Instantiate(passport) as GameObject;
 			GameObject clone = Instantiate(people[i].p, passport.transform.position - pOffset, Quaternion.identity) as GameObject;
-			clone.transform.localScale -= new Vector3(0.7F, 0.7F, 0);
+			clone.transform.localScale -= new Vector3(0.6F, 0.6F, 0);
 			clone.SetActive(true);
 			clone.transform.parent = passport.transform;
 			passport.transform.parent = people[i].p.transform;
 			passport.SetActive(true);
 		} else {
+			GameObject passport = (GameObject)Resources.Load("Passport", typeof(GameObject));
+			passport = Instantiate(passport) as GameObject;
+			GameObject clone = Instantiate(people[i+1].p, passport.transform.position - pOffset, Quaternion.identity) as GameObject;
+			clone.transform.localScale -= new Vector3(0.6F, 0.6F, 0);
+			clone.SetActive(true);
+			clone.transform.parent = passport.transform;
+			passport.transform.parent = people[i].p.transform;
+			passport.SetActive(true);
 			//huge changed
 		}
 	}
@@ -207,12 +217,27 @@ public class GameControl : MonoBehaviour {
 		//}
 	}
 
-	void NextOne() {
-		if(count >= 1) {
-			people[count - 1].p.SetActive(false);
+	void NextOne(bool b) {
+		if(count < numbOfPeople) {
+			if(count >= 1) {
+				people[count - 1].p.SetActive(false);
+				people[count - 1].playerChoice = b;
+			}
+			people[count++].p.SetActive(true);
+			GameObject temp= GameObject.Find("P_name");
+			temp.guiText.text = "Name: " + people_name[Random.Range(0,people_name.Length)];
 		}
-		people[count++].p.SetActive(true);
-		GameObject temp= GameObject.Find("P_name");
-		//temp.guiText.text = "Name: " + people_name[Random.Range(0,people_name.Length)];
+		else {
+			for(int i = 0; i < numbOfPeople; i++) {
+				if(people[i].identity == people[i].playerChoice) {
+					print("same");
+					//nothing
+				}else {
+					print("lose");
+					return;
+				}
+			}
+			print("win");
+		}
 	}
 }

@@ -3,14 +3,10 @@ using System.Collections;
 
 public class ButtonControl : MonoBehaviour {
 	float timeRecord = 0;
+	//GameControl gc;
 	// Use this for initialization
 	void Start () {
-		if(name == "Approve") {
-			//set user chose true;
-		}
-		if(name == "Reject"){
-			//set user chose false;
-		}
+		//gc = GameObject.Find("GameController").GetComponent<GameControl>();
 	}
 	
 	// Update is called once per frame
@@ -21,8 +17,15 @@ public class ButtonControl : MonoBehaviour {
 	void OnTriggerStay2D() {
 		timeRecord ++;
 		if(timeRecord > 100) {
+			if(name == "Approve") {
+				//set user chose true;
+				GameObject.Find("GameController").SendMessage("NextOne", true);
+			}
+			if(name == "Reject"){
+				//set user chose false;
+				GameObject.Find("GameController").SendMessage("NextOne", false);
+			}
 			print("NextOne");
-			GameObject.Find("GameController").SendMessage("NextOne");
 			timeRecord = 0;
 		}
 	}
