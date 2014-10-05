@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Jerry\Scripts\Magnifying.cs" />
      <Compile Include="Assets\Scripts\ButtonControl.cs" />
      <Compile Include="Assets\Scripts\EyeTest.cs" />
      <Compile Include="Assets\Scripts\EyeTracker.cs" />

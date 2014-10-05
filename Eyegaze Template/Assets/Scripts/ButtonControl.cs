@@ -6,6 +6,8 @@ public class ButtonControl : MonoBehaviour {
 	//GameControl gc;
 	// Use this for initialization
 	void Start () {
+		//GameControl gc = GameObject.Find("GameController").GetComponent<GameControl>();
+		//print(gc.people[0].nameD);
 		//gc = GameObject.Find("GameController").GetComponent<GameControl>();
 	}
 	

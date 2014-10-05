@@ -15,7 +15,7 @@ public class GameControl : MonoBehaviour {
 	public GameObject birPos;
 	public GameObject sexPos;
 
-	peopleSkeleton[] people;
+	public peopleSkeleton[] people;
 	//Component[] parts;
 	public GameObject peoplePrefab;
 
@@ -38,11 +38,20 @@ public class GameControl : MonoBehaviour {
 	};
 	// Use this for initialization
 
-	struct peopleSkeleton {
+	public struct peopleSkeleton {
 		public GameObject p;
 		public bool identity;
 		public bool ismale;
 		public bool playerChoice;
+
+		public bool moleD;
+		public bool eyeD;
+		public bool mouthD;
+		public bool nameD;
+		public bool birthD;
+		public bool flagD;
+		public bool bearD;
+		public bool noseD;
 	};
 
 	void Start () {
@@ -50,6 +59,16 @@ public class GameControl : MonoBehaviour {
 		InstantiatePeople();
 		GenerateRandom();
 		people[count].p.SetActive(true);
+
+		people[count].noseD = false;
+		people[count].moleD = false;
+		people[count].mouthD = false;
+		people[count].birthD = false;
+		people[count].bearD = false;
+		people[count].flagD = false;
+		people[count].eyeD = false;
+		people[count].nameD = false;
+
 		//for(int i = 0; i < people.Length; i++) {
 		//	print(people[i].ismale);
 		//}
@@ -223,6 +242,8 @@ public class GameControl : MonoBehaviour {
 						tmp = (GameObject)Resources.Load(resouce_name[5,record], typeof(GameObject));
 						tmp = Instantiate(tmp) as GameObject;
 						tmp.transform.parent = people[i].p.transform;
+					}else {
+						people[i].bearD = true;
 					}
 				}
 			}
@@ -273,6 +294,16 @@ public class GameControl : MonoBehaviour {
 				GameObject tmp = (GameObject)Resources.Load(resouce_name[6,record], typeof(GameObject));
 				tmp = Instantiate(tmp) as GameObject;
 				tmp.transform.parent = people[i].p.transform;
+				if(Random.Range(0,2) == 0) {
+					int diff = Random.Range(0,7);
+					if(diff != record) {
+						tmp = (GameObject)Resources.Load(resouce_name[7,diff], typeof(GameObject));
+						tmp = Instantiate(tmp) as GameObject;
+						tmp.transform.parent = people[i].p.transform;
+					}
+				}
+				people[i].moleD = true;
+				//mole different
 			}
 			
 			
@@ -286,6 +317,8 @@ public class GameControl : MonoBehaviour {
 						tmp = (GameObject)Resources.Load(resouce_name[5,record], typeof(GameObject));
 						tmp = Instantiate(tmp) as GameObject;
 						tmp.transform.parent = people[i].p.transform;
+					}else {
+						people[i].bearD = true;
 					}
 				}
 			}
@@ -293,10 +326,21 @@ public class GameControl : MonoBehaviour {
 			int place_change = Random.Range(1,3);
 			for(int k = 0; k < 1; k++) {
 				int parts = Random.Range(1,4);
-				GameObject msk = Instantiate((GameObject)Resources.Load(resouce_name[parts,Random.Range(0,3)], typeof(GameObject))) as GameObject;
+				GameObject msk = Instantiate((GameObject)Resources.Load(resouce_name[parts,Random.Range(0,7)], typeof(GameObject))) as GameObject;
 				Destroy(people[i].p.transform.GetChild(parts).gameObject);
 				print("change once");
 				msk.transform.parent = people[i].p.transform;
+				switch(parts) {
+				case 1:
+					people[i].eyeD = true;
+					break;
+				case 2:
+					people[i].noseD = true;
+					break;
+				case 3:
+					people[i].mouthD = true;
+					break;
+				}
 			}
 
 			if(Random.Range(0,5) == 1){
@@ -307,6 +351,7 @@ public class GameControl : MonoBehaviour {
 				name.SetActive(true);
 				name.transform.parent = sf.transform;
 				name.transform.localScale += new Vector3(0.7F, 0.7F, 0);
+				people[i].nameD = true;
 			}else {
 				name = people[i].p.transform.GetChild(4).GetChild(2).GetChild(5).gameObject;
 				name = Instantiate(name, namePos.transform.position, Quaternion.identity) as GameObject;
@@ -327,6 +372,7 @@ public class GameControl : MonoBehaviour {
 				flg = Instantiate(flg, flagPos.transform.position, flagPos.transform.rotation) as GameObject;
 				flg.SetActive(true);
 				flg.transform.parent = sf.transform;
+				people[i].flagD = true;
 				//flg.transform.localScale += new Vector3(0.7F, 0.7F, 0);
 			}
 
@@ -342,6 +388,7 @@ public class GameControl : MonoBehaviour {
 				bir.SetActive(true);
 				bir.transform.parent = sf.transform;
 				bir.transform.localScale += new Vector3(0.99F, 0.99F, 0);
+				people[i].birthD = true;
 			}
 			//bir.transform.localScale += new Vector3(0.8F, 0.8F, 0);
 			
@@ -380,6 +427,15 @@ public class GameControl : MonoBehaviour {
 			people[count++].playerChoice = b;
 			if(count < numbOfPeople){
 				people[count].p.SetActive(true);
+				print(people[count].noseD);
+				print(people[count].moleD);
+				print(people[count].mouthD);
+				print(people[count].birthD);
+				print(people[count].bearD);
+				print(people[count].flagD);
+				print(people[count].eyeD);
+				print(people[count].nameD);
+
 				//GameObject temp= GameObject.Find("P_name");
 				//temp.guiText.text = "Name: " + people_name[Random.Range(0,people_name.Length)];
 			}	else {
@@ -396,5 +452,9 @@ public class GameControl : MonoBehaviour {
 				print("win");
 			}
 		}
+	}
+
+	public int GetCurrentPeople() {
+		return count;
 	}
 }
