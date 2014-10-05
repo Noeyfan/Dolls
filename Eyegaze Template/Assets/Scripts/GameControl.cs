@@ -194,6 +194,8 @@ public class GameControl : MonoBehaviour {
 				}
 			}
 
+			//random change
+
 			name = people[i].p.transform.GetChild(4).GetChild(2).GetChild(4).gameObject;
 			name = Instantiate(name, namePos.transform.position, Quaternion.identity) as GameObject;
 			name.SetActive(true);
@@ -231,6 +233,17 @@ public class GameControl : MonoBehaviour {
 					child.gameObject.SetActive(false);
 				}
 			}
+
+			//big change
+			int place_change = Random.Range(1,4);
+			for(int k = 0; k < place_change; k++) {
+				int parts = Random.Range(1,4);
+				print("enter change");
+				GameObject msk = Instantiate((GameObject)Resources.Load(resouce_name[parts,Random.Range(0,3)], typeof(GameObject))) as GameObject;
+				Destroy( people[i].p.transform.GetChild(parts).gameObject);
+				msk.transform.parent = people[i].p.transform;
+			}
+
 
 			name = people[i].p.transform.GetChild(4).GetChild(2).GetChild(5).gameObject;
 			name = Instantiate(name, namePos.transform.position, Quaternion.identity) as GameObject;
@@ -303,7 +316,4 @@ public class GameControl : MonoBehaviour {
 		}
 	}
 
-	void GetCurrentPeople () {
-		
-	}
 }
