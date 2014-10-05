@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 public class GameControl : MonoBehaviour {
 	//GameObject[] people;
@@ -18,18 +20,21 @@ public class GameControl : MonoBehaviour {
 	public GameObject peoplePrefab;
 
 	string[,] resouce_name = {
-		{"Face1", "Face2", "Face3"},
+		{"Face1", "Face2", "Face3","Face4","Face5","Face6","Face7"},
 		//{"Hair1", "Hair2", "Hair2"},
-		{"Eye1", "Eye2", "Eye3"},
-		{"Nose1", "Nose2", "Nose3"},
-		{"Mouth1", "Mouth2", "Mouth3"},
-		{"Beard"},
+		{"Eye1", "Eye2", "Eye3", "Eye4", "Eye5","Eye6","Eye7"},
+		{"Nose1", "Nose2", "Nose3", "Nose4", "Nose5","Nose4", "Nose3"},
+		{"Mouth1", "Mouth2", "Mouth3", "Mouth4","Mouth5","Mouth4","Mouth1"},
+		{"Beard", "Beard2", " ", " ", " ", " ", " "},
+		{"Beard-imm", "Beard2-imm", " ", " ", " ", " ", " "},
+		{"mole1", "mole2", "mole3", "mole4", "mole5", "mole6", "mole7"},
+		{"mole1-imm", "mole2-imm", "mole3-imm", "mole4-imm", "mole5-imm", "mole6-imm", "mole7-imm"}
 	};
 
 	string[,] pp_name = {
 		{"name01","name02","name03","name04","name05","name06","name07","name08","name09","name10"},
 		{"Flag_of_China","Flag_of_France","Flag_of_Germany","Flag_of_India","Flag_of_Japan","Flag_of_Russia","Flag_of_South_Korea","Flag_of_the_UK","Flag_of_the_United_States","Flag_of_TW"},
-		{"birthday01","birthday02","birthday03","birthday04","birthday05","birthday06","birthday07","birthday08","birthday09","birthday10"},
+		{"birthday01","birthday02","birthday03","birthday04","birthday05","birthday06","birthday07","birthday08","birthday09","birthday10"}
 	};
 	// Use this for initialization
 
@@ -93,11 +98,11 @@ public class GameControl : MonoBehaviour {
 		//Generate Dialog
 		//for(int k =0; k < 5; k++) {
 		for(int k =0; k < 4; k++) { // no hair
-			int rVal = Random.Range(0,3);
+			int rVal = Random.Range(0,7);
 			string parts_name = resouce_name[k, rVal];
 			GameObject temp = (GameObject)Resources.Load(parts_name, typeof(GameObject));
 			if(k == 0) {
-				if(rVal == 0){
+				if(rVal == 0 || rVal == 3 || rVal == 5 || rVal == 6){
 					people[i].ismale = false;
 				}
 				else {
@@ -162,6 +167,7 @@ public class GameControl : MonoBehaviour {
 
 			GameObject tmp = (GameObject)Resources.Load("Beard", typeof(GameObject));
 			GameObject ist = Instantiate(tmp) as GameObject;
+			ist.SetActive(false);
 			ist.transform.parent = clone.transform;
 			clone.transform.parent = passport.transform;
 
@@ -194,6 +200,32 @@ public class GameControl : MonoBehaviour {
 				}
 			}
 
+			//add beard or glass or  mole
+			if(Random.Range(0,3) == 0) {
+				int record = Random.Range(0,7);
+				GameObject tmp = (GameObject)Resources.Load(resouce_name[6,record], typeof(GameObject));
+				tmp = Instantiate(tmp) as GameObject;
+				tmp.transform.parent = people[i].p.transform;
+
+				tmp = (GameObject)Resources.Load(resouce_name[7,record], typeof(GameObject));
+				tmp = Instantiate(tmp) as GameObject;
+				tmp.transform.parent = people[i].p.transform;
+			}
+
+
+			if(Random.Range(0,2) == 0) {
+				int record = Random.Range(0,2);
+				if(people[i].ismale) {
+					GameObject tmp = (GameObject)Resources.Load(resouce_name[4,record], typeof(GameObject));
+					tmp = Instantiate(tmp) as GameObject;
+					tmp.transform.parent = people[i].p.transform;
+					if(Random.Range(0,2) == 0){
+						tmp = (GameObject)Resources.Load(resouce_name[5,record], typeof(GameObject));
+						tmp = Instantiate(tmp) as GameObject;
+						tmp.transform.parent = people[i].p.transform;
+					}
+				}
+			}
 			//random change
 
 			name = people[i].p.transform.GetChild(4).GetChild(2).GetChild(4).gameObject;
@@ -235,32 +267,82 @@ public class GameControl : MonoBehaviour {
 			}
 
 			//big change
-			int place_change = Random.Range(1,4);
-			for(int k = 0; k < place_change; k++) {
+
+			if(Random.Range(0,3) == 0) {
+				int record = Random.Range(0,7);
+				GameObject tmp = (GameObject)Resources.Load(resouce_name[6,record], typeof(GameObject));
+				tmp = Instantiate(tmp) as GameObject;
+				tmp.transform.parent = people[i].p.transform;
+			}
+			
+			
+			if(Random.Range(0,2) == 0) {
+				int record = Random.Range(0,2);
+				if(people[i].ismale) {
+					GameObject tmp = (GameObject)Resources.Load(resouce_name[4,record], typeof(GameObject));
+					tmp = Instantiate(tmp) as GameObject;
+					tmp.transform.parent = people[i].p.transform;
+					if(Random.Range(0,2) == 0){
+						tmp = (GameObject)Resources.Load(resouce_name[5,record], typeof(GameObject));
+						tmp = Instantiate(tmp) as GameObject;
+						tmp.transform.parent = people[i].p.transform;
+					}
+				}
+			}
+
+			int place_change = Random.Range(1,3);
+			for(int k = 0; k < 1; k++) {
 				int parts = Random.Range(1,4);
-				print("enter change");
 				GameObject msk = Instantiate((GameObject)Resources.Load(resouce_name[parts,Random.Range(0,3)], typeof(GameObject))) as GameObject;
-				Destroy( people[i].p.transform.GetChild(parts).gameObject);
+				Destroy(people[i].p.transform.GetChild(parts).gameObject);
+				print("change once");
 				msk.transform.parent = people[i].p.transform;
 			}
 
+			if(Random.Range(0,5) == 1){
+				string parts_name = pp_name[0, Random.Range(0,10)];
+				GameObject tmp_pp = Instantiate((GameObject)Resources.Load(parts_name, typeof(GameObject))) as GameObject;
+				name = tmp_pp;
+				name = Instantiate(name, namePos.transform.position, Quaternion.identity) as GameObject;
+				name.SetActive(true);
+				name.transform.parent = sf.transform;
+				name.transform.localScale += new Vector3(0.7F, 0.7F, 0);
+			}else {
+				name = people[i].p.transform.GetChild(4).GetChild(2).GetChild(5).gameObject;
+				name = Instantiate(name, namePos.transform.position, Quaternion.identity) as GameObject;
+				name.SetActive(true);
+				name.transform.parent = sf.transform;
+				name.transform.localScale -= new Vector3(0.8F, 0.8F, 0);
+			}
 
-			name = people[i].p.transform.GetChild(4).GetChild(2).GetChild(5).gameObject;
-			name = Instantiate(name, namePos.transform.position, Quaternion.identity) as GameObject;
-			name.SetActive(true);
-			name.transform.parent = sf.transform;
-			name.transform.localScale -= new Vector3(0.8F, 0.8F, 0);
-			
-			flg = people[i].p.transform.GetChild(4).GetChild(2).GetChild(6).gameObject;
-			flg = Instantiate(flg, flagPos.transform.position, flagPos.transform.rotation) as GameObject;
-			flg.SetActive(true);
-			flg.transform.parent = sf.transform;
-			flg.transform.localScale -= new Vector3(0.1F, 0.1F, 0);
-			
-			bir = people[i].p.transform.GetChild(4).GetChild(2).GetChild(7).gameObject;
-			bir = Instantiate(bir, birPos.transform.position, Quaternion.identity) as GameObject;
-			bir.SetActive(true);
-			bir.transform.parent = sf.transform;
+			if(Random.Range(0,5) != 0){
+				flg = people[i].p.transform.GetChild(4).GetChild(2).GetChild(6).gameObject;
+				flg = Instantiate(flg, flagPos.transform.position, flagPos.transform.rotation) as GameObject;
+				flg.SetActive(true);
+				flg.transform.parent = sf.transform;
+				flg.transform.localScale -= new Vector3(0.1F, 0.1F, 0);
+			}else {
+				string parts_name = pp_name[1, Random.Range(0,10)];
+				flg =(GameObject)Resources.Load(parts_name, typeof(GameObject));
+				flg = Instantiate(flg, flagPos.transform.position, flagPos.transform.rotation) as GameObject;
+				flg.SetActive(true);
+				flg.transform.parent = sf.transform;
+				//flg.transform.localScale += new Vector3(0.7F, 0.7F, 0);
+			}
+
+			if(Random.Range(0,3) != 0 ){
+				bir = people[i].p.transform.GetChild(4).GetChild(2).GetChild(7).gameObject;
+				bir = Instantiate(bir, birPos.transform.position, Quaternion.identity) as GameObject;
+				bir.SetActive(true);
+				bir.transform.parent = sf.transform;
+			}else {
+				string parts_name = pp_name[2, Random.Range(0,10)];
+				bir = (GameObject)Resources.Load(parts_name, typeof(GameObject));
+				bir = Instantiate(bir, birPos.transform.position, Quaternion.identity) as GameObject;
+				bir.SetActive(true);
+				bir.transform.parent = sf.transform;
+				bir.transform.localScale += new Vector3(0.99F, 0.99F, 0);
+			}
 			//bir.transform.localScale += new Vector3(0.8F, 0.8F, 0);
 			
 			bir = people[i].p.transform.GetChild(4).GetChild(3).gameObject;
@@ -315,5 +397,4 @@ public class GameControl : MonoBehaviour {
 			}
 		}
 	}
-
 }
