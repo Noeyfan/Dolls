@@ -7,6 +7,12 @@ public class GameControl : MonoBehaviour {
 	public int numbOfPeople = 10;
 	public Vector3 pOffset;
 	public Vector3 immOffset;
+
+	public GameObject namePos;
+	public GameObject flagPos;
+	public GameObject birPos;
+	public GameObject sexPos;
+
 	peopleSkeleton[] people;
 	//Component[] parts;
 	public GameObject peoplePrefab;
@@ -39,9 +45,9 @@ public class GameControl : MonoBehaviour {
 		InstantiatePeople();
 		GenerateRandom();
 		people[count].p.SetActive(true);
-		for(int i = 0; i < people.Length; i++) {
-			print(people[i].ismale);
-		}
+		//for(int i = 0; i < people.Length; i++) {
+		//	print(people[i].ismale);
+		//}
 		//GameObject testPrefab = (GameObject)Resources.LoadAssetAtPath("Assets/Prefabs/WhiteBoard.prefab", typeof(GameObject));
 		//Instantiate(testPrefab);
 	}
@@ -126,7 +132,7 @@ public class GameControl : MonoBehaviour {
 			// change clone
 			clone.transform.localScale -= new Vector3(0.7F, 0.7F, 0);
 			clone.SetActive(true);
-			Transform[] allChildren = clone.gameObject.GetComponentsInChildren<Transform>();
+			//Transform[] allChildren = clone.gameObject.GetComponentsInChildren<Transform>();
 			//foreach (Transform children in allChildren) {
 				//if(children.name.Contains("Hair")) {
 					//print("hair");
@@ -150,10 +156,13 @@ public class GameControl : MonoBehaviour {
 			clone.transform.localScale -= new Vector3(0.7F, 0.7F, 0);
 			clone.SetActive(true);
 			//Beard for test
+
+			//place that need to be changed
+			//int place_change = Random.Range(0,2);
+
 			GameObject tmp = (GameObject)Resources.Load("Beard", typeof(GameObject));
 			GameObject ist = Instantiate(tmp) as GameObject;
 			ist.transform.parent = clone.transform;
-
 			clone.transform.parent = passport.transform;
 
 			for(int k = 0; k < 3; k++) {
@@ -172,6 +181,7 @@ public class GameControl : MonoBehaviour {
 	}
 
 	void GenerateImmgration(bool b, int i) {
+		GameObject name, flg, bir;
 		GameObject sf = (GameObject)Resources.Load("ScreenFile", typeof(GameObject));
 		sf = Instantiate(sf) as GameObject;
 		if(b) {
@@ -183,11 +193,72 @@ public class GameControl : MonoBehaviour {
 					child.gameObject.SetActive(false);
 				}
 			}
+
+			name = people[i].p.transform.GetChild(4).GetChild(2).GetChild(4).gameObject;
+			name = Instantiate(name, namePos.transform.position, Quaternion.identity) as GameObject;
+			name.SetActive(true);
+			name.transform.parent = sf.transform;
+			name.transform.localScale -= new Vector3(0.8F, 0.8F, 0);
+
+			flg = people[i].p.transform.GetChild(4).GetChild(2).GetChild(5).gameObject;
+			flg = Instantiate(flg, flagPos.transform.position, flagPos.transform.rotation) as GameObject;
+			flg.SetActive(true);
+			flg.transform.parent = sf.transform;
+			flg.transform.localScale -= new Vector3(0.1F, 0.1F, 0);
+
+			bir = people[i].p.transform.GetChild(4).GetChild(2).GetChild(6).gameObject;
+			bir = Instantiate(bir, birPos.transform.position, Quaternion.identity) as GameObject;
+			bir.SetActive(true);
+			bir.transform.parent = sf.transform;
+			//bir.transform.localScale += new Vector3(0.8F, 0.8F, 0);
+
+			bir = people[i].p.transform.GetChild(4).GetChild(3).gameObject;
+			bir = Instantiate(bir, sexPos.transform.position, Quaternion.identity) as GameObject;
+			bir.SetActive(true);
+			bir.transform.parent = sf.transform;
+			bir.transform.localScale += new Vector3(0.5F, 0.5F, 0);
+
 			clone_im.transform.parent = sf.transform;
 			sf.transform.parent = people[i].p.transform;
 			sf.SetActive(true);
 		}else {
 			//wrong one
+			GameObject clone_im = Instantiate(people[i].p, sf.transform.position + immOffset, Quaternion.identity) as GameObject;
+			clone_im.transform.localScale -= new Vector3(0.45F, 0.45F, 0);
+			clone_im.SetActive(true);
+			foreach (Transform child in clone_im.transform) {
+				if(child.tag == "Passport") {
+					child.gameObject.SetActive(false);
+				}
+			}
+
+			name = people[i].p.transform.GetChild(4).GetChild(2).GetChild(5).gameObject;
+			name = Instantiate(name, namePos.transform.position, Quaternion.identity) as GameObject;
+			name.SetActive(true);
+			name.transform.parent = sf.transform;
+			name.transform.localScale -= new Vector3(0.8F, 0.8F, 0);
+			
+			flg = people[i].p.transform.GetChild(4).GetChild(2).GetChild(6).gameObject;
+			flg = Instantiate(flg, flagPos.transform.position, flagPos.transform.rotation) as GameObject;
+			flg.SetActive(true);
+			flg.transform.parent = sf.transform;
+			flg.transform.localScale -= new Vector3(0.1F, 0.1F, 0);
+			
+			bir = people[i].p.transform.GetChild(4).GetChild(2).GetChild(7).gameObject;
+			bir = Instantiate(bir, birPos.transform.position, Quaternion.identity) as GameObject;
+			bir.SetActive(true);
+			bir.transform.parent = sf.transform;
+			//bir.transform.localScale += new Vector3(0.8F, 0.8F, 0);
+			
+			bir = people[i].p.transform.GetChild(4).GetChild(3).gameObject;
+			bir = Instantiate(bir, sexPos.transform.position, Quaternion.identity) as GameObject;
+			bir.SetActive(true);
+			bir.transform.parent = sf.transform;
+			bir.transform.localScale += new Vector3(0.5F, 0.5F, 0);
+	
+			clone_im.transform.parent = sf.transform;
+			sf.transform.parent = people[i].p.transform;
+			sf.SetActive(true);
 		}
 	}
 
@@ -218,9 +289,9 @@ public class GameControl : MonoBehaviour {
 				//temp.guiText.text = "Name: " + people_name[Random.Range(0,people_name.Length)];
 			}	else {
 				for(int i = 0; i < numbOfPeople; i++) {
-					print(people[i].identity +" "+ people[i].playerChoice + i);
+					//print(people[i].identity +" "+ people[i].playerChoice + i);
 					if(people[i].identity == people[i].playerChoice) {
-						print("same");
+						//print("same");
 						//nothing
 					}else if(people[i].identity != people[i].playerChoice){
 						print("lose");
