@@ -1,8 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Sample Assets\Characters\First Person Character\Scripts\FirstPersonCharacter.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\DoorController.cs">
     <Files>
-      <File FileName="Assets\Sample Assets\Characters\First Person Character\Scripts\FirstPersonCharacter.cs" Line="60" Column="1" />
+      <File FileName="Assets\Sample Assets\Characters\First Person Character\Scripts\FirstPersonCharacter.cs" Line="98" Column="9" />
+      <File FileName="Assets\DoorController.cs" Line="29" Column="33" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
