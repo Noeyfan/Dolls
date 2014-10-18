@@ -129,6 +129,14 @@ public abstract class HandModel : MonoBehaviour {
     for (int i = 0; i < colliders.Length; ++i)
       for (int j = i + 1; j < colliders.Length; ++j)
         Physics.IgnoreCollision(colliders[i], colliders[j]);
+
+	// modify collider
+	foreach (Collider collider in colliders) {
+		// change to istrigger
+		collider.isTrigger = true;
+		// set tag to collider
+		collider.tag = "Hand";
+	}
   }
 
   	protected void IgnoreCollisionsWithPlayer() {
