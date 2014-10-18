@@ -29,12 +29,19 @@ public class SimpleMouseRotator : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
+
+	}
+
+	void Awake() {
+		//originalRotation = transform.localRotation;
+		//originalRotation = GameObject.FindWithTag("Player").transform.rotation;
+	}
+
+	void OnEnable() {
 		originalRotation = transform.localRotation;
 	}
-	
 	// Update is called once per frame
 	void Update () {
-		
 		// we make initial calculations from the original local rotation
 		transform.localRotation = originalRotation;
 

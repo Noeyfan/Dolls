@@ -12,6 +12,13 @@ public class FirstPersonCharacter : MonoBehaviour
 	#endif
 	[SerializeField] private AdvancedSettings advanced = new AdvancedSettings();        // The container for the advanced settings ( done this way so that the advanced setting are exposed under a foldout
 	[SerializeField] private bool lockCursor = true;
+	[SerializeField] private bool triggerRunAnim = false;
+	[SerializeField] public bool hasControl = true;
+
+	Vector3 vec;
+	GameObject camera;
+	int rotateBody = 0;
+	GameObject exit;
 
 	[System.Serializable]
 	public class AdvancedSettings                                                       // The advanced settings
@@ -35,6 +42,15 @@ public class FirstPersonCharacter : MonoBehaviour
 		grounded = true;
 		Screen.lockCursor = lockCursor;
 		rayHitComparer = new RayHitComparer();
+		camera = GameObject.FindWithTag("MainCamera");
+		exit = GameObject.Find("RunToPoint");
+	}
+
+	void Start() {
+		if(triggerRunAnim) {
+			//disable camera
+			StartCoroutine(PlayRunAnim());
+		}
 	}
 
 	void OnDisable()
@@ -77,74 +93,97 @@ public class FirstPersonCharacter : MonoBehaviour
 		
 
 #endif
+		if(hasControl) {
 		
-		input = new Vector2( h, v );
+			input = new Vector2( h, v );
 
-		// normalize input if it exceeds 1 in combined length:
-		if (input.sqrMagnitude > 1) input.Normalize();
-		
-		// Get a vector which is desired move as a world-relative direction, including speeds
-		Vector3 desiredMove = transform.forward * input.y * speed + transform.right * input.x * strafeSpeed;
-		
-		// preserving current y velocity (for falling, gravity)
-		float yv = rigidbody.velocity.y;
-		
-		// add jump power
-		if (grounded && jump) {
-			yv += jumpPower;
-			grounded = false;
-		}
-		
-		// Set the rigidbody's velocity according to the ground angle and desired move
-		rigidbody.velocity = desiredMove + Vector3.up * yv;
-		
-		// Use low/high friction depending on whether we're moving or not
-		if (desiredMove.magnitude > 0 || !grounded)
-		{
-			collider.material = advanced.zeroFrictionMaterial;
-		} else {
-			collider.material = advanced.highFrictionMaterial;
-		}
-
-		
-		// Ground Check:
-		
-		// Create a ray that points down from the centre of the character.
-		Ray ray = new Ray(transform.position, -transform.up);
-		
-		// Raycast slightly further than the capsule (as determined by jumpRayLength)
-		RaycastHit[] hits = Physics.RaycastAll(ray, capsule.height * jumpRayLength );
-		System.Array.Sort (hits, rayHitComparer);
-		
-		
-		if (grounded || rigidbody.velocity.y < jumpPower * .5f)
-		{
-			// Default value if nothing is detected:
-			grounded = false;
-			// Check every collider hit by the ray
-			for (int i = 0; i < hits.Length; i++)
+			// normalize input if it exceeds 1 in combined length:
+			if (input.sqrMagnitude > 1) input.Normalize();
+			
+			// Get a vector which is desired move as a world-relative direction, including speeds
+			Vector3 desiredMove = transform.forward * input.y * speed + transform.right * input.x * strafeSpeed;
+			
+			// preserving current y velocity (for falling, gravity)
+			float yv = rigidbody.velocity.y;
+			
+			// add jump power
+			if (grounded && jump) {
+				yv += jumpPower;
+				grounded = false;
+			}
+			
+			// Set the rigidbody's velocity according to the ground angle and desired move
+			rigidbody.velocity = desiredMove + Vector3.up * yv;
+			
+			// Use low/high friction depending on whether we're moving or not
+			if (desiredMove.magnitude > 0 || !grounded)
 			{
-				// Check it's not a trigger
-				if (!hits[i].collider.isTrigger)
+				collider.material = advanced.zeroFrictionMaterial;
+			} else {
+				collider.material = advanced.highFrictionMaterial;
+			}
+
+			
+			// Ground Check:
+			
+			// Create a ray that points down from the centre of the character.
+			Ray ray = new Ray(transform.position, -transform.up);
+			
+			// Raycast slightly further than the capsule (as determined by jumpRayLength)
+			RaycastHit[] hits = Physics.RaycastAll(ray, capsule.height * jumpRayLength );
+			System.Array.Sort (hits, rayHitComparer);
+			
+			
+			if (grounded || rigidbody.velocity.y < jumpPower * .5f)
+			{
+				// Default value if nothing is detected:
+				grounded = false;
+				// Check every collider hit by the ray
+				for (int i = 0; i < hits.Length; i++)
 				{
-					// The character is grounded, and we store the ground angle (calculated from the normal)
-					grounded = true;
-					
-					// stick to surface - helps character stick to ground - specially when running down slopes
-					//if (rigidbody.velocity.y <= 0) {
-					rigidbody.position = Vector3.MoveTowards (rigidbody.position, hits[i].point + Vector3.up * capsule.height*.5f, Time.deltaTime * advanced.groundStickyEffect);
-					//}
-					rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z);
-					break;
+					// Check it's not a trigger
+					if (!hits[i].collider.isTrigger)
+					{
+						// The character is grounded, and we store the ground angle (calculated from the normal)
+						grounded = true;
+						
+						// stick to surface - helps character stick to ground - specially when running down slopes
+						//if (rigidbody.velocity.y <= 0) {
+						rigidbody.position = Vector3.MoveTowards (rigidbody.position, hits[i].point + Vector3.up * capsule.height*.5f, Time.deltaTime * advanced.groundStickyEffect);
+						//}
+						rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0, rigidbody.velocity.z);
+						break;
+					}
 				}
 			}
+			
+			Debug.DrawRay(ray.origin, ray.direction * capsule.height * jumpRayLength, grounded ? Color.green : Color.red );
+
+
+			// add extra gravity
+			rigidbody.AddForce(Physics.gravity * (advanced.gravityMultiplier - 1));
+		}else {
+			rigidbody.velocity =  vec;
+			print(exit.transform.position - gameObject.transform.position);
+			//print(Vector3.Distance(exit.transform.position , gameObject.transform.position));
+			if(Vector3.Distance(exit.transform.position , gameObject.transform.position) > 1f && (exit.transform.position - gameObject.transform.position).z < 0) {
+				vec = (exit.transform.position - gameObject.transform.position);
+				print("enter main");
+			}else {
+				vec  =  -Vector3.forward * runSpeed;
+				print("enter else");
+			}
+			//gameObject.transform.Translate((exit.transform.position - gameObject.transform.position)*Time.deltaTime/ 3);
+			rotateBody++;
+			//print(Vector3.Angle(gameObject.transform.forward, GameObject.Find("RunToPoint").transform.forward));
+			//print(Vector3.Angle(gameObject.transform.forward, exit.transform.forward));
+			if(rotateBody > 60 && rotateBody < 150 && Vector3.Angle(gameObject.transform.forward, exit.transform.forward) < 160) {
+				gameObject.transform.Rotate(gameObject.transform.up * 10);
+			}
+			if(rotateBody > 150) {
+				gameObject.transform.Rotate(-gameObject.transform.up * 10);
+			}
 		}
-		
-		Debug.DrawRay(ray.origin, ray.direction * capsule.height * jumpRayLength, grounded ? Color.green : Color.red );
-
-
-		// add extra gravity
-		rigidbody.AddForce(Physics.gravity * (advanced.gravityMultiplier - 1));
 	}
 
 	
@@ -155,6 +194,19 @@ public class FirstPersonCharacter : MonoBehaviour
 		{
 			return ((RaycastHit)x).distance.CompareTo(((RaycastHit)y).distance);
 		}	
+	}
+
+	IEnumerator PlayRunAnim() {
+		hasControl = false;
+		//vec =  -Vector3.forward;
+		camera.gameObject.GetComponent<SimpleMouseRotator>().enabled = false;
+		gameObject.gameObject.GetComponent<SimpleMouseRotator>().enabled = false;
+		yield return new WaitForSeconds(3.3f);
+		//RUN
+		hasControl = true;
+		camera.gameObject.GetComponent<SimpleMouseRotator>().enabled = true;
+		gameObject.gameObject.GetComponent<SimpleMouseRotator>().enabled = true;
+		camera.transform.forward = gameObject.transform.forward;
 	}
 	
 }
