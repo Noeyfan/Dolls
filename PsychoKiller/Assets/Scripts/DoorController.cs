@@ -11,6 +11,8 @@ public class DoorController : MonoBehaviour {
 	public DoorType doorType;
 	public DoorFace doorFace;
 	public bool isBasementDoor;
+	public bool isLocked;
+
 	protected DoorState doorState = DoorState.IDLE;
 
 	protected int side;
@@ -21,12 +23,14 @@ public class DoorController : MonoBehaviour {
 	protected float elapsedTimeAnimation = 0f;
 	protected Quaternion firstRotation, targetRotation;
 
-	GameController gc;
+	private GameController gc;
+	private FirstPersonCharacter fc;
 
 	// Use this for initialization
 	void Start () {
 		// close all doors
 		gc = GameObject.Find("GameController").GetComponent<GameController>();
+		fc = GameObject.FindWithTag("Player").GetComponent<FirstPersonCharacter>();
 		CloseDoor ();
 
 		if (GetComponent<BoxCollider> ().center.x < 0f) side = -1;		
@@ -50,10 +54,15 @@ public class DoorController : MonoBehaviour {
 
 	void OnCollisionEnter(Collision c) {
 		if(c.gameObject.tag == "Hand") {
-			if(!isBasementDoor || (isBasementDoor && gc.hasKey)) {
+			if(!isLocked) {
+				if(!isBasementDoor || (isBasementDoor && gc.hasKey)) {
 
-				//AnimateDoor(CheckSideCollision(contactPoint));
-				AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
+					//AnimateDoor(CheckSideCollision(contactPoint));
+					AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
+				}
+			}else {
+				GameObject.Find("SoundSets").SendMessage("PlaySound", 5); // Lock Sound
+				fc.Kill();
 			}
 		}
 	}
