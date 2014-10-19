@@ -17,6 +17,7 @@ public class TriggerController : MonoBehaviour {
 		if(c.tag == "Player") {
 			//trigger running
 			c.SendMessage("Run");
+			GameObject.Find("SoundSets").SendMessage("PlaySound", 2);
 		}
 		print ("enter");
 	}

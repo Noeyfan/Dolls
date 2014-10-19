@@ -5,6 +5,12 @@ public class SoundController : MonoBehaviour {
 	public AudioClip[] ac;
 	private AudioSource audioSource;
 
+	enum soundName{
+		whereiseveryone,
+		someonedown,
+		screaming,
+		doorSound
+	};
 
 	// Use this for initialization
 	void Start () {

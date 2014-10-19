@@ -11,16 +11,15 @@ public class GameController : MonoBehaviour {
 	enum soundName{
 		whereiseveryone,
 		someonedown,
+		screaming
 	};
 
 	void Start () {
 		notes = GameObject.Find("Notes");
-		hasKey = false;
 		ShowNotes(false);
 		sc = GameObject.Find("SoundSets").GetComponent<SoundController>();
+		Invoke("PlayBeg", 1f);
 
-		Invoke("playBeg", 1f);
-		//sc.PlaySound(0);
 	}
 	
 	// Update is called once per frame
@@ -32,7 +31,11 @@ public class GameController : MonoBehaviour {
 		showingNotes = true; //used for exit reading notes
 	}
 
-	void playBeg() {
+	void PlayBeg() {
 		sc.PlaySound((int)soundName.whereiseveryone);
+	}
+
+	void GetKey() {
+		hasKey = true;
 	}
 }
