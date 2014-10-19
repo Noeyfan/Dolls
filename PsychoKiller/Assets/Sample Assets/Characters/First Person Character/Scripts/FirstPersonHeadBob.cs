@@ -142,15 +142,15 @@ public class FirstPersonHeadBob : MonoBehaviour {
 
 					nextStepTime = headBobCycle + .5f;
 					
-					// pick & play a random footstep sound from the array,
-					// excluding sound at index 0
-					int n = Random.Range(1,footstepSounds.Length);
-					audio.clip = footstepSounds[n];
-					audio.Play();
+                    //// pick & play a random footstep sound from the array,
+                    //// excluding sound at index 0
+                    //int n = Random.Range(1,footstepSounds.Length);
+                    //audio.clip = footstepSounds[n];
+                    //audio.Play();
 
-					// move picked sound to index 0 so it's not picked next time
-					footstepSounds[n] = footstepSounds[0];
-					footstepSounds[0] = audio.clip;
+                    //// move picked sound to index 0 so it's not picked next time
+                    //footstepSounds[n] = footstepSounds[0];
+                    //footstepSounds[0] = audio.clip;
 
 				}
 			}

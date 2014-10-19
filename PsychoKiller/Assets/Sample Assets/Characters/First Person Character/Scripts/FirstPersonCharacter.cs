@@ -14,6 +14,7 @@ public class FirstPersonCharacter : MonoBehaviour
 	[SerializeField] private bool lockCursor = true;
 	[SerializeField] private bool triggerRunAnim = false;
 	[SerializeField] public bool hasControl = true;
+    [SerializeField] AudioClip[] footstepSounds;
 
 	Vector3 vec;
 	GameObject camera;
@@ -34,7 +35,13 @@ public class FirstPersonCharacter : MonoBehaviour
 	public bool grounded { get; private set; }
 	private Vector2 input;
 	private IComparer rayHitComparer;
-	
+    public bool useMakeyMakey = true;
+
+    private float velocity = 0;
+    private float damping = 0.97f;
+    private float acc = 0;
+    private int no_acc_count = 0;
+
 	void Awake ()
 	{
 		// Set up a reference to the capsule collider.
@@ -94,14 +101,31 @@ public class FirstPersonCharacter : MonoBehaviour
 
 #endif
 		if(hasControl) {
-		
-			input = new Vector2( h, v );
+
+            if (useMakeyMakey && (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S)))
+            {
+                acc = 100f;
+                velocity += acc * Time.fixedDeltaTime;
+                velocity = Mathf.Min(300f, velocity);
+                if (velocity < 0.001f) velocity = 0;
+                int n = Random.Range(1,footstepSounds.Length);
+
+                audio.PlayOneShot(footstepSounds[n]);
+               
+            }
+
+            velocity *= damping;
+            
+            
+            input = new Vector2( h, v );
 
 			// normalize input if it exceeds 1 in combined length:
 			if (input.sqrMagnitude > 1) input.Normalize();
-			
+
+            speed = velocity;
 			// Get a vector which is desired move as a world-relative direction, including speeds
-			Vector3 desiredMove = transform.forward * input.y * speed + transform.right * input.x * strafeSpeed;
+			Vector3 desiredMove = useMakeyMakey? transform.forward * speed :
+                                    transform.forward * input.y * speed + transform.right * input.x * strafeSpeed;
 			
 			// preserving current y velocity (for falling, gravity)
 			float yv = rigidbody.velocity.y;
@@ -186,7 +210,6 @@ public class FirstPersonCharacter : MonoBehaviour
 		}
 	}
 
-	
 	//used for comparing distances
 	class RayHitComparer: IComparer
 	{
