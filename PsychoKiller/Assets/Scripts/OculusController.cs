@@ -2,14 +2,14 @@
 using System.Collections;
 
 public class OculusController : MonoBehaviour {
-	
+
 	public GameObject leftOculusCamera, rightOculusCamera;
 
-	public bool isOculusActive = true;
+	private bool isOculusActive = true;
 
 	// Use this for initialization
 	void Start () {
-		SetEnableOculus (false);
+
 	}
 	
 	// Update is called once per frame

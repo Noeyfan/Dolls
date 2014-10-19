@@ -49,14 +49,13 @@ public class DoorController : MonoBehaviour {
 			Collider collider = c.collider;
 			Vector3 contactPoint = c.contacts[0].point;
 
-			AnimateDoor(CheckSideCollision(contactPoint));
+			//AnimateDoor(CheckSideCollision(contactPoint));
+			AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
 		}
 	}
 
 	void OnTriggerEnter(Collider other) {
-		if (other.gameObject.tag == "Hand") {
-			//AnimateDoor(CheckSideCollision(other.gameObject.transform.position));
-		}
+
 	}
 
 	int ConvertDoorType() {
