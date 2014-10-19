@@ -1,12 +1,13 @@
 ﻿Shader "Custom/Ward" {
-	//KH: use this for plastic and metals and other anisotropic materials
+	//KH: use this for faster anisotropic materials but lower quality
+	// has no fresnel effect
 
 	Properties {
 		_DiffuseColor ("Diffuse Color", Color) = (1,1,1,1)
 		_SpecularColor ("Specular Color", Color) = (1,1,1,1)
 		_MainTex ("Base (RGB)", 2D) = "white" {}
-		_AnisoU ("Anisotropy U", Float) = 10.0
-		_AnisoV ("Anisotropy V", Float) = 10.0
+		_AnisoU ("Anisotropy U", Range(0.0,1.0)) = 0.5
+		_AnisoV ("Anisotropy V", Range(0.0,1.0)) = 0.5
 		_BumpMap ("Normalmap", 2D) = "bump" {}
 	}
 	SubShader {
@@ -27,11 +28,14 @@
 		fixed4 _SpecularColor;
 
 		half4 LightingSimpleSpecular (SurfaceOutput s, half3 lightDir, half3 viewDir, half atten) {
-			float3 n = normalize( f.normal );
-			float3 l = normalize( -vLightDirection );
-			float3 v = normalize( pCameraPosition - f.world );
+			// Make sure the interpolated inputs andlightDir
+			// constant parameters are normalized
+			float3 n = normalize( s.Normal );
+			float3 l = normalize( lightDir );
+			float3 v = normalize( viewDir );
 			float3 h = normalize( l + v );
- 
+			float2 fAnisotropicRoughness = float2(_AnisoU, _AnisoV);
+
 			// Apply a small bias to the roughness
 			// coefficients to avoid divide-by-zero
 			fAnisotropicRoughness += float2( 1e-5f, 1e-5f );
@@ -42,7 +46,7 @@
 			float3 bitangent = normalize( cross( n, tangent ) );
  
 			// Define material properties
-			float3 Ps   = float3( 1.0f, 1.0f, 1.0f );
+			float3 Ps   = _LightColor0.rgb;
  
 			// Generate any useful aliases
 			float VdotN = dot( v, n );
@@ -70,7 +74,7 @@
 			float3 Specular = Ps * ( exp( beta ) / s_den );
  
 			// Composite the final value:
-			return float4( dot( n, l ) * (cDiffuse + Specular ), 1.0f );
+			return half4( dot( n, l ) * (s.Albedo + Specular) * (atten * 2), 1.0f );
 
 
 		}
