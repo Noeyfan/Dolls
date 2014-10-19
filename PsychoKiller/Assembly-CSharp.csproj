@@ -141,7 +141,7 @@
      <Compile Include="Assets\Sample Assets\Utility\TimedObjectActivator.cs" />
      <Compile Include="Assets\Sample Assets\Utility\WaypointCircuit.cs" />
      <Compile Include="Assets\Sample Assets\Utility\WaypointProgressTracker.cs" />
-     <Compile Include="Assets\Scripts\Direction.cs" />
+     <Compile Include="Assets\Scripts\OculusController.cs" />
      <None Include="Assets\Plugins\donotdelete.txt" />
      <None Include="Assets\LeapMotion\Materials\Sources\Shaders\Toony-Basic.shader" />
      <None Include="Assets\LeapMotion\InteractionUtils (alpha)\readme.txt" />
