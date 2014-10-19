@@ -133,7 +133,7 @@ public abstract class HandModel : MonoBehaviour {
 	// modify collider
 	foreach (Collider collider in colliders) {
 		// change to istrigger
-		collider.isTrigger = true;
+		//collider.isTrigger = true;
 		// set tag to collider
 		collider.tag = "Hand";
 	}
