@@ -8,7 +8,7 @@ public class OculusController : MonoBehaviour {
 	private bool isOculusActive = true;
 	public bool isUsingMouse = false;
 
-	Vector2 rotationRange = new Vector3 (170, 3600);
+	Vector2 rotationRange = new Vector3 (3600, 3600);
 	Vector3 targetAngles, followAngles, followVelocity;
 	Quaternion originalRotation;
 	float rotationSpeed = 5;
