@@ -12,14 +12,15 @@ public class FirstPersonCharacter : MonoBehaviour
 	#endif
 	[SerializeField] private AdvancedSettings advanced = new AdvancedSettings();        // The container for the advanced settings ( done this way so that the advanced setting are exposed under a foldout
 	[SerializeField] private bool lockCursor = true;
-	[SerializeField] private bool triggerRunAnim = false;
 	[SerializeField] public bool hasControl = true;
-
+	
 	Vector3 vec;
 	GameObject camera;
 	int rotateBody = 0;
 	GameObject exit;
-
+	OculusController oc;
+	
+	
 	[System.Serializable]
 	public class AdvancedSettings                                                       // The advanced settings
 	{
@@ -45,14 +46,15 @@ public class FirstPersonCharacter : MonoBehaviour
 		camera = GameObject.FindWithTag("MainCamera");
 		exit = GameObject.Find("RunToPoint");
 	}
-
+	
 	void Start() {
-		if(triggerRunAnim) {
-			//disable camera
-			StartCoroutine(PlayRunAnim());
-		}
+		oc = gameObject.GetComponent<OculusController>();
+		//if(triggerRunAnim) {
+		//disable camera
+		//StartCoroutine(PlayRunAnim());
+		//}
 	}
-
+	
 	void OnDisable()
 	{
 		Screen.lockCursor = false;
@@ -70,19 +72,19 @@ public class FirstPersonCharacter : MonoBehaviour
 	public void FixedUpdate ()
 	{
 		float speed = runSpeed;
-
+		
 		// Read input
-#if CROSS_PLATFORM_INPUT
+		#if CROSS_PLATFORM_INPUT
 		float h = CrossPlatformInput.GetAxis("Horizontal");
 		float v = CrossPlatformInput.GetAxis("Vertical");
 		bool jump = CrossPlatformInput.GetButton("Jump");
-#else
+		#else
 		float h = Input.GetAxis("Horizontal");
 		float v = Input.GetAxis("Vertical");
 		bool jump = Input.GetButton("Jump");
-#endif
-
-#if !MOBILE_INPUT
+		#endif
+		
+		#if !MOBILE_INPUT
 		
 		// On standalone builds, walk/run speed is modified by a key press.
 		// We select appropriate speed based on whether we're walking by default, and whether the walk/run toggle button is pressed:
@@ -91,12 +93,12 @@ public class FirstPersonCharacter : MonoBehaviour
 		
 		// On mobile, it's controlled in analogue fashion by the v input value, and therefore needs no special handling.
 		
-
-#endif
-		if(hasControl) {
 		
+		#endif
+		if(hasControl) {
+			
 			input = new Vector2( h, v );
-
+			
 			// normalize input if it exceeds 1 in combined length:
 			if (input.sqrMagnitude > 1) input.Normalize();
 			
@@ -122,7 +124,7 @@ public class FirstPersonCharacter : MonoBehaviour
 			} else {
 				collider.material = advanced.highFrictionMaterial;
 			}
-
+			
 			
 			// Ground Check:
 			
@@ -158,20 +160,18 @@ public class FirstPersonCharacter : MonoBehaviour
 			}
 			
 			Debug.DrawRay(ray.origin, ray.direction * capsule.height * jumpRayLength, grounded ? Color.green : Color.red );
-
-
+			
+			
 			// add extra gravity
 			rigidbody.AddForce(Physics.gravity * (advanced.gravityMultiplier - 1));
 		}else {
 			rigidbody.velocity =  vec;
-			print(exit.transform.position - gameObject.transform.position);
+			//print(exit.transform.position - gameObject.transform.position);
 			//print(Vector3.Distance(exit.transform.position , gameObject.transform.position));
 			if(Vector3.Distance(exit.transform.position , gameObject.transform.position) > 1f && (exit.transform.position - gameObject.transform.position).z < 0) {
 				vec = (exit.transform.position - gameObject.transform.position);
-				print("enter main");
 			}else {
 				vec  =  -Vector3.forward * runSpeed;
-				print("enter else");
 			}
 			//gameObject.transform.Translate((exit.transform.position - gameObject.transform.position)*Time.deltaTime/ 3);
 			rotateBody++;
@@ -185,7 +185,7 @@ public class FirstPersonCharacter : MonoBehaviour
 			}
 		}
 	}
-
+	
 	
 	//used for comparing distances
 	class RayHitComparer: IComparer
@@ -195,18 +195,26 @@ public class FirstPersonCharacter : MonoBehaviour
 			return ((RaycastHit)x).distance.CompareTo(((RaycastHit)y).distance);
 		}	
 	}
-
+	
 	IEnumerator PlayRunAnim() {
 		hasControl = false;
+		oc.SetEnableOculus(false);
+		oc.isUsingMouse = false;
 		//vec =  -Vector3.forward;
-		camera.gameObject.GetComponent<SimpleMouseRotator>().enabled = false;
-		gameObject.gameObject.GetComponent<SimpleMouseRotator>().enabled = false;
+		//camera.gameObject.GetComponent<SimpleMouseRotator>().enabled = false;
+		//gameObject.gameObject.GetComponent<SimpleMouseRotator>().enabled = false;
 		yield return new WaitForSeconds(3.3f);
 		//RUN
 		hasControl = true;
-		camera.gameObject.GetComponent<SimpleMouseRotator>().enabled = true;
-		gameObject.gameObject.GetComponent<SimpleMouseRotator>().enabled = true;
+		oc.SetEnableOculus(true);
+		oc.isUsingMouse = true;
+		//camera.gameObject.GetComponent<SimpleMouseRotator>().enabled = true;
+		//gameObject.gameObject.GetComponent<SimpleMouseRotator>().enabled = true;
 		camera.transform.forward = gameObject.transform.forward;
+	}
+	
+	void Run() {
+		StartCoroutine (PlayRunAnim());
 	}
 	
 }
