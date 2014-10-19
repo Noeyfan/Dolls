@@ -53,7 +53,6 @@ public class DoorController : MonoBehaviour {
 			if(!isBasementDoor || (isBasementDoor && gc.hasKey)) {
 
 				//AnimateDoor(CheckSideCollision(contactPoint));
-				GameObject.Find("SoundSets").SendMessage("PlaySound", 3);
 				AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
 			}
 		}
@@ -99,6 +98,9 @@ public class DoorController : MonoBehaviour {
 		this.firstRotation = transform.localRotation;
 		this.targetRotation = targetRotation;
 		isAnimating = true;
+
+		// sound
+		GameObject.Find("SoundSets").SendMessage("PlaySound", 3);
 	}
 
 	protected void CloseDoor() {

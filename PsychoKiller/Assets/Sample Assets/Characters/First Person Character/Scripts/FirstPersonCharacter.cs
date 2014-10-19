@@ -112,8 +112,7 @@ public class FirstPersonCharacter : MonoBehaviour
                 if (velocity < 0.001f) velocity = 0;
                 int n = Random.Range(1,footstepSounds.Length);
 
-                audio.PlayOneShot(footstepSounds[n]);
-               
+                audio.PlayOneShot(footstepSounds[n-1]);               
             }
 
             velocity *= damping;
