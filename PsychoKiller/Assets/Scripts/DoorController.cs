@@ -10,6 +10,7 @@ public class DoorController : MonoBehaviour {
 
 	public DoorType doorType;
 	public DoorFace doorFace;
+	public bool isBasementDoor;
 	protected DoorState doorState = DoorState.IDLE;
 
 	protected int side;
@@ -20,9 +21,12 @@ public class DoorController : MonoBehaviour {
 	protected float elapsedTimeAnimation = 0f;
 	protected Quaternion firstRotation, targetRotation;
 
+	GameController gc;
+
 	// Use this for initialization
 	void Start () {
 		// close all doors
+		gc = GameObject.Find("GameController").GetComponent<GameController>();
 		CloseDoor ();
 
 		if (GetComponent<BoxCollider> ().center.x < 0f) side = -1;		
@@ -46,11 +50,11 @@ public class DoorController : MonoBehaviour {
 
 	void OnCollisionEnter(Collision c) {
 		if(c.gameObject.tag == "Hand") {
-			Collider collider = c.collider;
-			Vector3 contactPoint = c.contacts[0].point;
+			if(!isBasementDoor ||isBasementDoor && gc.hasKey) {
 
-			//AnimateDoor(CheckSideCollision(contactPoint));
-			AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
+				//AnimateDoor(CheckSideCollision(contactPoint));
+				AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
+			}
 		}
 	}
 
