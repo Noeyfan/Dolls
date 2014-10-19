@@ -45,17 +45,17 @@ public class DoorController : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision c) {
-		Collider collider = c.collider;
-		Vector3 contactPoint = c.contacts[0].point;
+		if(c.gameObject.tag == "Hand") {
+			Collider collider = c.collider;
+			Vector3 contactPoint = c.contacts[0].point;
 
-		if(c.gameObject.tag == "Player") {
-			//AnimateDoor(CheckSideCollision(contactPoint));
+			AnimateDoor(CheckSideCollision(contactPoint));
 		}
 	}
 
 	void OnTriggerEnter(Collider other) {
 		if (other.gameObject.tag == "Hand") {
-			AnimateDoor(CheckSideCollision(other.gameObject.transform.position));
+			//AnimateDoor(CheckSideCollision(other.gameObject.transform.position));
 		}
 	}
 

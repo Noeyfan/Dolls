@@ -40,6 +40,8 @@ using System.Runtime.InteropServices;
 /// </summary>
 public class OVRCamera : MonoBehaviour
 {
+	public bool isUpdateRotation = true;
+
 	/// <summary>
 	/// Types of render events we can send to the native rendering plugin.
 	/// </summary>
@@ -300,8 +302,10 @@ public class OVRCamera : MonoBehaviour
 		
 		// * * *
 		// Update camera rotation
-		camera.transform.rotation = q;
-		
+		if (isUpdateRotation) {
+			camera.transform.rotation = q;
+		}
+
 		// * * *
 		// Update camera position (first add Offset to parent transform)
 		camera.transform.localPosition = NeckPosition;
