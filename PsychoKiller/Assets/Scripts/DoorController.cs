@@ -50,7 +50,7 @@ public class DoorController : MonoBehaviour {
 
 	void OnCollisionEnter(Collision c) {
 		if(c.gameObject.tag == "Hand") {
-			if(!isBasementDoor ||isBasementDoor && gc.hasKey) {
+			if(!isBasementDoor || (isBasementDoor && gc.hasKey)) {
 
 				//AnimateDoor(CheckSideCollision(contactPoint));
 				AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
@@ -98,6 +98,9 @@ public class DoorController : MonoBehaviour {
 		this.firstRotation = transform.localRotation;
 		this.targetRotation = targetRotation;
 		isAnimating = true;
+
+		// sound
+		GameObject.Find("SoundSets").SendMessage("PlaySound", 3);
 	}
 
 	protected void CloseDoor() {
