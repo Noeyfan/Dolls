@@ -11,7 +11,7 @@
 	}
 	SubShader {
 		Tags { "RenderType"="Opaque" "LightMode"="ForwardBase"}
-		LOD 200
+		//LOD 600
 		
 		CGPROGRAM
 		#pragma surface surf SimpleSpecular
