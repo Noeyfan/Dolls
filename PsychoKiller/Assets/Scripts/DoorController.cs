@@ -23,7 +23,7 @@ public class DoorController : MonoBehaviour {
 	
 	// animation attribute
 	protected bool isAnimating = false;
-	protected float animationTime = 0.4f;
+	protected float animationTime = 0.7f;
 	protected float elapsedTimeAnimation = 0f;
 	protected Quaternion firstRotation, targetRotation;
 	
