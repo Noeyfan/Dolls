@@ -8,14 +8,18 @@ public class OculusController : MonoBehaviour {
 	private bool isOculusActive = true;
 	public bool isUsingMouse = false;
 
-	Vector2 rotationRange = new Vector3 (3600, 3600);
+	Vector2 rotationRange = new Vector3 (130, 3600);
 	Vector3 targetAngles, followAngles, followVelocity;
 	Quaternion originalRotation;
 	float rotationSpeed = 5;
 	float dampingTime = 0.2f;
 
+	GameObject OVRCameraController;
+
 	// Use this for initialization
 	void Start () {
+		OVRCameraController = GameObject.Find ("OVRCameraController");
+
 		if (isUsingMouse) {
 			SetEnableOculus(false);
 		}
@@ -59,6 +63,7 @@ public class OculusController : MonoBehaviour {
 			
 			// update the actual gameobject's rotation
 			transform.localRotation = originalRotation * Quaternion.Euler(0, followAngles.y, 0);
+			OVRCameraController.transform.localRotation = Quaternion.Euler(-followAngles.x, OVRCameraController.transform.localRotation.eulerAngles.y, OVRCameraController.transform.localRotation.eulerAngles.z);
 		}
 	}
 
