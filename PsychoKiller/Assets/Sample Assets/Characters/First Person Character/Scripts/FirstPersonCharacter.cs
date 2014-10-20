@@ -65,6 +65,7 @@ public class FirstPersonCharacter : MonoBehaviour
 		private int no_acc_count = 0;
 
 		private GameObject gameController;
+	private bool fadeout = false;
 
 		void Awake ()
 		{
@@ -296,9 +297,12 @@ public class FirstPersonCharacter : MonoBehaviour
 
     IEnumerator FadeOut()
     {
+		if (fadeout)
+						yield break;
+		fadeout = true;
         for (float i = 0; i < 1.0f; i+= Time.deltaTime)
         {
-            GameObject.Find("OVRCameraController/CameraRight/FadeOut").renderer.material.SetColor("_Color", new Color(0, 0, 0, (i/3.0f)));
+            GameObject.Find("OVRCameraController/CameraRight/FadeOut").renderer.material.SetColor("_Color", new Color(0, 0, 0, (i/1.0f)));
             yield return null;
         }
     }

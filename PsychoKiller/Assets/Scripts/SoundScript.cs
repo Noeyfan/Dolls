@@ -8,6 +8,8 @@ public class SoundScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Screen.showCursor = false;
+
         sources = GetComponents<AudioSource>();
         StartCoroutine(playOverlap());
 	}
