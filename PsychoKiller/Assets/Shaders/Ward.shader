@@ -15,7 +15,7 @@
 		//LOD 600
 		
 		CGPROGRAM
-		#pragma surface surf SimpleSpecular
+		#pragma surface surf SimpleSpecular 
 		#pragma multi_compile_fwdbase
 		#pragma target 3.0
 		#include "AutoLight.cginc"
