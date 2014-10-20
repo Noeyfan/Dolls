@@ -112,7 +112,7 @@ public class FirstPersonCharacter : MonoBehaviour
 
             if (useMakeyMakey && (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S)))
             {
-                acc = 100f;
+                acc = 50f;
                 velocity += acc * Time.fixedDeltaTime;
                 velocity = Mathf.Min(300f, velocity);
                 if (velocity < 0.001f) velocity = 0;

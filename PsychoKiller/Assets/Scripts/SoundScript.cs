@@ -25,5 +25,20 @@ public class SoundScript : MonoBehaviour {
             sources[i].clip = clips[i];
             sources[i].Play();
         }
+
+        bool stillplaying = false;
+        do
+        {
+            yield return null;
+            stillplaying = false;
+            for (int i = 0; i < sources.Length; i++)
+            {
+                if (sources[i].isPlaying)
+                    stillplaying = true;
+            }
+        } while (stillplaying);
+
+        yield return new WaitForSeconds(1.0f);
+        Application.LoadLevel("MainScene");
     }
 }
