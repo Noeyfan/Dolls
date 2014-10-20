@@ -61,6 +61,10 @@ public class NoteController : MonoBehaviour {
 				animationType = AnimationType.NULL;
 			}
 		}
+
+		// debug note
+		//if (Input.GetKeyDown (KeyCode.Q)) ShowUp ();		
+		//else if (Input.GetKeyDown (KeyCode.A)) GoBack ();
 	}
 
 	protected void ShowUp() {
@@ -81,6 +85,9 @@ public class NoteController : MonoBehaviour {
 			// set target
 			targetRotation = Quaternion.Euler (Vector3.zero);
 			targetPosition = new Vector3 (0f, 0f, 0.2f);
+
+			// sound
+			audio.Play();
 		}
 	}
 
@@ -104,6 +111,9 @@ public class NoteController : MonoBehaviour {
 			targetPosition = initPosition;
 
 			gameController.SendMessage("SetCurrentNoteNull");
+
+			// sound
+			audio.Play();
 		}
 	}
 
