@@ -67,7 +67,7 @@ public class FirstPersonCharacter : MonoBehaviour
 		sc = GameObject.Find("SoundSets");
 		blood.SetActive(false);
 		dead = false;
-        StartCoroutine(FadeOut());
+        //StartCoroutine(FadeOut());
 		//if(triggerRunAnim) {
 		//disable camera
 		//StartCoroutine(PlayRunAnim());
