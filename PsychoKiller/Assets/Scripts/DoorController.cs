@@ -79,7 +79,9 @@ public class DoorController : MonoBehaviour {
 				//if(!GameObject.Find("SoundSets").GetComponent<AudioSource>().isPlaying) {
 				//	GameObject.Find("SoundSets").SendMessage("PlaySound", 5);
 				//}// Lock Sound
-				GameObject.Find("SoundSets").SendMessage("PlaySound", 5);
+				if(!fc.dead) {
+					GameObject.Find("SoundSets").SendMessage("PlaySound", 5);
+				}
 				if(!startkill) {
 					fc.Kill();
 					startkill = true;
