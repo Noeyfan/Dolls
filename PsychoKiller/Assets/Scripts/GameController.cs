@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour {
 
 	GameObject currentNote;
 	bool isCurrentNoteNull = true;
+	public bool isMakeyMakeyActive = true;
 
 	enum soundName{
 		whereiseveryone,

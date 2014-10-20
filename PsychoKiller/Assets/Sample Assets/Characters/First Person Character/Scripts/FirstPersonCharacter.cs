@@ -45,6 +45,8 @@ public class FirstPersonCharacter : MonoBehaviour
     private float acc = 0;
     private int no_acc_count = 0;
 
+	private GameObject gameController;
+
 	void Awake ()
 	{
 		// Set up a reference to the capsule collider.
@@ -59,6 +61,7 @@ public class FirstPersonCharacter : MonoBehaviour
 	}
 	
 	void Start() {
+		gameController = GameObject.FindGameObjectWithTag("GameController");
 		oc = gameObject.GetComponent<OculusController>();
 		sc = GameObject.Find("SoundSets");
 		blood.SetActive(false);
@@ -110,7 +113,7 @@ public class FirstPersonCharacter : MonoBehaviour
 		#endif
 		if(hasControl) {
 
-            if (useMakeyMakey && (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S)))
+            if (useMakeyMakey && (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S)) && gameController.GetComponent<GameController>().isMakeyMakeyActive)
             {
                 acc = 50f;
                 velocity += acc * Time.fixedDeltaTime;
@@ -119,7 +122,7 @@ public class FirstPersonCharacter : MonoBehaviour
                 int n = Random.Range(1,footstepSounds.Length);
 
                 audio.PlayOneShot(footstepSounds[n-1]);        
-				GameObject.FindGameObjectWithTag("GameController").SendMessage("RemoveCurrentNote");
+				gameController.SendMessage("RemoveCurrentNote");
             }
 
             velocity *= damping;
