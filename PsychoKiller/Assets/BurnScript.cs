@@ -17,19 +17,20 @@ public class BurnScript : MonoBehaviour {
 
     IEnumerator burnbaby()
     {
+		yield return new WaitForSeconds(3f);
         party.Play();
         Vector3 pos = party.gameObject.transform.localPosition;
         for (float i = 0; i < BurnTime; i += Time.deltaTime)
         {
-            Debug.Log("Boooo");
             this.renderer.material.SetFloat("_BurnAmount", i / BurnTime);
             //pos.x -= i / (BurnTime * 300);
-            pos.y += i / (BurnTime * 250);
+            pos.y += i / (BurnTime * 500);
             party.startSize += (i / BurnTime)/1000.0f;
             party.startLifetime += (i / BurnTime) / 75.0f;
             party.gameObject.transform.localPosition = pos;
             yield return null;
         }
+		party.Stop();
 
     }
 }
