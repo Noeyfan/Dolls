@@ -42,7 +42,7 @@ public class NoteController : MonoBehaviour {
 		initPosition = transform.position;
 		initScale = transform.localScale;
 
-		float maxScaling = 0.4f;
+		float maxScaling = 0.3f;
 		float multiplier = maxScaling / ((initScale.x > initScale.y ? initScale.x : initScale.y));
 		fullscreenScale = new Vector3 (initScale.x * multiplier, initScale.y * multiplier, initScale.z);
 
@@ -57,9 +57,10 @@ public class NoteController : MonoBehaviour {
 			elapsedTimeAnimation += Time.deltaTime;
 
 			// animation
-			this.transform.localPosition = Vector3.Slerp(firstPosition, targetPosition, elapsedTimeAnimation / animationTime);
-			this.transform.localRotation = Quaternion.Slerp(firstRotation, targetRotation, elapsedTimeAnimation / animationTime);
-			this.transform.localScale = Vector3.Slerp(firstScale, targetScale, elapsedTimeAnimation / animationTime);
+			float progressTime = elapsedTimeAnimation / animationTime;
+			this.transform.localPosition = Vector3.Slerp(firstPosition, targetPosition, progressTime);
+			this.transform.localRotation = Quaternion.Slerp(firstRotation, targetRotation, progressTime);
+			this.transform.localScale = Vector3.Slerp(firstScale, targetScale, progressTime);
 
 			if (elapsedTimeAnimation >= animationTime) {
 				// set as currentNote
@@ -84,6 +85,7 @@ public class NoteController : MonoBehaviour {
 				isWaitingSFX = false;
 				elapsedTimeSFX = 0f;
 				audio.clip = paperPickupSFX;
+				SFX = null; // just once they can listen the sfx
 				// enable makey makey
 				GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().isMakeyMakeyActive = true;
 			}
@@ -121,7 +123,7 @@ public class NoteController : MonoBehaviour {
 
 			// set target
 			targetRotation = Quaternion.Euler (Vector3.zero);
-			targetPosition = new Vector3 (0f, 0f, 0.2f);
+			targetPosition = new Vector3 (0f, 0f, 0.16f);
 			targetScale = fullscreenScale;
 
 			// sound
