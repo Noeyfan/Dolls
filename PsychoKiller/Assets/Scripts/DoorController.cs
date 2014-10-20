@@ -15,6 +15,7 @@ public class DoorController : MonoBehaviour {
 	public bool isParent = true;
 	public bool isBasementDoor;
 	public bool isLocked;
+	public bool isFinalDoor;
 	
 	protected DoorState doorState = DoorState.IDLE;
 	
@@ -72,9 +73,11 @@ public class DoorController : MonoBehaviour {
 					//AnimateDoor(CheckSideCollision(contactPoint));
 					AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
 				}
-			}else {
+			}else if(isFinalDoor){
 				GameObject.Find("SoundSets").SendMessage("PlaySound", 5); // Lock Sound
 				fc.Kill();
+			}else {
+				GameObject.Find("SoundSets").SendMessage("PlaySound", 7);
 			}
 		}
 	}
