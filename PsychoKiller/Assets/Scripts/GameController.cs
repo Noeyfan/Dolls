@@ -19,8 +19,7 @@ public class GameController : MonoBehaviour {
 	void Start () {
 		ShowNotes(false);
 		sc = GameObject.Find("SoundSets").GetComponent<SoundController>();
-		Invoke("PlayBeg", 1f);
-
+		//Invoke("PlayBeg", 1f);
 	}
 	
 	// Update is called once per frame
