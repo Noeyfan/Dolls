@@ -24,9 +24,10 @@ public class BurnScript : MonoBehaviour {
             Debug.Log("Boooo");
             this.renderer.material.SetFloat("_BurnAmount", i / BurnTime);
             //pos.x -= i / (BurnTime * 300);
-            pos.y += i / (BurnTime * 250);
-            party.startSize += (i / BurnTime)/1000.0f;
-            party.startLifetime += (i / BurnTime) / 75.0f;
+            float step = (Time.deltaTime) / BurnTime;
+            pos.y += step;
+            party.startSize += (step * 0.3f);
+            party.startLifetime += (step * 1.5f);
             party.gameObject.transform.localPosition = pos;
             yield return null;
         }
