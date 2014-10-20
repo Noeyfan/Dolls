@@ -5,8 +5,10 @@ public class GameController : MonoBehaviour {
 	// Use this for initialization
 	bool showingNotes;
 	public bool hasKey;
-	GameObject notes;
 	SoundController sc;
+
+	GameObject currentNote;
+	bool isCurrentNoteNull = true;
 
 	enum soundName{
 		whereiseveryone,
@@ -15,7 +17,6 @@ public class GameController : MonoBehaviour {
 	};
 
 	void Start () {
-		notes = GameObject.Find("Notes");
 		ShowNotes(false);
 		sc = GameObject.Find("SoundSets").GetComponent<SoundController>();
 		Invoke("PlayBeg", 1f);
@@ -27,7 +28,6 @@ public class GameController : MonoBehaviour {
 	}
 
 	void ShowNotes (bool b) {
-		notes.SetActive(b);
 		showingNotes = true; //used for exit reading notes
 	}
 
@@ -37,5 +37,20 @@ public class GameController : MonoBehaviour {
 
 	void GetKey() {
 		hasKey = true;
+	}
+
+	public void SetCurrentNote(GameObject note) {
+		currentNote = note;
+		isCurrentNoteNull = false;
+	}
+
+	public void SetCurrentNoteNull() {
+		isCurrentNoteNull = true;
+	}
+
+	public void RemoveCurrentNote() {
+		if (!isCurrentNoteNull) {
+			currentNote.SendMessage("GoBack");
+		}
 	}
 }
