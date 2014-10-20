@@ -22,6 +22,7 @@ public class FirstPersonCharacter : MonoBehaviour
 	GameObject blood;
 	OculusController oc;
 	GameObject sc;
+	private bool dead;
 	
 	
 	[System.Serializable]
@@ -65,6 +66,7 @@ public class FirstPersonCharacter : MonoBehaviour
 		oc = gameObject.GetComponent<OculusController>();
 		sc = GameObject.Find("SoundSets");
 		blood.SetActive(false);
+		dead = false;
 		//if(triggerRunAnim) {
 		//disable camera
 		//StartCoroutine(PlayRunAnim());
@@ -254,13 +256,15 @@ public class FirstPersonCharacter : MonoBehaviour
 	}
 
 	IEnumerator KillerKillYou () {
-		sc.SendMessage("PlaySound", 5);
-		GameObject.Find("Door008").GetComponent<AudioSource>().Play();
-		yield return new WaitForSeconds(2f);
-		//Fall down
-		sc.SendMessage("PlaySound", 6);
-		hasControl = false;
-		oc.isUsingMouse = false;
-		blood.SetActive(true);
+		if(!dead) {
+			//sc.SendMessage("PlaySound", 5);
+			yield return new WaitForSeconds(4f);
+			//Fall down
+			sc.SendMessage("PlaySound", 6);
+			hasControl = false;
+			oc.isUsingMouse = false;
+			blood.SetActive(true);
+			dead = true;
+		}
 	}
 }

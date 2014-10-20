@@ -18,12 +18,18 @@ public class TriggerController : MonoBehaviour {
 		if(c.tag == "Player") {
 			//trigger running
 			//c.SendMessage("Run");
-			finalDoor.SendMessage("CloseDoor");
-			finalDoor.GetComponent<DoorController>().isLocked = true;
 			if(!played) {
+				StartCoroutine(Slam());
 				GameObject.Find("SoundSets").SendMessage("PlaySound", 2);
 				played = true;
 			}
 		}
+	}
+
+	IEnumerator Slam() {
+		yield return new WaitForSeconds(2.5f);
+		finalDoor.SendMessage("CloseDoor");
+		finalDoor.GetComponent<DoorController>().isLocked = true;
+		finalDoor.audio.Play();
 	}
 }

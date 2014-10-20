@@ -16,6 +16,7 @@ public class DoorController : MonoBehaviour {
 	public bool isBasementDoor;
 	public bool isLocked;
 	public bool isFinalDoor;
+
 	
 	protected DoorState doorState = DoorState.IDLE;
 	
@@ -29,6 +30,7 @@ public class DoorController : MonoBehaviour {
 	
 	private GameController gc;
 	private FirstPersonCharacter fc;
+	private bool startkill;
 
 	private Transform doorTransform;
 
@@ -74,8 +76,14 @@ public class DoorController : MonoBehaviour {
 					AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
 				}
 			}else if(isFinalDoor){
-				GameObject.Find("SoundSets").SendMessage("PlaySound", 5); // Lock Sound
-				fc.Kill();
+				//if(!GameObject.Find("SoundSets").GetComponent<AudioSource>().isPlaying) {
+				//	GameObject.Find("SoundSets").SendMessage("PlaySound", 5);
+				//}// Lock Sound
+				GameObject.Find("SoundSets").SendMessage("PlaySound", 5);
+				if(!startkill) {
+					fc.Kill();
+					startkill = true;
+				}
 			}else {
 				GameObject.Find("SoundSets").SendMessage("PlaySound", 7);
 			}
