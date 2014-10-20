@@ -144,36 +144,28 @@ public class DoorController : MonoBehaviour {
 		if (doorType == DoorType.RIGHT) {
 			if (relativePosition.y >= 0) {
 				if (side == 1) {
-					Debug.Log("BACK");
 					return DoorSide.BACK;
 				} else if (side == -1) {
-					Debug.Log("FRONT");
 					return DoorSide.FRONT;
 				}
 			} else { // relativePosition.y < 0
 				if (side == 1) {
-					Debug.Log("FRONT");
 					return DoorSide.FRONT;
 				} else if (side == -1) {
-					Debug.Log("BACK");
 					return DoorSide.BACK;
 				}
 			}	
 		} else if (doorType == DoorType.LEFT) {
 			if (relativePosition.y >= 0) {
 				if (side == 1) {
-					Debug.Log("FRONT");
 					return DoorSide.FRONT;
 				} else if (side == -1) {
-					Debug.Log("BACK");
 					return DoorSide.BACK;
 				}
 			} else { // relativePosition.y < 0
 				if (side == 1) {
-					Debug.Log("BACK");
 					return DoorSide.BACK;
 				} else if (side == -1) {
-					Debug.Log("FRONT");
 					return DoorSide.FRONT;
 				}
 			}	
