@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class BurnScript : MonoBehaviour {
-    float BurnTime = 20.0f;
+    public float delayBeforeBurn = 22;
+    float BurnTime = 10.0f;
     public ParticleSystem party;
 	// Use this for initialization
 	void Start () {
@@ -17,6 +18,7 @@ public class BurnScript : MonoBehaviour {
 
     IEnumerator burnbaby()
     {
+        yield return new WaitForSeconds(delayBeforeBurn);
         party.Play();
         Vector3 pos = party.gameObject.transform.localPosition;
         for (float i = 0; i < BurnTime; i += Time.deltaTime)
@@ -26,11 +28,13 @@ public class BurnScript : MonoBehaviour {
             //pos.x -= i / (BurnTime * 300);
             float step = (Time.deltaTime) / BurnTime;
             pos.y += step;
-            party.startSize += (step * 0.3f);
-            party.startLifetime += (step * 1.5f);
+            party.startSize += (step * 0.1f);
+            party.startLifetime += (step);
             party.gameObject.transform.localPosition = pos;
             yield return null;
         }
+        party.Stop();
+        this.renderer.enabled = false;
 
     }
 }
