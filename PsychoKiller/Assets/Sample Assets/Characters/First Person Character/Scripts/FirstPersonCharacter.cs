@@ -115,7 +115,7 @@ public class FirstPersonCharacter : MonoBehaviour
 		#endif
 		if(hasControl) {
 
-            if (useMakeyMakey && (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.S)) && gameController.GetComponent<GameController>().isMakeyMakeyActive)
+            if (useMakeyMakey && (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.G)) && gameController.GetComponent<GameController>().isMakeyMakeyActive)
             {
                 acc = 50f;
                 velocity += acc * Time.fixedDeltaTime;
