@@ -26,6 +26,7 @@ public class SpeakerController : MonoBehaviour {
 	void toggleSound() {
 		if(recordtime <= Time.time - interve) {
 			recordtime = Time.time;
+			sc.PlaySound(4);
 			if(partySound.GetComponent<AudioSource>().isPlaying) {
 				partySound.audio.Stop();
 			}else {

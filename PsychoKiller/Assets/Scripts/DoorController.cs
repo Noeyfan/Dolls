@@ -71,14 +71,12 @@ public class DoorController : MonoBehaviour {
 		if(c.gameObject.tag == "Hand") {
 			if(!isLocked) {
 				if(!isBasementDoor || (isBasementDoor && gc.hasKey)) {
-					
-					//AnimateDoor(CheckSideCollision(contactPoint));
 					AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
 				}
+				else if(isBasementDoor && !gc.hasKey){
+					GameObject.Find("SoundSets").SendMessage("PlaySound", 7);
+				}
 			}else if(isFinalDoor){
-				//if(!GameObject.Find("SoundSets").GetComponent<AudioSource>().isPlaying) {
-				//	GameObject.Find("SoundSets").SendMessage("PlaySound", 5);
-				//}// Lock Sound
 				if(!fc.dead) {
 					GameObject.Find("SoundSets").SendMessage("PlaySound", 5);
 				}
