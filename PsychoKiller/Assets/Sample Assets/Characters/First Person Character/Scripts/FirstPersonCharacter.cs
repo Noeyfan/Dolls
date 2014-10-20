@@ -290,12 +290,13 @@ public class FirstPersonCharacter : MonoBehaviour
 
 						blood.SetActive (true);
 						dead = true;
+						FadeOut();
 				}
 		}
 
     IEnumerator FadeOut()
     {
-        for (float i = 0; i < 3.0f; i+= Time.deltaTime)
+        for (float i = 0; i < 1.0f; i+= Time.deltaTime)
         {
             GameObject.Find("OVRCameraController/CameraRight/FadeOut").renderer.material.SetColor("_Color", new Color(0, 0, 0, (i/3.0f)));
             yield return null;
