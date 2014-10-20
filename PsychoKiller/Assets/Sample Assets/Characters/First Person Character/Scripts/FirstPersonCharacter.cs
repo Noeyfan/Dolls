@@ -116,7 +116,8 @@ public class FirstPersonCharacter : MonoBehaviour
                 if (velocity < 0.001f) velocity = 0;
                 int n = Random.Range(1,footstepSounds.Length);
 
-                audio.PlayOneShot(footstepSounds[n-1]);               
+                audio.PlayOneShot(footstepSounds[n-1]);        
+				GameObject.FindGameObjectWithTag("GameController").SendMessage("RemoveCurrentNote");
             }
 
             velocity *= damping;
