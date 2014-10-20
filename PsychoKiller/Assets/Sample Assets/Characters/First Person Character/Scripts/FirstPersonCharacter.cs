@@ -67,6 +67,7 @@ public class FirstPersonCharacter : MonoBehaviour
 		sc = GameObject.Find("SoundSets");
 		blood.SetActive(false);
 		dead = false;
+        StartCoroutine(FadeOut());
 		//if(triggerRunAnim) {
 		//disable camera
 		//StartCoroutine(PlayRunAnim());
@@ -267,4 +268,13 @@ public class FirstPersonCharacter : MonoBehaviour
 			dead = true;
 		}
 	}
+
+    IEnumerator FadeOut()
+    {
+        for (float i = 0; i < 3.0f; i+= Time.deltaTime)
+        {
+            GameObject.Find("OVRCameraController/CameraRight/FadeOut").renderer.material.SetColor("_Color", new Color(0, 0, 0, (i/3.0f)));
+            yield return null;
+        }
+    }
 }
