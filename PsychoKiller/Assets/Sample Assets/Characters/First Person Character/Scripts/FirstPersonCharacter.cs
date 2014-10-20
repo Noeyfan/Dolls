@@ -19,6 +19,7 @@ public class FirstPersonCharacter : MonoBehaviour
 	GameObject camera;
 	int rotateBody = 0;
 	GameObject exit;
+	GameObject blood;
 	OculusController oc;
 	
 	
@@ -52,10 +53,13 @@ public class FirstPersonCharacter : MonoBehaviour
 		rayHitComparer = new RayHitComparer();
 		camera = GameObject.FindWithTag("MainCamera");
 		exit = GameObject.Find("RunToPoint");
+		blood = GameObject.Find("Blood");
+
 	}
 	
 	void Start() {
 		oc = gameObject.GetComponent<OculusController>();
+		blood.SetActive(false);
 		//if(triggerRunAnim) {
 		//disable camera
 		//StartCoroutine(PlayRunAnim());
@@ -188,24 +192,29 @@ public class FirstPersonCharacter : MonoBehaviour
 			// add extra gravity
 			rigidbody.AddForce(Physics.gravity * (advanced.gravityMultiplier - 1));
 		}else {
-			rigidbody.velocity =  vec;
-			//print(exit.transform.position - gameObject.transform.position);
-			//print(Vector3.Distance(exit.transform.position , gameObject.transform.position));
+			//Fall down
+			var lookPos = exit.transform.position - transform.position;
+			lookPos.x = 0;
+			var rotation = Quaternion.LookRotation(lookPos);
+			rotation *= Quaternion.Euler(0, 0 , 90); // this add a 90 degrees Y rotation
+			transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.time * 0.5f);
+
+			/*rigidbody.velocity =  vec;
+
 			if(Vector3.Distance(exit.transform.position , gameObject.transform.position) > 1f && (exit.transform.position - gameObject.transform.position).z < 0) {
 				vec = (exit.transform.position - gameObject.transform.position);
 			}else {
 				vec  =  -Vector3.forward * runSpeed;
 			}
-			//gameObject.transform.Translate((exit.transform.position - gameObject.transform.position)*Time.deltaTime/ 3);
+
 			rotateBody++;
-			//print(Vector3.Angle(gameObject.transform.forward, GameObject.Find("RunToPoint").transform.forward));
-			//print(Vector3.Angle(gameObject.transform.forward, exit.transform.forward));
 			if(rotateBody > 60 && rotateBody < 150 && Vector3.Angle(gameObject.transform.forward, exit.transform.forward) < 160) {
 				gameObject.transform.Rotate(gameObject.transform.up * 10);
 			}
-			if(rotateBody > 150) {
-				gameObject.transform.Rotate(-gameObject.transform.up * 10);
-			}
+			print(Vector3.Angle(gameObject.transform.forward, exit.transform.forward));
+			if(rotateBody > 150 && Vector3.Angle(gameObject.transform.forward, exit.transform.forward) > 5) {
+				gameObject.transform.Rotate(-gameObject.transform.up * 5);
+			}*/
 		}
 	}
 	
@@ -220,23 +229,29 @@ public class FirstPersonCharacter : MonoBehaviour
 	
 	IEnumerator PlayRunAnim() {
 		hasControl = false;
-		oc.SetEnableOculus(false);
+		//oc.SetEnableOculus(false);
 		oc.isUsingMouse = false;
-		//vec =  -Vector3.forward;
-		//camera.gameObject.GetComponent<SimpleMouseRotator>().enabled = false;
-		//gameObject.gameObject.GetComponent<SimpleMouseRotator>().enabled = false;
-		yield return new WaitForSeconds(3.3f);
+		yield return new WaitForSeconds(3f);
 		//RUN
 		hasControl = true;
-		oc.SetEnableOculus(true);
+		//oc.SetEnableOculus(true);
 		oc.isUsingMouse = true;
-		//camera.gameObject.GetComponent<SimpleMouseRotator>().enabled = true;
-		//gameObject.gameObject.GetComponent<SimpleMouseRotator>().enabled = true;
 		camera.transform.forward = gameObject.transform.forward;
 	}
 	
-	void Run() {
+	public void Run() {
 		StartCoroutine (PlayRunAnim());
 	}
-	
+
+	public void Kill() {
+		StartCoroutine(KillerKillYou());
+	}
+
+	IEnumerator KillerKillYou () {
+		yield return new WaitForSeconds(2f);
+		//Fall down
+		hasControl = false;
+		oc.isUsingMouse = false;
+		blood.SetActive(true);
+	}
 }
