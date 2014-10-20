@@ -3,7 +3,7 @@ using System.Collections;
 
 public class BurnScript : MonoBehaviour {
     public float delayBeforeBurn = 22;
-    float BurnTime = 10.0f;
+    float BurnTime = 7.0f;
     public ParticleSystem party;
 	// Use this for initialization
 	void Start () {

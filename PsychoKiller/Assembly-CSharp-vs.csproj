@@ -102,6 +102,7 @@
      <Compile Include="Assets\OVR\Scripts\OVRUGUI.cs" />
      <Compile Include="Assets\OVR\Scripts\OVRUtils.cs" />
      <Compile Include="Assets\OVR\Scripts\OVRVisionGuide.cs" />
+     <Compile Include="Assets\PictureAnimationScript.cs" />
      <Compile Include="Assets\Sample Assets\Characters\First Person Character\Scripts\FirstPersonCharacter.cs" />
      <Compile Include="Assets\Sample Assets\Characters\First Person Character\Scripts\FirstPersonHeadBob.cs" />
      <Compile Include="Assets\Sample Assets\Characters\Third Person Character\Scripts\AICharacterControl.cs" />
