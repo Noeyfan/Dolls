@@ -22,7 +22,7 @@ public class FirstPersonCharacter : MonoBehaviour
 	GameObject blood;
 	OculusController oc;
 	GameObject sc;
-	private bool dead;
+	public bool dead;
 	
 	
 	[System.Serializable]
