@@ -290,7 +290,7 @@ public class FirstPersonCharacter : MonoBehaviour
 
 						blood.SetActive (true);
 						dead = true;
-						FadeOut();
+						StartCoroutine("FadeOut");
 				}
 		}
 
