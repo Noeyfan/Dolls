@@ -1,7 +1,4 @@
-﻿// simple "dissolving" shader by genericuser (radware.wordpress.com)
-// clips materials, using an image as guidance.
-// use clouds or random noise as the slice guide for best results.
-  Shader "Custom Shaders/Dissolving" {
+﻿  Shader "Custom/Dissolve" {
     Properties {
       _MainTex ("Texture (RGB)", 2D) = "white" {}
       _SliceGuide ("Slice Guide (RGB)", 2D) = "white" {}

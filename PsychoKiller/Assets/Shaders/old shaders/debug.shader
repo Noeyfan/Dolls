@@ -1,4 +1,4 @@
-﻿Shader "Custom/Ward" {
+﻿Shader "Old/debug" {
 	//KH: use this for faster anisotropic materials but lower quality
 	// has no fresnel effect
 
@@ -304,8 +304,10 @@
 		
 		}
 
+
+
+
 	
 	}
 }
-
 
