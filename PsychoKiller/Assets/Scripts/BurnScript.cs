@@ -28,8 +28,9 @@ public class BurnScript : MonoBehaviour {
             //pos.x -= i / (BurnTime * 300);
             float step = (Time.deltaTime) / BurnTime;
             pos.y += (step * 0.70f);
-            party.startSize += (step * 0.05f);
-            party.startLifetime += (step * 1.2f);
+            //party.startSize += (step * 0.05f);
+            party.startLifetime += (step * 4.0f);
+            party.startSpeed += (step * 0.03f);
             party.gameObject.transform.localPosition = pos;
             yield return null;
         }
