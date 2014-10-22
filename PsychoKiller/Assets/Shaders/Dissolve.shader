@@ -2,7 +2,7 @@
     Properties {
       _MainTex ("Texture (RGB)", 2D) = "white" {}
       _SliceGuide ("Slice Guide (RGB)", 2D) = "white" {}
-      _BurnAmount ("Burn Amount", Range(0.0, 1)) = 0.5
+      _BurnAmount ("Burn Amount", Range(-1, 1)) = 0.5
 	  _AshAmount ("Ash Amount", Range(0.0, 1)) = 0.1
 	  _BurnSpread ("Burn Spread", Range(0.0,1)) = 0.3
     }

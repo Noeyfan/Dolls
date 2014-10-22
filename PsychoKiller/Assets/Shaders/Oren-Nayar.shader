@@ -2,6 +2,7 @@
         Properties {
             _Color ("Main Color", Color) = (1,1,1,1)
             _MainTex ("Base (RGB)", 2D) = "white" {}
+            _BumpMap ("Normalmap", 2D) = "bump" {}
             _Roughness ("Roughness", range(0,1)) = 0.5
         }
        
@@ -69,25 +70,24 @@
                     #include "AutoLight.cginc"
                    
                     sampler2D _MainTex;
+                    sampler2D _BumpMap;
                     float4 _Color;
                    
                     struct v2f {
                         float4 pos : SV_POSITION;
-                        float2 packuv0 : TEXCOORD0;
-                        #ifdef LIGHTMAP_OFF
-                            float3 normal : TEXCOORD1;
-                        #endif
+                        float4 packuv0 : TEXCOORD0;
                         #ifndef LIGHTMAP_OFF
-                            float2 lightmapUV : TEXCOORD2;
+                            float2 lightmapUV : TEXCOORD1;
                         #else
-                            float3 lightDir : TEXCOORD2;
-                            float3 shlight : TEXCOORD3;
-                            float3 viewDir : TEXCOORD4;
+                            float3 lightDir : TEXCOORD1;
+                            float3 shlight : TEXCOORD2;
+                            float3 viewDir : TEXCOORD3;
                         #endif
-                        LIGHTING_COORDS(5,6)
+                        LIGHTING_COORDS(4,5)
                     };
                    
                     float4 _MainTex_ST;
+                    float4 _BumpMap_ST;
                    
                     #ifndef LIGHTMAP_OFF
                         float4 unity_LightmapST;
@@ -96,13 +96,14 @@
                         v2f o;
                         o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
                         o.packuv0.xy = TRANSFORM_TEX(v.texcoord, _MainTex);
+                        o.packuv0.zw = TRANSFORM_TEX(v.texcoord, _BumpMap);
                         #ifndef LIGHTMAP_OFF
                             o.lightmapUV.xy = v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
                         #endif
+                        TANGENT_SPACE_ROTATION;
                         #ifdef LIGHTMAP_OFF
-                            o.normal = v.normal;
-                            o.lightDir = ObjSpaceLightDir( v.vertex );
-                            o.viewDir = ObjSpaceViewDir( v.vertex );
+                            o.lightDir = mul(rotation, ObjSpaceLightDir(v.vertex));
+                            o.viewDir = mul(rotation, ObjSpaceViewDir(v.vertex));
                         #endif
                         #ifdef LIGHTMAP_OFF
                             float3 shlight = ShadeSH9 (float4(v.normal,1.0));
@@ -113,18 +114,15 @@
                     }
                     #ifndef LIGHTMAP_OFF
                         sampler2D unity_Lightmap;
-                        sampler2D unity_LightmapInd;
                     #endif
                     half4 frag (v2f IN) : COLOR {
                         float2 uv_MainTex = IN.packuv0.xy;
+                        float2 uv_BumpMap = IN.packuv0.zw;
                         SurfaceOutput o;
-                        o.Alpha = 0.0;
                         half4 c = tex2D(_MainTex, uv_MainTex) * _Color;
                         o.Albedo = c.rgb;
                         o.Alpha = c.a;
-                        #ifdef LIGHTMAP_OFF
-                            o.Normal = IN.normal;
-                        #endif
+                        o.Normal = UnpackNormal(tex2D(_BumpMap, uv_BumpMap));
                         half atten = LIGHT_ATTENUATION(IN);
                         #ifdef LIGHTMAP_OFF
                             c = LightingOrenNayar (o, IN.lightDir, IN.viewDir, atten);
@@ -158,38 +156,40 @@
                     #include "AutoLight.cginc"
                    
                     sampler2D _MainTex;
+                    sampler2D _BumpMap;
                     float4 _Color;
                    
                     struct v2f {
                         float4 pos : SV_POSITION;
-                        float2 packuv0 : TEXCOORD0;
-                        float3 normal : TEXCOORD1;
-                        float3 lightDir : TEXCOORD2;
-                        float3 viewDir : TEXCOORD3;
-                        LIGHTING_COORDS(4,5)
+                        float4 packuv0 : TEXCOORD0;
+                        float3 lightDir : TEXCOORD1;
+                        float3 viewDir : TEXCOORD2;
+                        LIGHTING_COORDS(3,4)
                     };
                    
                     float4 _MainTex_ST;
+                    float4 _BumpMap_ST;
                    
                     v2f vert (appdata_full v) {
                         v2f o;
                         o.pos = mul (UNITY_MATRIX_MVP, v.vertex);
-                        o.normal = v.normal;
                         o.packuv0.xy = TRANSFORM_TEX(v.texcoord, _MainTex);
-                        o.lightDir = ObjSpaceLightDir( v.vertex );
-                        o.viewDir = ObjSpaceViewDir( v.vertex );
+                        o.packuv0.zw = TRANSFORM_TEX(v.texcoord, _BumpMap);
+                        TANGENT_SPACE_ROTATION;
+                        o.lightDir = mul(rotation, ObjSpaceLightDir(v.vertex));
+                        o.viewDir = mul(rotation, ObjSpaceViewDir(v.vertex));
                         TRANSFER_VERTEX_TO_FRAGMENT(o);
                         return o;
                     }
                    
                     half4 frag (v2f IN) : COLOR {
                         float2 uv_MainTex = IN.packuv0.xy;
+                        float2 uv_BumpMap = IN.packuv0.zw;
                         SurfaceOutput o;
-                        o.Alpha = 0.0;
                         half4 c = tex2D(_MainTex, uv_MainTex) * _Color;
                         o.Albedo = c.rgb;
                         o.Alpha = c.a;
-                        o.Normal = IN.normal;
+                        o.Normal = UnpackNormal(tex2D(_BumpMap, uv_BumpMap));
                         c = LightingOrenNayar (o, IN.lightDir, IN.viewDir, LIGHT_ATTENUATION(IN));
                         return c;
                     }
