@@ -64,7 +64,8 @@
 
           float4 color = _Color;
 
-          if (a<0.3) {
+          if (a<0.22) {
+          //if (a<0.3) {
             color.a = 0;
           }
           else {
