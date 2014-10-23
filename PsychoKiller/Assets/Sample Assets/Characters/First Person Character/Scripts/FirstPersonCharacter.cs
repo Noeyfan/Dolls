@@ -306,4 +306,12 @@ public class FirstPersonCharacter : MonoBehaviour
             yield return null;
         }
     }
+
+    IEnumerator RunAway()
+    {
+        OVRCameraController occ = GetComponentInChildren<OVRCameraController>();
+        occ.EnableOrientation = false;
+        occ.EnablePosition = false;
+        yield return null;
+    }
 }
