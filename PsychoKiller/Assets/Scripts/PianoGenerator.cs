@@ -8,7 +8,8 @@ public class PianoGenerator : MonoBehaviour {
 	private Object[] blockNormalKeyObjectList, blockLastKeyObjectList;
 
 	//private float scale = 1.792165f;
-	private float scale = 1.455f;
+	private float scale = 2.63f;
+	private float secondaryScale = 0.67f;
 	private float space = 0.016f; // space between white keys
 	private int indexCurrentWhiteKey = 0;
 	private int indexCurrentKey = 0;
@@ -21,7 +22,7 @@ public class PianoGenerator : MonoBehaviour {
 		allPianoKeys.name = "AllPianoKeys";
 		allPianoKeys.transform.position = new Vector3 (2.295132f, 1.345867f, 1.516572f);
 		allPianoKeys.transform.rotation = Quaternion.Euler (0f, 154.9614f, 0f);
-		allPianoKeys.transform.localScale = new Vector3 (scale * 1.2f, scale, scale);
+		allPianoKeys.transform.localScale = new Vector3 (scale * secondaryScale, scale * secondaryScale, scale);
 
 		// from right to left
 		blockNormalKeyObjectList = new Object[] {
@@ -60,10 +61,10 @@ public class PianoGenerator : MonoBehaviour {
 
 	protected void GenerateAllKeys() {
 		GenerateFirstKey ();
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < 4; i++) {
 			GenerateOneBlockKey();		
 		}
-		GenerateLastKeys ();
+		//GenerateLastKeys ();
 	}
 
 	protected void GenerateOneBlockKey() {
@@ -107,7 +108,7 @@ public class PianoGenerator : MonoBehaviour {
 		key.transform.localPosition = Vector3.zero;
 		key.transform.localRotation = Quaternion.Euler (Vector3.zero);
 		key.transform.localScale = Vector3.one;
-		key.audio.clip = Resources.Load("Sound/Piano/piano (" + (89 - indexCurrentKey) + ")") as AudioClip;
+		key.audio.clip = Resources.Load("Sound/Piano/piano (" + (50 - indexCurrentKey) + ")") as AudioClip;
 
 		return key;
 	}
