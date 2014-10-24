@@ -62,6 +62,7 @@ public class TvController : MonoBehaviour {
 		}
 		renderer.material.mainTexture = movT[0];
 		movT[0].Play();
+		audio.clip = movT[0].audioClip;
 		audio.Play();
 	}
 }
