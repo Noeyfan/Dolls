@@ -8,14 +8,12 @@ public class PianoKeys : MonoBehaviour {
 
 	private DirectionType directionType = DirectionType.IDLE;
 
-	private GameObject hitObject;
 	private bool isHitting = false;
 
 	private float maxRotation;
 
-	private bool isReleased = false;
-	private float isAnimating = false;
-	private float elapsedTimeAnimation = false;
+	private bool isAnimating = false;
+	private float elapsedTimeAnimation = 0f;
 	private float timeAnimation = 0.3f;
 	private Quaternion firstRotation, targetRotation;
 
@@ -34,56 +32,45 @@ public class PianoKeys : MonoBehaviour {
 			// onComplete
 			if (elapsedTimeAnimation >= timeAnimation) {
 				if (directionType == DirectionType.PRESS) {
-					if (isReleased) {
-						Release();
-					}
+					audio.Play ();
+					Init();
+					Release();
 				} else if (directionType == DirectionType.RELEASE) {
 					isHitting = false;
+					Init();
 				}
-
-				// init
-				directionType = DirectionType.IDLE;
-				isAnimating = false;
-				elapsedTimeAnimation = 0f;
 			}
 		}
+	}
+
+	void Init() {
+		// init
+		directionType = DirectionType.IDLE;
+		isAnimating = false;
+		elapsedTimeAnimation = 0f;
 	}
 
 	void OnTriggerEnter(Collider other) {
 		if (!isHitting && other.gameObject.tag == "Hand") {
-			hitObject = other.gameObject;
-			audio.Play ();
-
 			Hit();
 		}
 	}
 
-	void OnTriggerExit(Collider other) {
-		if (isHitting && other.gameObject.tag == "Hand" && hitObject.Equals (other.gameObject)) {
-			if (isAnimating) {
-				isReleased = true;
-			} else {
-				Release();
-			}
-		}
-	}
-
 	void Hit() {
-		if (!isAnimating && directionType == directionType.IDLE) {
+		if (!isAnimating && directionType == DirectionType.IDLE) {
 			isAnimating = true;
 			firstRotation = transform.localRotation;
 			targetRotation = Quaternion.Euler (transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, transform.localRotation.eulerAngles.z + maxRotation);
 			directionType = DirectionType.PRESS;
 
 			isHitting = true;
-			isReleased = false;
 		}
 	}
 
 	void Release() {
 		if (!isAnimating && directionType == DirectionType.IDLE) {
 			isAnimating = true;
-			firstRotation = transform.localScale;
+			firstRotation = transform.localRotation;
 			targetRotation = Quaternion.Euler (transform.localRotation.eulerAngles.x, transform.localRotation.eulerAngles.y, transform.localRotation.eulerAngles.z - maxRotation);
 			directionType = DirectionType.RELEASE;
 		}
