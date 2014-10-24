@@ -289,7 +289,7 @@ public class FirstPersonCharacter : MonoBehaviour
 								oc.SetEnableOculus (false);
 						}
 
-						blood.SetActive (true);
+						blood.renderer.enabled = true;
 						dead = true;
 						StartCoroutine("FadeOut");
 				}

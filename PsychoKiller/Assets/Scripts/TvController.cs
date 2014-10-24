@@ -5,21 +5,24 @@ using System.Collections;
 public class TvController : MonoBehaviour {
 	//public MovieTexture movT;
 	// Use this for initialization
-	protected bool isPlaying;
-
 	private OculusController oc;
 	private int cnt;
 	private bool isOn;
+	private float timeRecord;
+	private float interve = 1f;
 	MovieTexture[] movT;
 
 	public int channelAmount = 2;
 
+
 	void Start () {
+		timeRecord = 0;
 		oc = GameObject.FindGameObjectWithTag("Player").GetComponent<OculusController>();
 	}
 
 	void OnCollisionEnter(Collision c) {
-		if(c.gameObject.tag == "Hand") {
+		if(c.gameObject.tag == "Hand" && timeRecord <= Time.time - interve) {
+			timeRecord = Time.time;
 			if(!isOn) {
 				isOn = true;
 				initTV();
@@ -32,23 +35,12 @@ public class TvController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(oc.isUsingMouse){
-			if(Input.GetKeyDown(KeyCode.A)) {
-				ChangeChannel();
-			}
-		}
-	}
-
-	void PlayTv() {
-		isPlaying = true;
 	}
 
 	void ChangeChannel() {
 		if(cnt < movT.Length) {
-			renderer.material.mainTexture = movT[cnt];
-			movT[cnt].Play();
-			audio.Play();
-			print("Changed");
+			StopTv(cnt);
+			PlayTv(cnt++);
 		}else {
 			cnt = 0;
 		}
@@ -60,9 +52,20 @@ public class TvController : MonoBehaviour {
 			string loadurl = "MovieTexture/Video/mv" + i;
 			movT[i] = Resources.Load(loadurl) as MovieTexture;
 		}
-		renderer.material.mainTexture = movT[0];
-		movT[0].Play();
-		audio.clip = movT[0].audioClip;
+		print(movT.Length);
+		PlayTv(0);
+	}
+
+	void PlayTv(int i) {
+		renderer.material.mainTexture = movT[i];
+		renderer.material.shader = Shader.Find("Unlit/Texture");
+		movT[i].Play();
+		audio.clip = movT[i].audioClip;
 		audio.Play();
+	}
+
+	void StopTv(int i) {
+		movT[i].Stop();
+		audio.Stop();
 	}
 }
