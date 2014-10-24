@@ -22,6 +22,10 @@ public class TvController : MonoBehaviour {
 		if(c.gameObject.tag == "Hand") {
 			if(!isOn) {
 				isOn = true;
+				initTV();
+			}else {
+				//switch tv
+				ChangeChannel();
 			}
 		}
 	}
@@ -29,7 +33,7 @@ public class TvController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if(oc.isUsingMouse){
-			if(Input.GetKey(KeyCode.A)) {
+			if(Input.GetKeyDown(KeyCode.A)) {
 				ChangeChannel();
 			}
 		}
@@ -41,6 +45,12 @@ public class TvController : MonoBehaviour {
 
 	void ChangeChannel() {
 		if(cnt < movT.Length) {
+			renderer.material.mainTexture = movT[cnt];
+			movT[cnt].Play();
+			audio.Play();
+			print("Changed");
+		}else {
+			cnt = 0;
 		}
 	}
 
