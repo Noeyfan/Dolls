@@ -70,8 +70,12 @@ public class DoorController : MonoBehaviour {
 	void OnCollisionEnter(Collision c) {
 		if(c.gameObject.tag == "Hand") {
 			if(!isLocked) {
-				if(!isBasementDoor || (isBasementDoor && gc.hasKey)) {
+				if(!isBasementDoor) {
 					AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
+					// change sound position
+				}else if(isBasementDoor && gc.hasKey){
+					AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
+					gc.ChangeSoundPos();
 				}
 				else if(isBasementDoor && !gc.hasKey){
 					GameObject.Find("SoundSets").SendMessage("PlaySound", 7);

@@ -8,8 +8,12 @@ public class GameController : MonoBehaviour {
 	SoundController sc;
 
 	GameObject currentNote;
+	GameObject partyMusic;
 	bool isCurrentNoteNull = true;
 	public bool isMakeyMakeyActive = true;
+
+	private Vector3 pMusicPos = new Vector3(14.34863f, 1.388297f, 2.568963f );
+	private Vector3 pMusicPosNew = new Vector3(12.70374f, -1.295909f, -0.9008411f );
 
 	enum soundName{
 		whereiseveryone,
@@ -19,7 +23,7 @@ public class GameController : MonoBehaviour {
 
 	void Start () {
 		ShowNotes(false);
-		sc = GameObject.Find("SoundSets").GetComponent<SoundController>();
+		initSound();
 		//Invoke("PlayBeg", 1f);
 	}
 	
@@ -39,6 +43,13 @@ public class GameController : MonoBehaviour {
 		hasKey = true;
 	}
 
+	void initSound() {
+		sc = GameObject.Find("SoundSets").GetComponent<SoundController>();
+		partyMusic  = GameObject.Find("PartyMusic");
+		partyMusic.transform.parent = null;
+		partyMusic.transform.position = (pMusicPos);
+	}
+
 	public void SetCurrentNote(GameObject note) {
 		currentNote = note;
 		isCurrentNoteNull = false;
@@ -52,5 +63,9 @@ public class GameController : MonoBehaviour {
 		if (!isCurrentNoteNull) {
 			currentNote.SendMessage("GoBack");
 		}
+	}
+	public void ChangeSoundPos() {
+		partyMusic.transform.position = pMusicPosNew;
+		partyMusic.GetComponent<AudioLowPassFilter>().enabled = false;
 	}
 }
