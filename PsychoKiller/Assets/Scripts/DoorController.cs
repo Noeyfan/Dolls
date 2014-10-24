@@ -148,7 +148,7 @@ public class DoorController : MonoBehaviour {
 	
 	protected DoorSide CheckSideCollision(Vector3 position) {
 		Vector3 relativePosition = doorTransform.InverseTransformPoint (position);
-		
+
 		if (doorType == DoorType.RIGHT) {
 			if (relativePosition.y >= 0) {
 				if (side == 1) {

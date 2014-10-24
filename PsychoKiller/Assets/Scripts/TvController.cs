@@ -28,7 +28,7 @@ public class TvController : MonoBehaviour {
 				initTV();
 			}else {
 				//switch tv
-				ChangeChannel();
+				//ChangeChannel();
 			}
 		}
 	}
