@@ -136,6 +136,7 @@ public abstract class HandModel : MonoBehaviour {
 		//collider.isTrigger = true;
 		// set tag to collider
 		collider.tag = "Hand";
+		collider.gameObject.layer = 12;
 	}
   }
 
