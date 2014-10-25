@@ -16,6 +16,7 @@ public class TvController : MonoBehaviour {
 
 
 	void Start () {
+		cnt = 0;
 		timeRecord = 0;
 		oc = GameObject.FindGameObjectWithTag("Player").GetComponent<OculusController>();
 	}
@@ -28,7 +29,7 @@ public class TvController : MonoBehaviour {
 				initTV();
 			}else {
 				//switch tv
-				//ChangeChannel();
+				ChangeChannel();
 			}
 		}
 	}
@@ -62,6 +63,7 @@ public class TvController : MonoBehaviour {
 		movT[i].Play();
 		audio.clip = movT[i].audioClip;
 		audio.Play();
+		print(movT.Length);
 	}
 
 	void StopTv(int i) {

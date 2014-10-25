@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour {
 	private Vector3 pMusicPos = new Vector3(14.34863f, 1.388297f, 2.568963f );
 	private Vector3 pMusicPosNew = new Vector3(12.70374f, -1.295909f, -0.9008411f );
 	private Vector3 decreasePoint = new Vector3(12.70374f, -1.295909f, -0.9008411f );
+	private Vector3 wallInside = new Vector3(4.014453f, 0.56f, 4.086f );
 
 	enum soundName{
 		whereiseveryone,
@@ -33,10 +34,15 @@ public class GameController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//print(Vector3.Distance(player.transform.position, decreasePoint));
+		//print((player.transform.position - wallInside).x);
 		//print((player.transform.position - decreasePoint).z);
-		if(((player.transform.position - decreasePoint).z > 5) && (Vector3.Distance(player.transform.position, decreasePoint) < 10)) {
-			print("enterroom");
+		if((((player.transform.position - decreasePoint).z > 5f) && ((player.transform.position - wallInside).x > 2.9f))  || (Vector3.Distance(player.transform.position, decreasePoint) > 9.5f)) {
+			//print("enterroom");
+			partyMusic.audio.volume -= Time.deltaTime;
 			//enther room
+		}
+		else{
+			partyMusic.audio.volume += Time.deltaTime;
 		}
 	}
 
@@ -57,6 +63,7 @@ public class GameController : MonoBehaviour {
 		partyMusic  = GameObject.Find("PartyMusic");
 		partyMusic.transform.parent = null;
 		partyMusic.transform.position = (pMusicPos);
+		partyMusic.audio.volume = 0f;
 	}
 
 	public void SetCurrentNote(GameObject note) {
