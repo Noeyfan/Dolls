@@ -36,6 +36,12 @@ public class TvController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		//print(Vector3.Distance(oc.transform.position, transform.position));
+		if(Vector3.Distance(oc.transform.position, transform.position) >7.6f && audio.volume > 0f) {
+			audio.volume -= Time.deltaTime/5;
+		}else if(audio.volume < 0.5f){
+			audio.volume += Time.deltaTime/5;
+		}
 	}
 
 	void ChangeChannel() {
@@ -63,7 +69,6 @@ public class TvController : MonoBehaviour {
 		movT[i].Play();
 		audio.clip = movT[i].audioClip;
 		audio.Play();
-		print(movT.Length);
 	}
 
 	void StopTv(int i) {

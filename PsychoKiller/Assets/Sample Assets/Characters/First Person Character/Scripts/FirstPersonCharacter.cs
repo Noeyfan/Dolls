@@ -29,9 +29,9 @@ public class FirstPersonCharacter : MonoBehaviour
 		[SerializeField]
 		public bool
 				hasControl = true;
-		[SerializeField]
-		AudioClip[]
-				footstepSounds;
+		[SerializeField]AudioClip[] footstepSoundsLeft;
+		[SerializeField]AudioClip[] footstepSoundsRight;
+
 	
 		Vector3 vec;
 		GameObject camera;
@@ -139,11 +139,17 @@ public class FirstPersonCharacter : MonoBehaviour
 								acc = 50f;
 								velocity += acc * Time.fixedDeltaTime;
 								velocity = Mathf.Min (300f, velocity);
-								if (velocity < 0.001f)
+								if (velocity < 0.001f){
 										velocity = 0;
-								int n = Random.Range (1, footstepSounds.Length);
+								}
 
-								audio.PlayOneShot (footstepSounds [n - 1]);        
+								int n = Random.Range (1, footstepSoundsLeft.Length);
+								
+								if(Input.GetKeyUp (KeyCode.W)){
+									audio.PlayOneShot (footstepSoundsLeft [n - 1]); 
+								}else if(Input.GetKeyUp (KeyCode.G)) {
+									audio.PlayOneShot (footstepSoundsRight [n - 1]);
+								}
 								gameController.SendMessage ("RemoveCurrentNote");
 						}
 

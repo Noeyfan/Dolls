@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour {
 		//print(Vector3.Distance(player.transform.position, decreasePoint));
 		//print((player.transform.position - wallInside).x);
 		//print((player.transform.position - decreasePoint).z);
-		if((((player.transform.position - decreasePoint).z > 5f) && ((player.transform.position - wallInside).x > 2.9f))  || (Vector3.Distance(player.transform.position, decreasePoint) > 9.5f)) {
+		if((((player.transform.position - decreasePoint).z > 5f) && ((player.transform.position - wallInside).x > 2.9f))  || (Vector3.Distance(player.transform.position, decreasePoint) > 9.7f)) {
 			//print("enterroom");
 			partyMusic.audio.volume -= Time.deltaTime;
 			//enther room
@@ -64,6 +64,8 @@ public class GameController : MonoBehaviour {
 		partyMusic.transform.parent = null;
 		partyMusic.transform.position = (pMusicPos);
 		partyMusic.audio.volume = 0f;
+		partyMusic.audio.playOnAwake = false;
+		partyMusic.audio.Play();
 	}
 
 	public void SetCurrentNote(GameObject note) {
