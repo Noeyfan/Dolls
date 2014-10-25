@@ -9,11 +9,13 @@ public class GameController : MonoBehaviour {
 
 	GameObject currentNote;
 	GameObject partyMusic;
+	GameObject player;
 	bool isCurrentNoteNull = true;
 	public bool isMakeyMakeyActive = true;
 
 	private Vector3 pMusicPos = new Vector3(14.34863f, 1.388297f, 2.568963f );
 	private Vector3 pMusicPosNew = new Vector3(12.70374f, -1.295909f, -0.9008411f );
+	private Vector3 decreasePoint = new Vector3(12.70374f, -1.295909f, -0.9008411f );
 
 	enum soundName{
 		whereiseveryone,
@@ -22,6 +24,7 @@ public class GameController : MonoBehaviour {
 	};
 
 	void Start () {
+		player = GameObject.FindWithTag("Player");
 		ShowNotes(false);
 		initSound();
 		//Invoke("PlayBeg", 1f);
@@ -29,6 +32,12 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		//print(Vector3.Distance(player.transform.position, decreasePoint));
+		//print((player.transform.position - decreasePoint).z);
+		if(((player.transform.position - decreasePoint).z > 5) && (Vector3.Distance(player.transform.position, decreasePoint) < 10)) {
+			print("enterroom");
+			//enther room
+		}
 	}
 
 	void ShowNotes (bool b) {
