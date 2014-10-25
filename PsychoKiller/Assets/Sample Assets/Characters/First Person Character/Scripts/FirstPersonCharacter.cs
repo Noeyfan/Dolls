@@ -32,6 +32,11 @@ public class FirstPersonCharacter : MonoBehaviour
 		[SerializeField]AudioClip[] footstepSoundsLeft;
 		[SerializeField]AudioClip[] footstepSoundsRight;
 
+		[SerializeField]AudioClip[] footstepSoundsLeftOnRig;
+		[SerializeField]AudioClip[] footstepSoundsRightOnRig;
+
+		[SerializeField]AudioClip[] footstepSoundsLeftBasement;
+		[SerializeField]AudioClip[] footstepSoundsRightBasement;
 	
 		Vector3 vec;
 		GameObject camera;
@@ -41,8 +46,20 @@ public class FirstPersonCharacter : MonoBehaviour
 		OculusController oc;
 		GameObject sc;
 		public bool dead;
-	
-	
+		public bool isOnRig;
+		int floor;
+
+	enum Floor {
+		normal,
+		rig,
+		basement,
+	};
+
+	enum Foot {
+		left,
+		right,
+	};
+
 		[System.Serializable]
 		public class AdvancedSettings                                                       // The advanced settings
 		{
@@ -65,7 +82,8 @@ public class FirstPersonCharacter : MonoBehaviour
 		private int no_acc_count = 0;
 
 		private GameObject gameController;
-	private bool fadeout = false;
+		private bool fadeout = false;
+		Floor ft;
 
 		void Awake ()
 		{
@@ -143,12 +161,10 @@ public class FirstPersonCharacter : MonoBehaviour
 										velocity = 0;
 								}
 
-								int n = Random.Range (1, footstepSoundsLeft.Length);
-								
 								if(Input.GetKeyUp (KeyCode.W)){
-									audio.PlayOneShot (footstepSoundsLeft [n - 1]); 
+									PlayStepSound(ft, Foot.left);
 								}else if(Input.GetKeyUp (KeyCode.G)) {
-									audio.PlayOneShot (footstepSoundsRight [n - 1]);
+									PlayStepSound(ft, Foot.right);
 								}
 								gameController.SendMessage ("RemoveCurrentNote");
 						}
@@ -320,4 +336,49 @@ public class FirstPersonCharacter : MonoBehaviour
         occ.EnablePosition = false;
         yield return null;
     }
+
+	void PlayStepSound(Floor floortype, Foot footSide) {
+		int n = Random.Range (1, footstepSoundsLeft.Length);
+		// n length of footsteps sound should be the same
+		if(footSide == Foot.left) {
+			switch(floortype) {
+			case Floor.normal:
+				audio.PlayOneShot (footstepSoundsLeft [n - 1]);
+				break;
+			case Floor.rig:
+				audio.PlayOneShot (footstepSoundsLeftOnRig [n - 1]);
+				break;
+			case Floor.basement:
+				audio.PlayOneShot (footstepSoundsLeftBasement [n - 1]);
+				break;
+			}
+		}else {
+			switch(floortype) {
+			case Floor.normal:
+				audio.PlayOneShot (footstepSoundsRight [n - 1]);
+				break;
+			case Floor.rig:
+				audio.PlayOneShot (footstepSoundsRightOnRig [n - 1]);
+				break;
+			case Floor.basement:
+				audio.PlayOneShot (footstepSoundsRightBasement [n - 1]);
+				break;
+			}
+		}
+	}
+
+	void OnRig() {
+		ft = Floor.rig;
+		print("ChangeToRig");
+	}
+
+	void InBasement() {
+		ft = Floor.basement;
+		print("ChangeToBasement");
+	}
+
+	void BackToNormalFloor() {
+		ft = Floor.normal;
+		print("BTN");
+	}
 }

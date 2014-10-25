@@ -28,6 +28,7 @@ public class GameController : MonoBehaviour {
 		player = GameObject.FindWithTag("Player");
 		ShowNotes(false);
 		initSound();
+		initRig();
 		//Invoke("PlayBeg", 1f);
 	}
 	
@@ -85,5 +86,11 @@ public class GameController : MonoBehaviour {
 	public void ChangeSoundPos() {
 		partyMusic.transform.position = pMusicPosNew;
 		partyMusic.GetComponent<AudioLowPassFilter>().enabled = false;
+	}
+
+	void initRig() {
+		foreach (GameObject rig in GameObject.FindGameObjectsWithTag("Rig")) {
+			rig.AddComponent("RigController");
+		}
 	}
 }
