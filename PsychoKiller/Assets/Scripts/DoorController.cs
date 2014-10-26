@@ -33,6 +33,7 @@ public class DoorController : MonoBehaviour {
 	private bool startkill;
 
 	private Transform doorTransform;
+	private bool cutscenedone = false;
 
 	// Use this for initialization
 	void Start () {
@@ -72,11 +73,20 @@ public class DoorController : MonoBehaviour {
 			if(!isLocked) {
 				if(!isBasementDoor || (isBasementDoor && gc.hasKey)) {
 					AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
+					if(isFinalDoor && !cutscenedone)
+					{
+						Debug.Log ("Yup");
+						cutscenedone = true;
+						GameObject.Find ("CutSceneControl").SendMessage("takeControl");
+					}
 				}
 				else if(isBasementDoor && !gc.hasKey){
 					GameObject.Find("SoundSets").SendMessage("PlaySound", 7);
 				}
-			}else if(isFinalDoor){
+
+			}
+			/*
+			else if(isFinalDoor){
 				if(!fc.dead) {
 					GameObject.Find("SoundSets").SendMessage("PlaySound", 5);
 				}
@@ -84,7 +94,9 @@ public class DoorController : MonoBehaviour {
 					fc.Kill();
 					startkill = true;
 				}
-			}else {
+
+			}*/
+			else {
 				GameObject.Find("SoundSets").SendMessage("PlaySound", 7);
 			}
 		}

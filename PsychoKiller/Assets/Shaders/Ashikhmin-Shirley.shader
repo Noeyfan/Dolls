@@ -298,4 +298,5 @@
 
 	
 	}
+	FallBack "VertexLit"
 }

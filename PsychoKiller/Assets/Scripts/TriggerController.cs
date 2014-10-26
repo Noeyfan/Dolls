@@ -18,11 +18,11 @@ public class TriggerController : MonoBehaviour {
 		if(c.tag == "Player") {
 			//trigger running
 			//c.SendMessage("Run");
-			if(!played) {
-				StartCoroutine(Slam());
-				GameObject.Find("SoundSets").SendMessage("PlaySound", 2);
-				played = true;
-			}
+			//if(!played) {
+			//	StartCoroutine(Slam());
+			//	GameObject.Find("SoundSets").SendMessage("PlaySound", 2);
+			//	played = true;
+			//}
 		}
 	}
 

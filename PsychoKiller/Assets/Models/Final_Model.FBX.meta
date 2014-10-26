@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 738206afdb0fe4046845d61ac89abc86
 ModelImporter:
-  serializedVersion: 16
+  serializedVersion: 15
   fileIDToRecycleName:
     100000: Arm Lower Reinforcement_001
     100002: Arm Lower Reinforcement_003
@@ -3398,7 +3398,6 @@ ModelImporter:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
     optimizeGameObjects: 0
-    motionNodeName: 
     animationCompression: 1
     animationRotationError: .5
     animationPositionError: .5
@@ -3442,5 +3441,4 @@ ModelImporter:
     rootMotionBoneName: 
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 2
-  additionalBone: 0
   userData: 
