@@ -11,6 +11,7 @@ public class CutSceneScript : MonoBehaviour {
     public GameObject ricky;
     public AudioClip[] footsteps;
     public DoorController door;
+	public RickyAnimationScript rickyAni;
 
 
     int num_clips;
@@ -100,6 +101,8 @@ public class CutSceneScript : MonoBehaviour {
     IEnumerator playCutSceneAnimationEvents()
     {
         bool ricky_appears = false;
+		bool ricky_walks = false;
+		bool ricky_stops = false;
         bool light_swings = false;
         bool player_dies = false;
         bool door_slam = false;
@@ -109,6 +112,14 @@ public class CutSceneScript : MonoBehaviour {
             {
                 ricky.SetActive(true);
             }
+			if (!ricky_walks && i >= 21.0f)
+			{
+				rickyAni.SendMessage("startWalking");
+			}
+			if (!ricky_stops && i >= 26.0f)
+			{
+				rickyAni.SendMessage("stopWalking");
+			}
             if (!light_swings && i >= 12.0f)
             {
                 movinglight.SetActive(true);
