@@ -4,7 +4,6 @@ using System.Collections;
 public class CutSceneScript : MonoBehaviour {
 	public FirstPersonCharacter fps;
 	public GameObject movinglight;
-	public GameObject cutscenesplane;
     public AudioSource[] sources;
     public AudioClip[] clips;
     public float[] timings;
@@ -140,7 +139,7 @@ public class CutSceneScript : MonoBehaviour {
 
     IEnumerator turnAroundAndDie()
     {
-        yield return new WaitForSeconds(50.0f);
+        yield return new WaitForSeconds(49.0f);
         ricky.transform.position = fps.transform.position - fps.transform.forward;
         ricky.GetComponent<BillBoardScript>().enabled = true;
         possess();
@@ -165,7 +164,8 @@ public class CutSceneScript : MonoBehaviour {
                 i += Time.deltaTime;
                 yield return null;
             }
-            fps.SendMessage("playfootsteps");
+            counter++;
+            fps.PlayStepSound(FirstPersonCharacter.Floor.basement, (FirstPersonCharacter.Foot)(counter % 2));
             //yield return null;
         }
         yield return new WaitForSeconds(0.7f);
@@ -176,7 +176,8 @@ public class CutSceneScript : MonoBehaviour {
                 i += Time.deltaTime;
                 yield return null;
             }
-            fps.SendMessage("playfootsteps");
+            counter++;
+            fps.PlayStepSound(FirstPersonCharacter.Floor.basement, (FirstPersonCharacter.Foot)(counter % 2));
             //yield return null;
         }
         yield return new WaitForSeconds(1.2f);
@@ -187,7 +188,8 @@ public class CutSceneScript : MonoBehaviour {
                 i += Time.deltaTime;
                 yield return null;
             }
-            fps.SendMessage("playfootsteps");
+            counter++;
+            fps.PlayStepSound(FirstPersonCharacter.Floor.basement, (FirstPersonCharacter.Foot)(counter % 2));
             yield return null;
         }
     }

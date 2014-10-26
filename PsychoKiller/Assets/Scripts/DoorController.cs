@@ -71,10 +71,7 @@ public class DoorController : MonoBehaviour {
 	void OnCollisionEnter(Collision c) {
 		if(c.gameObject.tag == "Hand") {
 			if(!isLocked) {
-				if(!isBasementDoor) {
-					AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
-					// change sound position
-				}else if(isBasementDoor && gc.hasKey){
+				if(!isBasementDoor || (isBasementDoor && gc.hasKey)) {
 					AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
 					if(isFinalDoor && !cutscenedone)
 					{
@@ -163,7 +160,7 @@ public class DoorController : MonoBehaviour {
 	
 	protected DoorSide CheckSideCollision(Vector3 position) {
 		Vector3 relativePosition = doorTransform.InverseTransformPoint (position);
-
+		
 		if (doorType == DoorType.RIGHT) {
 			if (relativePosition.y >= 0) {
 				if (side == 1) {

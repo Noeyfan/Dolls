@@ -14,7 +14,7 @@ public class PianoKeys : MonoBehaviour {
 
 	private bool isAnimating = false;
 	private float elapsedTimeAnimation = 0f;
-	private float timeAnimation = 0.15f;
+	private float timeAnimation = 0.2f;
 	private Quaternion firstRotation, targetRotation;
 
 	// Use this for initialization
