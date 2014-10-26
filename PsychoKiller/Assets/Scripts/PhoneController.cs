@@ -3,28 +3,58 @@ using System.Collections;
 
 public class PhoneController : MonoBehaviour
 {
+	private Vector3 initLocalPosition, hidePosition;
 
-		public GameObject phoneSource;
+	// animation attribute
+	private bool isAnimating = false;
+	private float elapsedTime = 0f;
+	private float totalTimeAnimation = 0.3f;
+	private Vector3 firstPosition, targetPosition;
 
-		private GameObject palm, phone;
+	// Use this for initialization
+	void Start ()
+	{
+		initLocalPosition = transform.localPosition;
 
-		// Use this for initialization
-		void Start ()
-		{
-				phone = Instantiate (phoneSource) as GameObject;
+		// hide from camera
+		hidePosition = new Vector3 (transform.localPosition.x, transform.localPosition.y - 0.4f, transform.localPosition.z);
+		transform.localPosition = hidePosition;
+	}
+
+	// Update is called once per frame
+	void Update ()
+	{
+		if (isAnimating) {
+			elapsedTime += Time.deltaTime;
+
+			transform.localPosition = Vector3.Slerp(firstPosition, targetPosition, elapsedTime / totalTimeAnimation);
+
+			if (elapsedTime >= totalTimeAnimation) {
+				// init
+				isAnimating = false;
+				elapsedTime = 0f;
+			}
 		}
-	
-		// Update is called once per frame
-		void Update ()
-		{
-				GameObject palm = GameObject.Find ("palm");
+	}
 
-				if (palm != null) {
-						phone.transform.position = palm.transform.position;
-						phone.transform.rotation = palm.transform.rotation;
-						phone.transform.Translate (new Vector3 (0f, -0.05f, 0f), Space.Self);
-				} else {
+	void Show() {
+		if (!isAnimating) {
+			isAnimating = true;
 
-				}
+			firstPosition = transform.localPosition;
+			targetPosition = initLocalPosition;
+
+			// sound
+			audio.Play();
 		}
+	}
+
+	void Hide() {
+		if (!isAnimating) {
+			isAnimating = true;
+
+			firstPosition = transform.localPosition;
+			targetPosition = hidePosition;
+		}
+	}
 }
