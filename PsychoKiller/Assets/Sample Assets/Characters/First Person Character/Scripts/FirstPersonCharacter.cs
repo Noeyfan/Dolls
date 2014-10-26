@@ -362,6 +362,7 @@ if(rotateBody > 150 && Vector3.Angle(gameObject.transform.forward, exit.transfor
         if (fadeout)
             yield break;
         fadeout = true;
+		yield return new WaitForSeconds (3.0f);
         for (float i = 0; i < 1.0f; i += Time.deltaTime)
         {
             GameObject.Find("OVRCameraController/CameraRight/FadeOut").renderer.material.SetColor("_Color", new Color(0, 0, 0, (i / 1.0f)));

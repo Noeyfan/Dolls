@@ -140,8 +140,13 @@ public class CutSceneScript : MonoBehaviour {
     IEnumerator turnAroundAndDie()
     {
         yield return new WaitForSeconds(49.0f);
-        ricky.transform.position = fps.transform.position - fps.transform.forward;
+		float ricky_y = ricky.transform.position.y;
+		Vector3 rickypos = fps.transform.position - fps.transform.forward;
+		rickypos.y = ricky_y;
+		ricky.transform.position = rickypos; 
+
         ricky.GetComponent<BillBoardScript>().enabled = true;
+		ricky.GetComponentInChildren<MeshRenderer> ().material.shader = Shader.Find ("Custom/Ricky");
         possess();
         Quaternion original = camcontrol.transform.rotation;
         Quaternion turnaround = Quaternion.Euler(camcontrol.transform.rotation.eulerAngles + new Vector3(0, 180, 0));
