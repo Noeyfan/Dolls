@@ -39,15 +39,20 @@ public class FirstPersonCharacter : MonoBehaviour
 		[SerializeField]AudioClip[] footstepSoundsRightBasement;
 	
 		Vector3 vec;
-		GameObject camera;
+		int floor;
 		int rotateBody = 0;
+		float timeRecord = 0;
+		float timeInterve = 3f;
+
+		GameObject camera;
 		GameObject exit;
 		GameObject blood;
 		OculusController oc;
 		GameObject sc;
+
 		public bool dead;
 		public bool isOnRig;
-		int floor;
+		public bool isWalking = false;
 
 	enum Floor {
 		normal,
@@ -154,6 +159,8 @@ public class FirstPersonCharacter : MonoBehaviour
 				if (hasControl) {
 
 						if (useMakeyMakey && (Input.GetKeyUp (KeyCode.W) || Input.GetKeyUp (KeyCode.G)) && gameController.GetComponent<GameController> ().isMakeyMakeyActive) {
+								isWalking = true;
+								timeRecord = Time.time;
 								acc = 50f;
 								velocity += acc * Time.fixedDeltaTime;
 								velocity = Mathf.Min (300f, velocity);
@@ -167,6 +174,9 @@ public class FirstPersonCharacter : MonoBehaviour
 									PlayStepSound(ft, Foot.right);
 								}
 								gameController.SendMessage ("RemoveCurrentNote");
+						}else if(timeRecord < Time.time - timeInterve){
+							timeRecord = Time.time;
+							isWalking = false;
 						}
 
 						velocity *= damping;

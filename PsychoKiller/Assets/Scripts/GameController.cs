@@ -3,15 +3,21 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 	// Use this for initialization
-	bool showingNotes;
-	public bool hasKey;
-	SoundController sc;
 
+	public bool hasKey;
+	public bool isMakeyMakeyActive = true;
+	public float stepRatio;
+
+	bool showingNotes;
+	bool isIncoroution;
+	bool isCurrentNoteNull = true;
+
+
+	SoundController sc;
 	GameObject currentNote;
 	GameObject partyMusic;
 	GameObject player;
-	bool isCurrentNoteNull = true;
-	public bool isMakeyMakeyActive = true;
+	GameObject SoundFollowYou;
 
 	private Vector3 pMusicPos = new Vector3(14.34863f, 1.388297f, 2.568963f );
 	private Vector3 pMusicPosNew = new Vector3(12.70374f, -1.295909f, -0.9008411f );
@@ -26,6 +32,7 @@ public class GameController : MonoBehaviour {
 
 	void Start () {
 		player = GameObject.FindWithTag("Player");
+		SoundFollowYou = GameObject.Find("SoundFollow");
 		ShowNotes(false);
 		initSound();
 		initRig();
@@ -34,6 +41,7 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		//print(player.GetComponent<FirstPersonCharacter>().isWalking);
 		//print(Vector3.Distance(player.transform.position, decreasePoint));
 		//print((player.transform.position - wallInside).x);
 		//print((player.transform.position - decreasePoint).z);
@@ -44,6 +52,14 @@ public class GameController : MonoBehaviour {
 		}
 		else{
 			partyMusic.audio.volume += Time.deltaTime;
+		}
+
+		if(player.GetComponent<FirstPersonCharacter>().isWalking == false) {
+			//random a walking sound
+			RandFollowSound();
+		}else {
+			StopCoroutine("followSound");
+			SoundFollowYou.audio.Stop();
 		}
 	}
 
@@ -92,5 +108,27 @@ public class GameController : MonoBehaviour {
 		foreach (GameObject rig in GameObject.FindGameObjectsWithTag("Rig")) {
 			rig.AddComponent("RigController");
 		}
+	}
+
+	void RandFollowSound() {
+		int n = Random.Range(5,10);
+		if(!isIncoroution) {
+			isIncoroution = true;
+			StartCoroutine(followSound(n));
+		}
+	}
+
+	IEnumerator followSound(int cnt) {
+		int rollRatio = Random.Range(0,7);
+		print(rollRatio);
+		if(rollRatio < 10 * stepRatio) {
+			print("enter");
+			for(int i = 0; i < cnt; i++) {
+				SoundFollowYou.audio.Play ();
+				yield return new WaitForSeconds(1f);
+			}
+		}
+		yield return new WaitForSeconds(3f);
+		isIncoroution = false;
 	}
 }
