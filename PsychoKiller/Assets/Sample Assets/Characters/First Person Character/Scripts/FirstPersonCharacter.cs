@@ -29,20 +29,42 @@ public class FirstPersonCharacter : MonoBehaviour
 		[SerializeField]
 		public bool
 				hasControl = true;
-		[SerializeField]
-		AudioClip[]
-				footstepSounds;
+		[SerializeField]AudioClip[] footstepSoundsLeft;
+		[SerializeField]AudioClip[] footstepSoundsRight;
+
+		[SerializeField]AudioClip[] footstepSoundsLeftOnRig;
+		[SerializeField]AudioClip[] footstepSoundsRightOnRig;
+
+		[SerializeField]AudioClip[] footstepSoundsLeftBasement;
+		[SerializeField]AudioClip[] footstepSoundsRightBasement;
 	
 		Vector3 vec;
-		GameObject camera;
+		int floor;
 		int rotateBody = 0;
+		float timeRecord = 0;
+		float timeInterve = 1.5f;
+
+		GameObject camera;
 		GameObject exit;
 		GameObject blood;
 		OculusController oc;
 		GameObject sc;
+
 		public bool dead;
-	
-	
+		public bool isOnRig;
+		public bool isWalking = false;
+
+	enum Floor {
+		normal,
+		rig,
+		basement,
+	};
+
+	enum Foot {
+		left,
+		right,
+	};
+
 		[System.Serializable]
 		public class AdvancedSettings                                                       // The advanced settings
 		{
@@ -65,7 +87,8 @@ public class FirstPersonCharacter : MonoBehaviour
 		private int no_acc_count = 0;
 
 		private GameObject gameController;
-	private bool fadeout = false;
+		private bool fadeout = false;
+		Floor ft;
 
 		void Awake ()
 		{
@@ -142,15 +165,24 @@ public class FirstPersonCharacter : MonoBehaviour
 				if (hasControl) {
 
 						if (useMakeyMakey && (Input.GetKeyUp (KeyCode.W) || Input.GetKeyUp (KeyCode.G)) && gameController.GetComponent<GameController> ().isMakeyMakeyActive) {
+								isWalking = true;
+								timeRecord = Time.time;
 								acc = 50f;
 								velocity += acc * Time.fixedDeltaTime;
 								velocity = Mathf.Min (300f, velocity);
-								if (velocity < 0.001f)
+								if (velocity < 0.001f){
 										velocity = 0;
-								int n = Random.Range (1, footstepSounds.Length);
+								}
 
-								audio.PlayOneShot (footstepSounds [n - 1]);        
+								if(Input.GetKeyUp (KeyCode.W)){
+									PlayStepSound(ft, Foot.left);
+								}else if(Input.GetKeyUp (KeyCode.G)) {
+									PlayStepSound(ft, Foot.right);
+								}
 								gameController.SendMessage ("RemoveCurrentNote");
+						}else if(timeRecord < Time.time - timeInterve){
+							timeRecord = Time.time;
+							isWalking = false;
 						}
 
 						velocity *= damping;
@@ -295,7 +327,7 @@ public class FirstPersonCharacter : MonoBehaviour
 								oc.SetEnableOculus (false);
 						}
 
-						blood.SetActive (true);
+						blood.renderer.enabled = true;
 						dead = true;
 						StartCoroutine("FadeOut");
 				}
@@ -320,4 +352,46 @@ public class FirstPersonCharacter : MonoBehaviour
         occ.EnablePosition = false;
         yield return null;
     }
+
+	void PlayStepSound(Floor floortype, Foot footSide) {
+		int n = Random.Range (1, footstepSoundsLeft.Length);
+		// n length of footsteps sound should be the same
+		if(footSide == Foot.left) {
+			switch(floortype) {
+			case Floor.normal:
+				audio.PlayOneShot (footstepSoundsLeft [n - 1]);
+				break;
+			case Floor.rig:
+				audio.PlayOneShot (footstepSoundsLeftOnRig [n - 1]);
+				break;
+			case Floor.basement:
+				audio.PlayOneShot (footstepSoundsLeftBasement [n - 1]);
+				break;
+			}
+		}else {
+			switch(floortype) {
+			case Floor.normal:
+				audio.PlayOneShot (footstepSoundsRight [n - 1]);
+				break;
+			case Floor.rig:
+				audio.PlayOneShot (footstepSoundsRightOnRig [n - 1]);
+				break;
+			case Floor.basement:
+				audio.PlayOneShot (footstepSoundsRightBasement [n - 1]);
+				break;
+			}
+		}
+	}
+
+	void OnRig() {
+		ft = Floor.rig;
+	}
+
+	void InBasement() {
+		ft = Floor.basement;
+	}
+
+	void BackToNormalFloor() {
+		ft = Floor.normal;
+	}
 }

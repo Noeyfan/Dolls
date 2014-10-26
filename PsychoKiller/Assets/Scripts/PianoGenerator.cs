@@ -8,8 +8,8 @@ public class PianoGenerator : MonoBehaviour {
 	private Object[] blockNormalKeyObjectList, blockLastKeyObjectList;
 
 	//private float scale = 1.792165f;
-	private float scale = 2.63f;
-	private float secondaryScale = 0.67f;
+	private float scale = 2.95f;
+	private float secondaryScale = 0.7f;
 	private float space = 0.016f; // space between white keys
 	private int indexCurrentWhiteKey = 0;
 	private int indexCurrentKey = 0;
@@ -18,10 +18,12 @@ public class PianoGenerator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		GameObject pianoGenerator = GameObject.Find ("PianoGenerator");
+
 		allPianoKeys = new GameObject ();
 		allPianoKeys.name = "AllPianoKeys";
-		allPianoKeys.transform.position = new Vector3 (2.295132f, 1.345867f, 1.516572f);
-		allPianoKeys.transform.rotation = Quaternion.Euler (0f, 154.9614f, 0f);
+		allPianoKeys.transform.position = pianoGenerator.transform.position;
+		allPianoKeys.transform.rotation = pianoGenerator.transform.rotation;
 		allPianoKeys.transform.localScale = new Vector3 (scale * secondaryScale, scale * secondaryScale, scale);
 
 		// from right to left
@@ -60,11 +62,12 @@ public class PianoGenerator : MonoBehaviour {
 	}
 
 	protected void GenerateAllKeys() {
+		// first keys
 		GenerateFirstKey ();
+		// rest keys
 		for (int i = 0; i < 4; i++) {
 			GenerateOneBlockKey();		
 		}
-		//GenerateLastKeys ();
 	}
 
 	protected void GenerateOneBlockKey() {
@@ -84,19 +87,6 @@ public class PianoGenerator : MonoBehaviour {
 		GameObject key = GenerateOneKey (key_C_F);
 		key.transform.localPosition = new Vector3(key.transform.localPosition.x, key.transform.localPosition.y, key.transform.localPosition.z + space * indexCurrentWhiteKey);
 		indexCurrentWhiteKey++;
-	}
-
-	protected void GenerateLastKeys() {
-		for (int i = 0; i < 3; i++) {
-			GameObject key = GenerateOneKey (blockLastKeyObjectList[i]);
-			key.transform.localPosition = new Vector3(key.transform.localPosition.x, key.transform.localPosition.y, key.transform.localPosition.z + space * indexCurrentWhiteKey);
-			
-			if (i == 1) {
-				key.transform.localPosition = new Vector3(key.transform.localPosition.x, key.transform.localPosition.y, key.transform.localPosition.z - space / 2f);
-			} else {
-				indexCurrentWhiteKey++;
-			}
-		}
 	}
 
 	protected GameObject GenerateOneKey(Object objectSource) {		

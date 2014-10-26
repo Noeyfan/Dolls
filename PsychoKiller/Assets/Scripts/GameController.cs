@@ -3,13 +3,28 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 	// Use this for initialization
-	bool showingNotes;
-	public bool hasKey;
-	SoundController sc;
 
-	GameObject currentNote;
-	bool isCurrentNoteNull = true;
+	public bool hasKey;
 	public bool isMakeyMakeyActive = true;
+	public float stepRatio;
+
+	bool showingNotes;
+	bool isIncoroution;
+	bool isCurrentNoteNull = true;
+
+
+	SoundController sc;
+	GameObject currentNote;
+	GameObject partyMusic;
+	GameObject player;
+	GameObject SoundFollowYou;
+	GameObject weatherSound;
+
+	private Vector3 pMusicPos = new Vector3(14.34863f, 1.388297f, 2.568963f );
+	private Vector3 pMusicPosNew = new Vector3(12.70374f, -1.295909f, -0.9008411f );
+	private Vector3 decreasePoint = new Vector3(12.70374f, -1.295909f, -0.9008411f );
+	private Vector3 wallInside = new Vector3(4.014453f, 0.56f, 4.086f);
+	private Vector3 inBasement = new Vector3(15f, 0.5f, 2.2f);
 
 	enum soundName{
 		whereiseveryone,
@@ -18,13 +33,52 @@ public class GameController : MonoBehaviour {
 	};
 
 	void Start () {
+		player = GameObject.FindWithTag("Player");
+		SoundFollowYou = GameObject.Find("SoundFollow");
+		weatherSound = GameObject.Find("CameraRight");
 		ShowNotes(false);
-		sc = GameObject.Find("SoundSets").GetComponent<SoundController>();
+		initSound();
+		initRig();
+		stepRatio = 0f;
 		//Invoke("PlayBeg", 1f);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		//print(player.GetComponent<FirstPersonCharacter>().isWalking);
+		//print(Vector3.Distance(player.transform.position, decreasePoint));
+		//print((player.transform.position - wallInside).x);
+		//print((player.transform.position - decreasePoint).z);
+
+		//Adjust sound on First Floor
+		if((((player.transform.position - decreasePoint).z > 5f) && ((player.transform.position - wallInside).x > 2.9f))) {
+			//print("enterroom");
+			partyMusic.audio.volume -= Time.deltaTime/2;
+			stepRatio = 0.5f;
+			//enther room
+		}else if(Vector3.Distance(player.transform.position, decreasePoint) > 9.7f) {
+			partyMusic.audio.volume -= Time.deltaTime/2;
+		}
+		else{
+			partyMusic.audio.volume += Time.deltaTime * 2;
+		}
+
+		//Making Follower Sound
+		if(player.GetComponent<FirstPersonCharacter>().isWalking == false) {
+			//random a walking sound
+			RandFollowSound();
+		}else {
+			StopCoroutine("followSound");
+			SoundFollowYou.audio.Stop();
+		}
+		//print ((inBasement- player.transform.position).y);
+		//Adjust Weather Sound
+		if((inBasement- player.transform.position).y > 0) {
+			stepRatio = 0.2f;
+			weatherSound.audio.volume -= Time.deltaTime/10;
+		}else if(weatherSound.audio.volume < 0.6){
+			weatherSound.audio.volume += Time.deltaTime/10;
+		}
 	}
 
 	void ShowNotes (bool b) {
@@ -37,6 +91,16 @@ public class GameController : MonoBehaviour {
 
 	void GetKey() {
 		hasKey = true;
+	}
+
+	void initSound() {
+		sc = GameObject.Find("SoundSets").GetComponent<SoundController>();
+		partyMusic  = GameObject.Find("PartyMusic");
+		partyMusic.transform.parent = null;
+		partyMusic.transform.position = (pMusicPos);
+		partyMusic.audio.volume = 0f;
+		partyMusic.audio.playOnAwake = false;
+		partyMusic.audio.Play();
 	}
 
 	public void SetCurrentNote(GameObject note) {
@@ -52,5 +116,37 @@ public class GameController : MonoBehaviour {
 		if (!isCurrentNoteNull) {
 			currentNote.SendMessage("GoBack");
 		}
+	}
+	public void ChangeSoundPos() {
+		partyMusic.transform.position = pMusicPosNew;
+		partyMusic.GetComponent<AudioLowPassFilter>().enabled = false;
+	}
+
+	void initRig() {
+		foreach (GameObject rig in GameObject.FindGameObjectsWithTag("Rig")) {
+			rig.AddComponent("RigController");
+		}
+	}
+
+	void RandFollowSound() {
+		int n = Random.Range(5,10);
+		if(!isIncoroution) {
+			isIncoroution = true;
+			StartCoroutine(followSound(n));
+		}
+	}
+
+	IEnumerator followSound(int cnt) {
+		int rollRatio = Random.Range(1,10);
+		print(rollRatio);
+		if(rollRatio < 10 * stepRatio) {
+			print("enter");
+			for(int i = 0; i < cnt; i++) {
+				SoundFollowYou.audio.Play ();
+				yield return new WaitForSeconds(1f);
+			}
+		}
+		yield return new WaitForSeconds(3f);
+		isIncoroution = false;
 	}
 }
