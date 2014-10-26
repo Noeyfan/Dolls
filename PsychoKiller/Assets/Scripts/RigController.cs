@@ -3,9 +3,17 @@ using System.Collections;
 
 public class RigController : MonoBehaviour {
 	FirstPersonCharacter fpc;
+	bool isBasement;
+	AudioSource basementSound;
 	// Use this for initialization
 	void Start () {
 		fpc = GameObject.FindGameObjectWithTag("Player").GetComponent<FirstPersonCharacter>();
+		basementSound = GameObject.Find("BasementSound").GetComponent<AudioSource>();
+		if(gameObject.name == "Basement") {
+			isBasement = true;
+		}else {
+			isBasement = false;
+		}
 	}
 	
 	// Update is called once per frame
@@ -14,12 +22,19 @@ public class RigController : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider c) {
-		print("OnRig");
-		fpc.SendMessage("OnRig");
+		if(c.tag == "Player") {
+			if(isBasement) {
+				fpc.SendMessage("InBasement");
+				basementSound.transform.position = fpc.transform.position;
+				basementSound.transform.parent = fpc.transform;
+				basementSound.Play();
+			}else {
+				fpc.SendMessage("OnRig");
+			}
+		}
 	}
 
 	void OnTriggerExit() {
-		print("Back to Normal");
 		fpc.SendMessage("BackToNormalFloor");
 	}
 }
