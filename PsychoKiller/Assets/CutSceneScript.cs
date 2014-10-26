@@ -11,6 +11,7 @@ public class CutSceneScript : MonoBehaviour {
     public OVRCameraController camcontrol;
     public GameObject ricky;
     public AudioClip[] footsteps;
+    public DoorController door;
 
 
     int num_clips;
@@ -102,6 +103,7 @@ public class CutSceneScript : MonoBehaviour {
         bool ricky_appears = false;
         bool light_swings = false;
         bool player_dies = false;
+        bool door_slam = false;
         for (float i = 0; i < 120.0f; i += Time.deltaTime)
         {
             if (!ricky_appears && i >= 16.0f)
@@ -112,6 +114,11 @@ public class CutSceneScript : MonoBehaviour {
             {
                 movinglight.SetActive(true);
                 movinglight.GetComponent<Animator>().enabled = true;
+            }
+            if (!door_slam && i >= 28.6)
+            {
+                door.SendMessage("CloseDoor");
+                door.isLocked = true;
             }
             //if (!player_dies && i >= 46.0f)
           //  {
@@ -133,7 +140,7 @@ public class CutSceneScript : MonoBehaviour {
 
     IEnumerator turnAroundAndDie()
     {
-        yield return new WaitForSeconds(42.0f);
+        yield return new WaitForSeconds(50.0f);
         ricky.transform.position = fps.transform.position - fps.transform.forward;
         ricky.GetComponent<BillBoardScript>().enabled = true;
         possess();
@@ -151,27 +158,36 @@ public class CutSceneScript : MonoBehaviour {
     {
         yield return new WaitForSeconds(20.0f);
         int counter = 0;
-        for (float i = 0; i < 7.0f;)
+        for (float i = 0; i < 3.0f;)
         {
-            for (float j = 0; j < 0.3f; j += Time.deltaTime)
+            for (float j = 0; j < 0.2f; j += Time.deltaTime)
             {
                 i += Time.deltaTime;
                 yield return null;
             }
-            sources[num_sources].PlayOneShot(footsteps[counter % 2]);
-            counter++;
+            fps.SendMessage("playfootsteps");
+            //yield return null;
+        }
+        yield return new WaitForSeconds(0.7f);
+        for (float i = 0; i < 3.3f; )
+        {
+            for (float j = 0; j < 0.2f; j += Time.deltaTime)
+            {
+                i += Time.deltaTime;
+                yield return null;
+            }
+            fps.SendMessage("playfootsteps");
             //yield return null;
         }
         yield return new WaitForSeconds(1.2f);
         for (float i = 0; i < 0.1f; i += Time.deltaTime)
         {
-            for (float j = 0; j < 0.3f; j += Time.deltaTime)
+            for (float j = 0; j < 0.2f; j += Time.deltaTime)
             {
                 i += Time.deltaTime;
                 yield return null;
             }
-            sources[num_sources].PlayOneShot(footsteps[counter % 2]);
-            counter++;
+            fps.SendMessage("playfootsteps");
             yield return null;
         }
     }

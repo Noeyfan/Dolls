@@ -105,7 +105,13 @@ public class FirstPersonCharacter : MonoBehaviour
 						Screen.lockCursor = lockCursor;
 				}
 		}
-	
+
+        public void playfootsteps()
+        {
+            int n = Random.Range(1, footstepSounds.Length);
+
+            audio.PlayOneShot(footstepSounds[n - 1]);        
+        }
 	
 		public void FixedUpdate ()
 		{
