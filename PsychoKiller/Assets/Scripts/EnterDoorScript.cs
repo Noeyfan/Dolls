@@ -3,11 +3,11 @@ using System.Collections;
 
 public class EnterDoorScript : MonoBehaviour {
 	bool played;
-	SoundController sc;
+	GameObject sc;
 
 	// Use this for initialization
 	void Start () {
-		sc = GameObject.Find("SoundSets").GetComponent<SoundController>();
+		sc = GameObject.Find("LindseyVoice");
 	}
 	
 	// Update is called once per frame
@@ -18,7 +18,8 @@ public class EnterDoorScript : MonoBehaviour {
 	void OnTriggerEnter(Collider c) {
 		if(c.tag == "Player") {
 			if(!played) {
-				sc.PlaySound(0);
+				AudioClip sfx = Resources.Load("Sound/First Floor/where is everyone") as AudioClip;
+				sc.SendMessage("PlaySound", sfx);
 				played = true;
 			}
 		}

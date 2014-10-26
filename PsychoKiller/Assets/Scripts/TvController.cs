@@ -12,7 +12,7 @@ public class TvController : MonoBehaviour {
 	private float interve = 1f;
 	MovieTexture[] movT;
 
-	public int channelAmount = 2;
+	int channelAmount = 2;
 
 
 	void Start () {

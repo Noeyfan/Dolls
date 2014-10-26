@@ -139,7 +139,7 @@ public class NoteController : MonoBehaviour
 
 						// set target
 						targetRotation = Quaternion.Euler (Vector3.zero);
-						targetPosition = new Vector3 (0f, 0f, 0.16f);
+						targetPosition = new Vector3 (-0.032f, 0f, 0.16f);
 						targetScale = fullscreenScale;
 
 						// sound

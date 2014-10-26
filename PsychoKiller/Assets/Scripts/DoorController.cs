@@ -2,7 +2,13 @@
 using System.Collections;
 
 public class DoorController : MonoBehaviour {
-	
+
+	// entrance door sound attribute
+	public static bool isPlayingKnockSound = false;
+	public static bool isFinishPlayingKnockSound = false;
+	private float totalTimeKnockSound = Mathf.Infinity;
+	private float elapsedTimeKnockSound = 0f;
+
 	public enum DoorType {RIGHT, LEFT};
 	public enum DoorFace {NORMAL, SIDE};
 	public enum DoorSide {NULL, FRONT, BACK};
@@ -16,7 +22,7 @@ public class DoorController : MonoBehaviour {
 	public bool isBasementDoor;
 	public bool isLocked;
 	public bool isFinalDoor;
-
+	public bool isEntranceDoor = false;
 	
 	protected DoorState doorState = DoorState.IDLE;
 	
@@ -66,24 +72,44 @@ public class DoorController : MonoBehaviour {
 				elapsedTimeAnimation = 0f;
 			}
 		}
+
+		if (isPlayingKnockSound && !isFinishPlayingKnockSound) {
+			elapsedTimeKnockSound += Time.deltaTime;
+
+			if (elapsedTimeKnockSound >= totalTimeKnockSound) {
+				isFinishPlayingKnockSound = true;
+			}
+		}
 	}
 
 	void OnCollisionEnter(Collision c) {
 		if(c.gameObject.tag == "Hand") {
 			if(!isLocked) {
 				if(!isBasementDoor || (isBasementDoor && gc.hasKey)) {
-					AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
-					if(isFinalDoor && !cutscenedone)
-					{
-						Debug.Log ("Yup");
-						cutscenedone = true;
-						GameObject.Find ("CutSceneControl").SendMessage("takeControl");
+					if (isEntranceDoor) {
+						if (!isPlayingKnockSound) { // play knock2 sound
+							isPlayingKnockSound = true;
+							elapsedTimeKnockSound = 0f;
+
+							AudioClip knockSFX = Resources.Load("Sound/First Floor/first door") as AudioClip;
+							totalTimeKnockSound = knockSFX.length;
+							GameObject.Find("LindseyVoice").SendMessage("PlaySound", knockSFX);
+						} else if (isFinishPlayingKnockSound) {
+							AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
+						}
+					} else {
+						AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
+						if(isFinalDoor && !cutscenedone)
+						{
+							Debug.Log ("Yup");
+							cutscenedone = true;
+							GameObject.Find ("CutSceneControl").SendMessage("takeControl");
+						}
 					}
 				}
 				else if(isBasementDoor && !gc.hasKey){
 					GameObject.Find("SoundSets").SendMessage("PlaySound", 7);
 				}
-
 			}
 			/*
 			else if(isFinalDoor){
