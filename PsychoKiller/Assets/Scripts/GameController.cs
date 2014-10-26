@@ -39,6 +39,7 @@ public class GameController : MonoBehaviour {
 		ShowNotes(false);
 		initSound();
 		initRig();
+		stepRatio = 0f;
 		//Invoke("PlayBeg", 1f);
 	}
 	
@@ -50,13 +51,16 @@ public class GameController : MonoBehaviour {
 		//print((player.transform.position - decreasePoint).z);
 
 		//Adjust sound on First Floor
-		if((((player.transform.position - decreasePoint).z > 5f) && ((player.transform.position - wallInside).x > 2.9f))  || (Vector3.Distance(player.transform.position, decreasePoint) > 9.7f)) {
+		if((((player.transform.position - decreasePoint).z > 5f) && ((player.transform.position - wallInside).x > 2.9f))) {
 			//print("enterroom");
-			partyMusic.audio.volume -= Time.deltaTime;
+			partyMusic.audio.volume -= Time.deltaTime/2;
+			stepRatio = 0.5f;
 			//enther room
+		}else if(Vector3.Distance(player.transform.position, decreasePoint) > 9.7f) {
+			partyMusic.audio.volume -= Time.deltaTime/2;
 		}
 		else{
-			partyMusic.audio.volume += Time.deltaTime;
+			partyMusic.audio.volume += Time.deltaTime * 2;
 		}
 
 		//Making Follower Sound
@@ -70,6 +74,7 @@ public class GameController : MonoBehaviour {
 		//print ((inBasement- player.transform.position).y);
 		//Adjust Weather Sound
 		if((inBasement- player.transform.position).y > 0) {
+			stepRatio = 0.2f;
 			weatherSound.audio.volume -= Time.deltaTime/10;
 		}else if(weatherSound.audio.volume < 0.6){
 			weatherSound.audio.volume += Time.deltaTime/10;
@@ -132,7 +137,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	IEnumerator followSound(int cnt) {
-		int rollRatio = Random.Range(0,7);
+		int rollRatio = Random.Range(1,10);
 		print(rollRatio);
 		if(rollRatio < 10 * stepRatio) {
 			print("enter");

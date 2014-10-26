@@ -42,7 +42,7 @@ public class FirstPersonCharacter : MonoBehaviour
 		int floor;
 		int rotateBody = 0;
 		float timeRecord = 0;
-		float timeInterve = 3f;
+		float timeInterve = 1.5f;
 
 		GameObject camera;
 		GameObject exit;
@@ -379,16 +379,13 @@ public class FirstPersonCharacter : MonoBehaviour
 
 	void OnRig() {
 		ft = Floor.rig;
-		print("ChangeToRig");
 	}
 
 	void InBasement() {
 		ft = Floor.basement;
-		print("ChangeToBasement");
 	}
 
 	void BackToNormalFloor() {
 		ft = Floor.normal;
-		print("BTN");
 	}
 }
