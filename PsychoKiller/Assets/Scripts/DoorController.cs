@@ -37,12 +37,15 @@ public class DoorController : MonoBehaviour {
 	private GameController gc;
 	private FirstPersonCharacter fc;
 	private bool startkill;
+	private BasementLightControl blc;
 
 	private Transform doorTransform;
 	private bool cutscenedone = false;
 
 	// Use this for initialization
 	void Start () {
+		blc = GameObject.Find("BasementLightSets").GetComponent<BasementLightControl>();
+
 		if (isParent)
 			doorTransform = transform.parent.transform;
 		else
@@ -118,6 +121,7 @@ public class DoorController : MonoBehaviour {
 							Debug.Log ("Yup");
 							cutscenedone = true;
 							GameObject.Find ("CutSceneControl").SendMessage("takeControl");
+							blc.interve = 2f;
 						}
 					}
 				}
