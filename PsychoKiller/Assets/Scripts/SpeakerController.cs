@@ -3,6 +3,7 @@ using System.Collections;
 
 public class SpeakerController : MonoBehaviour {
 	public GameObject partySound;
+	public GameObject someOneDownHere;
 	private SoundController sc;
 	private float recordtime;
 	private float interve;
@@ -30,6 +31,7 @@ public class SpeakerController : MonoBehaviour {
 		if(recordtime <= Time.time - interve) {
 			recordtime = Time.time;
 			//sc.PlaySound(4);
+			someOneDownHere.audio.Play();
 			if(partySound.GetComponent<AudioSource>().isPlaying) {
 				partySound.audio.Stop();
 			}else {
