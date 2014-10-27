@@ -138,9 +138,7 @@ public class GameController : MonoBehaviour {
 	
 	IEnumerator followSound(int cnt) {
 		int rollRatio = Random.Range(1,10);
-		print(rollRatio);
 		if(rollRatio < 10 * stepRatio) {
-			print("enter");
 			for(int i = 0; i < cnt; i++) {
 				SoundFollowYou.audio.Play ();
 				yield return new WaitForSeconds(1f);

@@ -25,12 +25,9 @@ public class BasementLightControl : MonoBehaviour {
 
 	IEnumerator SelectBlink() {
 		int chose = Random.Range(0, lights.Length - 4);
-		print( "chose is " + chose);
 		for(int i = 0; i < chose; i++) {
 			int ran = Random.Range(0, lights.Length);
 			StartCoroutine(BlinkLight(lights[ran]));
-			print("Blink");
-
 		}
 		yield return new WaitForSeconds(4f);
 		isblinking = false;
@@ -38,11 +35,16 @@ public class BasementLightControl : MonoBehaviour {
 	}
 
 	IEnumerator BlinkLight(Light l) {
+		int soundrand = Random.Range(0,2);
+		AudioSource lighas = l.gameObject.AddComponent<AudioSource>();
+		lighas.clip = Resources.Load("Sound/Light/lb" + soundrand) as AudioClip;
+
 		for(int i =0; i < blinkTimes; i++) {
 			float n = Random.Range(0.1f,0.6f);
 			l.enabled = false;
 			yield return new WaitForSeconds(n);
 			l.enabled = true;
+			lighas.Play();
 			yield return new WaitForSeconds(n);
 		}
 	}
