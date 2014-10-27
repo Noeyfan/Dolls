@@ -6,9 +6,11 @@ public class SpeakerController : MonoBehaviour {
 	private SoundController sc;
 	private float recordtime;
 	private float interve;
+	private bool stopMusic;
 	// Use this for initialization
 	void Start () {
 		interve = 1f;
+		stopMusic = false;
 		sc = GameObject.Find("SoundSets").GetComponent<SoundController>();
 	}
 	
@@ -18,15 +20,16 @@ public class SpeakerController : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider c) {
-		if(c.tag == "Hand") {
+		if(c.tag == "Player" && !stopMusic) {
 			toggleSound();
+			stopMusic = true;
 		}
 	}
 
 	void toggleSound() {
 		if(recordtime <= Time.time - interve) {
 			recordtime = Time.time;
-			sc.PlaySound(4);
+			//sc.PlaySound(4);
 			if(partySound.GetComponent<AudioSource>().isPlaying) {
 				partySound.audio.Stop();
 			}else {
