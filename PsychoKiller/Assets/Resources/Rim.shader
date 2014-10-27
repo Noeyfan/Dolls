@@ -6,9 +6,11 @@
       _RimPower ("Rim Power", Range(0.1,8.0)) = 1.0
     }
     SubShader {
-      Tags { "RenderType" = "Opaque" }
+    
+      Tags {"Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent"}
       CGPROGRAM
-      #pragma surface surf BlinnPhong 
+      #pragma surface surf BlinnPhong alpha
+      
       struct Input {
           float2 uv_MainTex;
           float2 uv_BumpMap;
@@ -19,10 +21,13 @@
       float4 _RimColor;
       float _RimPower;
       void surf (Input IN, inout SurfaceOutput o) {
-          o.Albedo = tex2D (_MainTex, IN.uv_MainTex).rgb;
+      	  float4 texcolor = tex2D (_MainTex, IN.uv_MainTex);
+          o.Albedo = texcolor.rgb;
+          
           o.Normal = UnpackNormal (tex2D (_BumpMap, IN.uv_BumpMap));
           half rim = 1.0 - saturate(dot (normalize(IN.viewDir), o.Normal));
           o.Emission = _RimColor.rgb * pow (rim, _RimPower);
+          o.Alpha = texcolor.a;
       }
       ENDCG
     } 

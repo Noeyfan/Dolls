@@ -78,6 +78,9 @@ public class DoorController : MonoBehaviour {
 
 			if (elapsedTimeKnockSound >= totalTimeKnockSound) {
 				isFinishPlayingKnockSound = true;
+
+				// enable makey makey
+				GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().isMakeyMakeyActive = true;
 			}
 		}
 	}
@@ -99,6 +102,9 @@ public class DoorController : MonoBehaviour {
 							AudioClip knockSFX = Resources.Load("Sound/First Floor/first door") as AudioClip;
 							totalTimeKnockSound = knockSFX.length;
 							GameObject.Find("LindseyVoice").SendMessage("PlaySound", knockSFX);
+
+							// disable makey makey
+							GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().isMakeyMakeyActive = false;
 						} else if (isFinishPlayingKnockSound) {
 							AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
 						}

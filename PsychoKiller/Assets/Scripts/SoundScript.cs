@@ -41,6 +41,12 @@ public class SoundScript : MonoBehaviour {
         } while (stillplaying);
 
         yield return new WaitForSeconds(2.0f);
-        Application.LoadLevel("MainScene");
+        //Application.LoadLevel("MainScene");
+		GameObject.Find ("blackbg").SendMessage("StartTransition");
     }
+
+	void PlayClip(AudioClip clip) {
+		audio.clip = clip;
+		audio.Play ();
+	}
 }
