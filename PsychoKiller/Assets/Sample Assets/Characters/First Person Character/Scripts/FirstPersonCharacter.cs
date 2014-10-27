@@ -168,7 +168,7 @@ public class FirstPersonCharacter : MonoBehaviour
         if (hasControl)
         {
 
-            if (useMakeyMakey && (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.G)) && gameController.GetComponent<GameController>().isMakeyMakeyActive)
+			if (useMakeyMakey && (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1)) && gameController.GetComponent<GameController>().isMakeyMakeyActive)
             {
                 isWalking = true;
                 timeRecord = Time.time;
@@ -353,6 +353,8 @@ if(rotateBody > 150 && Vector3.Angle(gameObject.transform.forward, exit.transfor
             blood.renderer.enabled = true;
             dead = true;
             StartCoroutine("FadeOut");
+			yield return new WaitForSeconds(10.0f);
+			Application.LoadLevel("outtro");
         }
     }
 

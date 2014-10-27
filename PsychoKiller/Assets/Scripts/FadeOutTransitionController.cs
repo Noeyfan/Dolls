@@ -47,5 +47,8 @@ public class FadeOutTransitionController : MonoBehaviour {
 		elapsedTimeFading = 0f;
 
 		transform.parent.gameObject.audio.Play ();
+
+		AudioClip sfx = Resources.Load("Sound/First Floor/fashionably late") as AudioClip;
+		GameObject.Find("LindseyVoice").SendMessage("PlaySound", sfx);
 	}
 }

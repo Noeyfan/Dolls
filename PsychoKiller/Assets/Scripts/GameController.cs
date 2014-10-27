@@ -7,6 +7,7 @@ public class GameController : MonoBehaviour {
 	public bool hasKey;
 	public bool isMakeyMakeyActive = true;
 	public float stepRatio;
+	public float volumeSh;
 	
 	bool showingNotes;
 	bool isIncoroution;
@@ -63,7 +64,9 @@ public class GameController : MonoBehaviour {
 			partyMusic.audio.volume -= Time.deltaTime/2;
 		}
 		else{
-			partyMusic.audio.volume += Time.deltaTime * 2;
+			if(partyMusic.audio.volume < volumeSh) {
+				partyMusic.audio.volume += Time.deltaTime * 2;
+			}
 		}
 		
 		//Making Follower Sound
