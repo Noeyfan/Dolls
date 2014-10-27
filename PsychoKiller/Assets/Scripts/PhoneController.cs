@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PhoneController : MonoBehaviour
 {
+	public Texture[] textureList;
+
 	private Vector3 initLocalPosition, hidePosition;
 	
 	// animation attribute
@@ -15,7 +17,10 @@ public class PhoneController : MonoBehaviour
 	private float elapsedTimeSFX = 0f;
 	private bool isWaitingSFX = false;
 	private float durationSFX = 0f;
-	
+
+	private int index = 1;
+	private float delay = 1f;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -40,6 +45,15 @@ public class PhoneController : MonoBehaviour
 
 					// play VO
 					AudioClip lindseyVoice = Resources.Load("Sound/First Floor/party is downstairs") as AudioClip;
+					switch(index) {
+					case 1:
+						lindseyVoice = Resources.Load("Sound/First Floor/party is downstairs") as AudioClip;
+						break;
+					case 2 :
+						lindseyVoice = Resources.Load("Sound/First Floor/hurry up lindsay") as AudioClip;
+						break;
+					}
+
 					durationSFX = lindseyVoice.length;
 					GameObject.Find("LindseyVoice").SendMessage("PlaySound", lindseyVoice);
 				} else if (targetPosition == hidePosition) {
@@ -65,7 +79,9 @@ public class PhoneController : MonoBehaviour
 		}
 	}
 	
-	void Show() {
+	void Show(int index) {
+		this.index = index;
+
 		if (!isAnimating) {
 			isAnimating = true;
 
@@ -77,7 +93,20 @@ public class PhoneController : MonoBehaviour
 
 			// disable makey makey
 			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().isMakeyMakeyActive = false;
+
+			// change texture
+			gameObject.transform.GetChild(0).transform.GetChild(0).renderer.material.mainTexture = textureList[index-1];
 		}
+	}
+
+	void ShowWithDelay(int index) {
+		StartCoroutine("ShowDelay", index);
+	}
+
+	IEnumerator ShowDelay(int index) {
+		yield return new WaitForSeconds (delay);
+		
+		Show (index);
 	}
 
 	void Hide() {

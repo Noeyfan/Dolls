@@ -20,7 +20,7 @@ public class MessagingController : MonoBehaviour {
 			if(!played) {
 				played = true;
 
-				GameObject.FindGameObjectWithTag ("Phone").SendMessage ("Show");
+				GameObject.FindGameObjectWithTag ("Phone").SendMessage ("Show",1);
 			}
 		}
 	}
