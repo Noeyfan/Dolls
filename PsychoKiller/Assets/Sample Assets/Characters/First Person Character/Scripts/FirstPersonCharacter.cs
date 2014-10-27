@@ -116,7 +116,7 @@ public class FirstPersonCharacter : MonoBehaviour
         gameController = GameObject.FindGameObjectWithTag("GameController");
         oc = gameObject.GetComponent<OculusController>();
         sc = GameObject.Find("SoundSets");
-        blood.SetActive(false);
+        //blood.SetActive(false);
         dead = false;
         //StartCoroutine(FadeOut());
         //if(triggerRunAnim) {
@@ -350,7 +350,6 @@ if(rotateBody > 150 && Vector3.Angle(gameObject.transform.forward, exit.transfor
             {
                 oc.SetEnableOculus(false);
             }
-
             blood.renderer.enabled = true;
             dead = true;
             StartCoroutine("FadeOut");

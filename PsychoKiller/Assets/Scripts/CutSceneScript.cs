@@ -12,10 +12,11 @@ public class CutSceneScript : MonoBehaviour {
     public GameObject ricky;
    
 	public AudioClip deathbgm;
-	public AudioClip scream;
+	public AudioClip surprise;
     public DoorController door;
 	public RickyAnimationScript rickyAni;
 	public DoorController basementdoor;
+	public GameObject rickylight;
 
 
     int num_clips;
@@ -191,7 +192,7 @@ public class CutSceneScript : MonoBehaviour {
             camcontrol.transform.rotation = Quaternion.Slerp(original, turnaround, i/0.2f);
             yield return null;
         }
-		this.audio.PlayOneShot (scream);
+		this.audio.PlayOneShot (surprise);
         fps.Kill();
     }
 
@@ -210,7 +211,9 @@ public class CutSceneScript : MonoBehaviour {
             fps.PlayStepSound(FirstPersonCharacter.Floor.basement, (FirstPersonCharacter.Foot)(counter % 2));
             //yield return null;
         }
+		rickylight.SetActive(true);
         yield return new WaitForSeconds(0.7f);
+		rickylight.SetActive(false);
         for (float i = 0; i < 3.3f; )
         {
             for (float j = 0; j < 0.2f; j += Time.deltaTime)
