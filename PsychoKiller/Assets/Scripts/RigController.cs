@@ -3,7 +3,7 @@ using System.Collections;
 
 public class RigController : MonoBehaviour {
 	FirstPersonCharacter fpc;
-	bool isBasement;
+	public bool isBasement;
 	AudioSource basementSound;
 	// Use this for initialization
 	void Start () {
@@ -11,6 +11,7 @@ public class RigController : MonoBehaviour {
 		basementSound = GameObject.Find("BasementSound").GetComponent<AudioSource>();
 		if(gameObject.name == "Basement") {
 			isBasement = true;
+			//
 		}else {
 			isBasement = false;
 		}
@@ -23,6 +24,7 @@ public class RigController : MonoBehaviour {
 
 	void OnTriggerEnter(Collider c) {
 		if(c.tag == "Player") {
+			print(isBasement);
 			if(isBasement) {
 				fpc.SendMessage("InBasement");
 				basementSound.transform.position = fpc.transform.position;
