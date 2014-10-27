@@ -40,7 +40,7 @@ public class SoundScript : MonoBehaviour {
             }
         } while (stillplaying);
 
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(0f);
         //Application.LoadLevel("MainScene");
 		GameObject.Find ("blackbg").SendMessage("StartTransition");
     }

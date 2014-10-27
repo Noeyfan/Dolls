@@ -6,7 +6,7 @@ public class IntroTransitionController : MonoBehaviour {
 	private bool isBlackFading = false;
 	private bool isTitleFading = false;
 	private float totalTimeBlackFading = 1f;
-	private float totalTimeTitleFading = 2.5f;
+	private float totalTimeTitleFading = 4f;
 	private float elapsedTimeBlackFading = 0f;
 	private float elapsedTimeTitleFading = 0f;
 	private float firstAlpha, targetAlpha;
@@ -36,10 +36,10 @@ public class IntroTransitionController : MonoBehaviour {
 				GameObject.Find("SoundObject").SendMessage("PlayClip",clip);
 				
 				// fade in title
-				StartCoroutine("ShowTitle", 3f);
+				StartCoroutine("ShowTitle", 0f);
 				
 				// fade out title
-				StartCoroutine("HideTitle", clip.length - totalTimeTitleFading);
+				StartCoroutine("HideTitle", clip.length - (totalTimeTitleFading + 0.7f));
 			}
 
 			Color tintColor = renderer.material.GetColor("_Color");
