@@ -338,7 +338,7 @@ if(rotateBody > 150 && Vector3.Angle(gameObject.transform.forward, exit.transfor
         if (!dead)
         {
             //sc.SendMessage("PlaySound", 5);
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(1f);
             //Fall down
             sc.SendMessage("PlaySound", 6);
             hasControl = false;

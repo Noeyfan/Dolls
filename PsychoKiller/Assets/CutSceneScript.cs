@@ -150,7 +150,7 @@ public class CutSceneScript : MonoBehaviour {
 
     IEnumerator turnAroundAndDie()
     {
-        yield return new WaitForSeconds(49.0f);
+        yield return new WaitForSeconds(50.0f);
 		float ricky_y = ricky.transform.position.y;
 		Vector3 rickypos = fps.transform.position - fps.transform.forward;
 		rickypos.y = ricky_y;
