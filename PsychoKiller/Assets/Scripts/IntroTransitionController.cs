@@ -43,7 +43,7 @@ public class IntroTransitionController : MonoBehaviour {
 			}
 
 			Color tintColor = renderer.material.GetColor("_Color");
-			renderer.material.SetColor("_Color", new Color(tintColor.r, tintColor.b, tintColor.g, elapsedTimeBlackFading / totalTimeBlackFading));
+			renderer.material.SetColor("_Color", new Color(tintColor.r, tintColor.g, tintColor.b, elapsedTimeBlackFading / totalTimeBlackFading));
 		}
 
 		if (isTitleFading) {
