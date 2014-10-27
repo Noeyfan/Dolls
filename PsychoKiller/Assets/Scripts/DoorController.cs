@@ -94,6 +94,9 @@ public class DoorController : MonoBehaviour {
 		if(c.gameObject.tag == "Hand") {
 			if(!isLocked) {
 				if(!isBasementDoor || (isBasementDoor && gc.hasKey)) {
+					if(isBasementDoor) {
+						GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().ChangeSoundPos();
+					}
 					if (isEntranceDoor) {
 						if (!isPlayingKnockSound) { // play knock2 sound
 							isPlayingKnockSound = true;
