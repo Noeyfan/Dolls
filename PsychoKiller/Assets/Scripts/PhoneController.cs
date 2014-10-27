@@ -4,13 +4,18 @@ using System.Collections;
 public class PhoneController : MonoBehaviour
 {
 	private Vector3 initLocalPosition, hidePosition;
-
+	
 	// animation attribute
 	private bool isAnimating = false;
 	private float elapsedTime = 0f;
-	private float totalTimeAnimation = 0.3f;
+	private float totalTimeAnimation = 1f;
 	private Vector3 firstPosition, targetPosition;
 
+	// sound attribute
+	private float elapsedTimeSFX = 0f;
+	private bool isWaitingSFX = false;
+	private float durationSFX = 0f;
+	
 	// Use this for initialization
 	void Start ()
 	{
@@ -30,13 +35,36 @@ public class PhoneController : MonoBehaviour
 			transform.localPosition = Vector3.Slerp(firstPosition, targetPosition, elapsedTime / totalTimeAnimation);
 
 			if (elapsedTime >= totalTimeAnimation) {
+				if (targetPosition == initLocalPosition) {
+					isWaitingSFX = true;
+
+					// play VO
+					AudioClip lindseyVoice = Resources.Load("Sound/First Floor/party is downstairs") as AudioClip;
+					durationSFX = lindseyVoice.length;
+					GameObject.Find("LindseyVoice").SendMessage("PlaySound", lindseyVoice);
+				} else if (targetPosition == hidePosition) {
+					// enable makey makey
+					GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().isMakeyMakeyActive = true;
+				}
+
 				// init
 				isAnimating = false;
 				elapsedTime = 0f;
 			}
 		}
-	}
 
+		if (isWaitingSFX) {
+			elapsedTimeSFX += Time.deltaTime;
+			if (elapsedTimeSFX >= durationSFX) {
+				// init
+				isWaitingSFX = false;
+				elapsedTimeSFX = 0f;
+
+				Hide();
+			}
+		}
+	}
+	
 	void Show() {
 		if (!isAnimating) {
 			isAnimating = true;
@@ -46,6 +74,9 @@ public class PhoneController : MonoBehaviour
 
 			// sound
 			audio.Play();
+
+			// disable makey makey
+			GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ().isMakeyMakeyActive = false;
 		}
 	}
 
