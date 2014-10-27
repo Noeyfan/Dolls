@@ -82,6 +82,11 @@ public class DoorController : MonoBehaviour {
 		}
 	}
 
+	public void OpenDoor()
+	{
+		AnimateDoor(CheckSideCollision(GameObject.FindGameObjectWithTag("Player").transform.position));
+	}
+
 	void OnCollisionEnter(Collision c) {
 		if(c.gameObject.tag == "Hand") {
 			if(!isLocked) {

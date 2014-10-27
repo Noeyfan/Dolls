@@ -7,11 +7,15 @@ public class CutSceneScript : MonoBehaviour {
     public AudioSource[] sources;
     public AudioClip[] clips;
     public float[] timings;
+	public float[] volumes;
     public OVRCameraController camcontrol;
     public GameObject ricky;
-    public AudioClip[] footsteps;
+   
+	public AudioClip deathbgm;
+	public AudioClip scream;
     public DoorController door;
 	public RickyAnimationScript rickyAni;
+	public DoorController basementdoor;
 
 
     int num_clips;
@@ -65,6 +69,8 @@ public class CutSceneScript : MonoBehaviour {
         StartCoroutine(returnControlAfter(30.0f));
         StartCoroutine(turnAroundAndDie());
         StartCoroutine(playfootsteps());
+		this.audio.PlayOneShot (deathbgm, 0.13f);
+		camcontrol.GetComponentInParent<AudioSource> ().Stop ();
 	}
 
     void returnControl()
@@ -88,7 +94,7 @@ public class CutSceneScript : MonoBehaviour {
                 if (!event_over[j] && i >= timings[j])
                 {
                     event_over[j] = true;
-                    sources[next_avail_source].PlayOneShot(clips[j]);
+                    sources[next_avail_source].PlayOneShot(clips[j],volumes[j]);
                     next_avail_source = (next_avail_source + 1) % num_sources;
                 }
             }
@@ -103,33 +109,51 @@ public class CutSceneScript : MonoBehaviour {
         bool ricky_appears = false;
 		bool ricky_walks = false;
 		bool ricky_stops = false;
+		bool ricky_opens_door = false;
         bool light_swings = false;
         bool player_dies = false;
         bool door_slam = false;
+		bool basement_door_shuts = false;
         for (float i = 0; i < 120.0f; i += Time.deltaTime)
         {
             if (!ricky_appears && i >= 16.0f)
             {
                 ricky.SetActive(true);
+				ricky_appears = true;
             }
 			if (!ricky_walks && i >= 21.0f)
 			{
+				ricky_walks = true;
 				rickyAni.SendMessage("startWalking");
 			}
 			if (!ricky_stops && i >= 26.0f)
 			{
+				ricky_stops = true;
 				rickyAni.SendMessage("stopWalking");
+			}
+			if (!ricky_opens_door && i >= 45.0f)
+			{
+				ricky_opens_door = true;
+				door.SendMessage("OpenDoor");
+				door.isLocked = false;
 			}
             if (!light_swings && i >= 12.0f)
             {
+				light_swings = true;
                 movinglight.SetActive(true);
                 movinglight.GetComponent<Animator>().enabled = true;
             }
             if (!door_slam && i >= 28.6)
             {
+				//door_slam = true;
                 door.SendMessage("CloseDoor");
                 door.isLocked = true;
             }
+			if(!basement_door_shuts && i>=0)
+			{
+				basementdoor.SendMessage("CloseDoor");
+				basementdoor.isLocked = true;
+			}
             //if (!player_dies && i >= 46.0f)
           //  {
           //      fps.Kill();
@@ -152,8 +176,9 @@ public class CutSceneScript : MonoBehaviour {
     {
         yield return new WaitForSeconds(50.0f);
 		float ricky_y = ricky.transform.position.y;
-		Vector3 rickypos = fps.transform.position - fps.transform.forward;
-		rickypos.y = ricky_y;
+		Vector3 rickypos = fps.transform.position - fps.transform.forward * 0.5f;
+		//rickypos.y = ricky_y;
+		rickypos.y -= 0.5f;
 		ricky.transform.position = rickypos; 
 
         ricky.GetComponent<BillBoardScript>().enabled = true;
@@ -161,11 +186,12 @@ public class CutSceneScript : MonoBehaviour {
         possess();
         Quaternion original = camcontrol.transform.rotation;
         Quaternion turnaround = Quaternion.Euler(camcontrol.transform.rotation.eulerAngles + new Vector3(0, 180, 0));
-        for (float i = 0; i < 2.0f; i += Time.deltaTime)
+        for (float i = 0; i < 0.2f; i += Time.deltaTime)
         {
-            camcontrol.transform.rotation = Quaternion.Slerp(original, turnaround, i/2.0f);
+            camcontrol.transform.rotation = Quaternion.Slerp(original, turnaround, i/0.2f);
             yield return null;
         }
+		this.audio.PlayOneShot (scream);
         fps.Kill();
     }
 
