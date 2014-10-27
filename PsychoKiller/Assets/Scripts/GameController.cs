@@ -14,6 +14,8 @@ public class GameController : MonoBehaviour {
 	
 	
 	SoundController sc;
+	BasementLightControl blc;
+
 	GameObject currentNote;
 	GameObject partyMusic;
 	GameObject player;
@@ -36,6 +38,7 @@ public class GameController : MonoBehaviour {
 		player = GameObject.FindWithTag("Player");
 		SoundFollowYou = GameObject.Find("SoundFollow");
 		weatherSound = GameObject.Find("CameraRight");
+		blc = GameObject.Find("BasementLightSets").GetComponent<BasementLightControl>();
 		ShowNotes(false);
 		initSound();
 		initRig();
@@ -54,7 +57,7 @@ public class GameController : MonoBehaviour {
 		if((((player.transform.position - decreasePoint).z > 5f) && ((player.transform.position - wallInside).x > 2.9f))) {
 			//print("enterroom");
 			partyMusic.audio.volume -= Time.deltaTime/2;
-			stepRatio = 0.5f;
+			//stepRatio = 0.5f;
 			//enther room
 		}else if(Vector3.Distance(player.transform.position, decreasePoint) > 9.7f) {
 			partyMusic.audio.volume -= Time.deltaTime/2;
@@ -74,10 +77,13 @@ public class GameController : MonoBehaviour {
 		//print ((inBasement- player.transform.position).y);
 		//Adjust Weather Sound
 		if((inBasement- player.transform.position).y > 0) {
-			stepRatio = 0.2f;
+			stepRatio = 0f;
 			weatherSound.audio.volume -= Time.deltaTime/10;
+			blc.playBuzzSound = true;
 		}else if(weatherSound.audio.volume < 0.6){
 			weatherSound.audio.volume += Time.deltaTime/10;
+		}else {
+			blc.playBuzzSound = false;
 		}
 	}
 	
