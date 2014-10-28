@@ -56,7 +56,6 @@ public class CutSceneScript : MonoBehaviour
 
 		void possess ()
 		{
-				camcontrol.FollowOrientation = fps.transform;
 				fps.GetComponent<OculusController> ().SetEnableOculus (false);
 				fps.hasControl = false;
 				fps.GetComponent<Rigidbody> ().isKinematic = true;
@@ -80,7 +79,6 @@ public class CutSceneScript : MonoBehaviour
 
 		void returnControl ()
 		{
-				camcontrol.FollowOrientation = null;
 				fps.GetComponent<OculusController> ().SetEnableOculus (true);
 				fps.hasControl = true;
 				fps.GetComponent<Rigidbody> ().isKinematic = false;
@@ -178,14 +176,14 @@ public class CutSceneScript : MonoBehaviour
 				ricky.transform.position = rickypos; 
 
 				ricky.GetComponent<BillBoardScript> ().enabled = true;
-				ricky.GetComponentInChildren<MeshRenderer> ().material.shader = Shader.Find ("Custom/Ricky");
+				ricky.GetComponentInChildren<MeshRenderer> ().material.shader = Shader.Find ("Unlit/Transparent Cutout");
 				possess ();
 
 
-				Quaternion original = fps.transform.rotation;
-				Quaternion turnaround = Quaternion.Euler (fps.transform.rotation.eulerAngles + new Vector3 (0, 180, 0));
+				Quaternion original = camcontrol.transform.rotation;
+				Quaternion turnaround = Quaternion.Euler (camcontrol.transform.rotation.eulerAngles + new Vector3 (0, 180, 0));
 				for (float i = 0; i < 0.2f; i += Time.deltaTime) {
-						fps.transform.rotation = Quaternion.Slerp (original, turnaround, i / 0.2f);
+					camcontrol.transform.rotation = Quaternion.Slerp (original, turnaround, i / 0.2f);
 						yield return null;
 				}
 				this.audio.PlayOneShot (surprise);
