@@ -172,7 +172,7 @@ public class FirstPersonCharacter : MonoBehaviour
             {
                 isWalking = true;
                 timeRecord = Time.time;
-                acc = 50f;
+                acc = 10f;
                 velocity += acc * Time.fixedDeltaTime;
                 velocity = Mathf.Min(300f, velocity);
                 if (velocity < 0.001f)
@@ -180,11 +180,11 @@ public class FirstPersonCharacter : MonoBehaviour
                     velocity = 0;
                 }
 
-                if (Input.GetKeyUp(KeyCode.W))
+				if (Input.GetMouseButtonUp(0))
                 {
                     PlayStepSound(ft, Foot.left);
                 }
-                else if (Input.GetKeyUp(KeyCode.G))
+				else if (Input.GetMouseButtonUp(1))
                 {
                     PlayStepSound(ft, Foot.right);
                 }

@@ -52,6 +52,7 @@ public class CutSceneScript : MonoBehaviour {
 
     void possess()
     {
+		camcontrol.FollowOrientation = fps.transform;
         fps.hasControl = false;
         fps.GetComponent<Rigidbody>().isKinematic = true;
         camcontrol.EnableOrientation = false;
@@ -62,7 +63,6 @@ public class CutSceneScript : MonoBehaviour {
 	{
         possess();
 		fps.GetComponent<Animator> ().enabled = true;
-        
 		
 		//cutscenesplane.SetActive (true);
 		StartCoroutine (playCutsceneAnimationSounds ());
@@ -72,10 +72,12 @@ public class CutSceneScript : MonoBehaviour {
         StartCoroutine(playfootsteps());
 		this.audio.PlayOneShot (deathbgm, 0.13f);
 		camcontrol.GetComponentInParent<AudioSource> ().Stop ();
+
 	}
 
     void returnControl()
     {
+		camcontrol.FollowOrientation = null;
         fps.hasControl = true;
         fps.GetComponent<Rigidbody>().isKinematic = false;
         fps.GetComponent<Animator>().enabled = false;
