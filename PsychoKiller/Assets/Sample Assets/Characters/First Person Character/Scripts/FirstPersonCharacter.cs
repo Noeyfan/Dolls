@@ -175,9 +175,9 @@ public class FirstPersonCharacter : MonoBehaviour
 						if (useMakeyMakey && (Input.GetMouseButtonUp (0) || Input.GetMouseButtonUp (1)) && gameController.GetComponent<GameController> ().isMakeyMakeyActive) {
 								isWalking = true;
 								timeRecord = Time.time;
-								acc = 25f;
+								acc = 35f;
 								velocity += acc * Time.fixedDeltaTime;
-								velocity = Mathf.Min (300f, velocity);
+								velocity = Mathf.Min (250f, velocity);
 								if (velocity < 0.001f) {
 										velocity = 0;
 								}

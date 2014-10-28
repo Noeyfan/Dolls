@@ -19,6 +19,7 @@ public class CutSceneScript : MonoBehaviour
 		public DoorController basementdoor;
 		public GameObject rickylight;
 
+		public GameObject rickyillum;
 
 		int num_clips;
 		int num_sources;
@@ -174,9 +175,9 @@ public class CutSceneScript : MonoBehaviour
 				//rickypos.y = ricky_y;
 				rickypos.y -= 0.5f;
 				ricky.transform.position = rickypos; 
-
+				rickyillum.SetActive(true);
 				ricky.GetComponent<BillBoardScript> ().enabled = true;
-				ricky.GetComponentInChildren<MeshRenderer> ().material.shader = Shader.Find ("Unlit/Transparent Cutout");
+				
 				possess ();
 
 
