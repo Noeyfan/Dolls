@@ -44,7 +44,7 @@ public class InteractiveObjectController : MonoBehaviour
 		else
 			objectTransform = transform;
 
-		initShader = Shader.Find ("Custom/Rim");
+		initShader = Shader.Find ("Custom/highlight");
 		targetShader = Shader.Find ("Unlit/Transparent");
 
 		// material
