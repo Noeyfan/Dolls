@@ -1,9 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\..\..\AntFinalLast2\Assets\Scripts\ObjectsDropCollider.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\TvController.cs">
     <Files>
-      <File FileName="..\..\..\AntFinalLast2\Assets\Scripts\RainDeadAnt.cs" Line="21" Column="41" />
-      <File FileName="..\..\..\AntFinalLast2\Assets\Scripts\ObjectsDropCollider.cs" Line="60" Column="40" />
+      <File FileName="Assets\Scripts\GameController.cs" Line="42" Column="57" />
+      <File FileName="Assets\Scripts\TvController.cs" Line="53" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
