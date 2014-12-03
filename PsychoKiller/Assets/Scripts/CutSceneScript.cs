@@ -189,7 +189,7 @@ public class CutSceneScript : MonoBehaviour
 				float ricky_y = ricky.transform.position.y;
 				Vector3 rickypos = camcontrol.transform.position + camcontrol.transform.rotation * Vector3.forward * 1f;
 				//rickypos.y = ricky_y;
-				rickypos.y = -2f;
+				rickypos.y = -2f + (fps.transform.position.y - -1.826929f);
 				//rickypos.x += 0.4f;
 				ricky.transform.position = rickypos;
 				ricky.GetComponent<BillBoardScript> ().enabled = true;

@@ -37,7 +37,7 @@ public class NoteController : MonoBehaviour
 	void Start ()
 	{
 		// material
-		renderer.material = new Material (Shader.Find ("Custom/highlight"));
+		renderer.material = new Material (Shader.Find ("Custom/Rim"));
 		renderer.material.mainTexture = texture;
 
 		initShader = renderer.material.shader;
